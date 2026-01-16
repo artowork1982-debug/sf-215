@@ -1,0 +1,14 @@
+[13-Jan-2026 18:14:01 Europe/Helsinki] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY093]: Invalid parameter number in /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/app/pages/list.php:266
+Stack trace:
+#0 /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/app/pages/list.php(266): PDOStatement->execute()
+#1 /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/app/pages/list.php(576): sf_get_flash_translations_list()
+#2 /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/index.php(202): include('...')
+#3 {main}
+  thrown in /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/app/pages/list.php on line 266
+[13-Jan-2026 18:14:55 Europe/Helsinki] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY093]: Invalid parameter number in /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/app/pages/list.php:266
+Stack trace:
+#0 /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/app/pages/list.php(266): PDOStatement->execute()
+#1 /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/app/pages/list.php(576): sf_get_flash_translations_list()
+#2 /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/index.php(202): include('...')
+#3 {main}
+  thrown in /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/app/pages/list.php on line 266

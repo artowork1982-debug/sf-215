@@ -1,0 +1,5 @@
+[2026-01-14 02:35:36] [ERROR] send_to_comms.php FATAL ERROR: SQLSTATE[HY093]: Invalid parameter number
+[2026-01-14 02:35:49] [ERROR] send_to_comms.php FATAL ERROR: SQLSTATE[HY093]: Invalid parameter number
+[2026-01-14 02:50:17] [ERROR] send_to_comms.php FATAL ERROR: SQLSTATE[HY093]: Invalid parameter number
+[2026-01-14 02:50:22] [ERROR] send_to_comms.php FATAL ERROR: SQLSTATE[HY093]: Invalid parameter number
+[2026-01-14 02:53:43] [ERROR] send_to_comms.php FATAL ERROR: SQLSTATE[HY093]: Invalid parameter number

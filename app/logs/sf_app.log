@@ -1,0 +1,467 @@
+[2026-01-12 09:23:04] [INFO] Worker starting for flash_id: 370
+[2026-01-12 09:23:05] [INFO] Worker successfully processed flash_id: 370
+[2026-01-12 09:27:10] [INFO] send_to_comms.php: Processing flash 370
+[2026-01-12 09:27:10] [INFO] send_to_comms.php: Flash 370 state updated to to_comms
+[2026-01-12 09:27:10] [INFO] send_to_comms.php: Attempting to send email for flash 370
+[2026-01-12 09:27:10] [INFO] sf_mail_to_comms: CALLED for flashId=370
+[2026-01-12 09:27:10] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-12 09:27:11] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-12 09:27:11] [INFO] send_to_comms.php: Email sent successfully for flash 370
+[2026-01-12 09:50:01] [INFO] Worker starting for flash_id: 372
+[2026-01-12 09:50:01] [INFO] Worker successfully processed flash_id: 372
+[2026-01-12 09:50:07] [INFO] send_to_comms.php: Processing flash 372
+[2026-01-12 09:50:07] [INFO] send_to_comms.php: Flash 372 state updated to to_comms
+[2026-01-12 09:50:07] [INFO] send_to_comms.php: Attempting to send email for flash 372
+[2026-01-12 09:50:07] [INFO] sf_mail_to_comms: CALLED for flashId=372
+[2026-01-12 09:50:07] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-12 09:50:08] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-12 09:50:08] [INFO] send_to_comms.php: Email sent successfully for flash 372
+[2026-01-12 09:50:30] [INFO] sf_mail_published: CALLED for flashId=372
+[2026-01-12 09:50:30] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-12 09:50:30] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-12 09:50:43] [INFO] sf_mail_published: CALLED for flashId=370
+[2026-01-12 09:50:43] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-12 09:50:43] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-12 09:50:43] [INFO] publish.php: Sending to distribution for selected languages: fi
+[2026-01-12 09:50:43] [INFO] publish.php: Sending distribution email for language fi, flash ID 370
+[2026-01-12 09:50:43] [INFO] sf_mail_to_distribution: CALLED for flashId=370, injury=
+[2026-01-12 09:50:43] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-12 09:50:43] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-12 09:54:58] [INFO] Worker starting for flash_id: 373
+[2026-01-12 09:54:58] [INFO] Worker successfully processed flash_id: 373
+[2026-01-12 09:55:04] [INFO] send_to_comms.php: Processing flash 373
+[2026-01-12 09:55:04] [INFO] send_to_comms.php: Flash 373 state updated to to_comms
+[2026-01-12 09:55:04] [INFO] send_to_comms.php: Attempting to send email for flash 373
+[2026-01-12 09:55:04] [INFO] sf_mail_to_comms: CALLED for flashId=373
+[2026-01-12 09:55:04] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-12 09:55:04] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-12 09:55:04] [INFO] send_to_comms.php: Email sent successfully for flash 373
+[2026-01-12 09:55:16] [INFO] sf_mail_published: CALLED for flashId=373
+[2026-01-12 09:55:16] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-12 09:55:16] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-12 09:55:16] [INFO] publish.php: Sending to distribution for selected languages: fi
+[2026-01-12 09:55:16] [INFO] publish.php: Sending distribution email for language fi, flash ID 373
+[2026-01-12 09:55:16] [INFO] sf_mail_to_distribution: CALLED for flashId=373, injury=1
+[2026-01-12 09:55:16] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-12 09:55:16] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-12 10:06:15] [INFO] Worker starting for flash_id: 373
+[2026-01-12 10:06:15] [INFO] Worker successfully processed flash_id: 373
+[2026-01-12 11:02:01] [INFO] users_update: Käyttäjä päivitetty, id=8, email=artowork1982@gmail.com | {"csrf_token":"[REDACTED]","id":"8","first_name":"Tapojärvi","last_name":"Communications","email":"artowork1982@gmail.com","role_id":"4","home_worksite_id":""}
+[2026-01-12 22:22:04] [INFO] Worker starting for flash_id: 374
+[2026-01-12 22:22:05] [INFO] Worker successfully processed flash_id: 374
+[2026-01-12 22:23:06] [INFO] Worker starting for flash_id: 375
+[2026-01-12 22:23:06] [INFO] Worker successfully processed flash_id: 375
+[2026-01-12 22:29:47] [INFO] Worker starting for flash_id: 376
+[2026-01-12 22:29:47] [INFO] Worker successfully processed flash_id: 376
+[2026-01-12 23:06:41] [INFO] Worker starting for flash_id: 377
+[2026-01-12 23:06:41] [INFO] Worker successfully processed flash_id: 377
+[2026-01-12 23:07:31] [INFO] Worker starting for flash_id: 378
+[2026-01-12 23:07:31] [INFO] Worker successfully processed flash_id: 378
+[2026-01-12 23:10:26] [INFO] Worker starting for flash_id: 379
+[2026-01-12 23:10:27] [INFO] Worker successfully processed flash_id: 379
+[2026-01-12 23:11:06] [INFO] Worker starting for flash_id: 380
+[2026-01-12 23:11:07] [INFO] Worker successfully processed flash_id: 380
+[2026-01-12 23:18:57] [INFO] Worker starting for flash_id: 381
+[2026-01-12 23:18:57] [INFO] Worker successfully processed flash_id: 381
+[2026-01-12 23:19:30] [INFO] Worker starting for flash_id: 382
+[2026-01-12 23:19:30] [INFO] Worker successfully processed flash_id: 382
+[2026-01-12 23:22:33] [INFO] Worker starting for flash_id: 383
+[2026-01-12 23:22:33] [INFO] Worker successfully processed flash_id: 383
+[2026-01-12 23:24:19] [INFO] Worker starting for flash_id: 384
+[2026-01-12 23:24:19] [INFO] Worker successfully processed flash_id: 384
+[2026-01-12 23:37:10] [INFO] Worker starting for flash_id: 385
+[2026-01-12 23:37:10] [INFO] Worker successfully processed flash_id: 385
+[2026-01-12 23:39:43] [INFO] Worker starting for flash_id: 386
+[2026-01-12 23:39:43] [INFO] Worker successfully processed flash_id: 386
+[2026-01-13 10:26:39] [INFO] Worker starting for flash_id: 387
+[2026-01-13 10:26:39] [INFO] Worker successfully processed flash_id: 387
+[2026-01-13 18:35:55] [INFO] Worker starting for flash_id: 388
+[2026-01-13 18:35:56] [INFO] Worker successfully processed flash_id: 388
+[2026-01-13 18:36:17] [INFO] send_to_comms.php: Processing flash 388
+[2026-01-13 18:36:17] [INFO] send_to_comms.php: Flash 388 state updated to to_comms
+[2026-01-13 18:36:17] [INFO] send_to_comms.php: Attempting to send email for flash 388
+[2026-01-13 18:36:17] [INFO] sf_mail_to_comms: CALLED for flashId=388
+[2026-01-13 18:36:17] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-13 18:36:17] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 18:36:17] [INFO] send_to_comms.php: Email sent successfully for flash 388
+[2026-01-13 18:37:14] [INFO] sf_mail_published: CALLED for flashId=388
+[2026-01-13 18:37:14] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-13 18:37:14] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 18:37:14] [INFO] publish.php: Sending to distribution for selected languages: fi
+[2026-01-13 18:37:14] [INFO] publish.php: Sending distribution email for language fi, flash ID 388
+[2026-01-13 18:37:14] [INFO] sf_mail_to_distribution: CALLED for flashId=388, injury=
+[2026-01-13 18:37:14] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-13 18:37:14] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 18:50:30] [INFO] Worker starting for flash_id: 390
+[2026-01-13 18:50:30] [INFO] Worker successfully processed flash_id: 390
+[2026-01-13 18:50:53] [INFO] request_info: calling sf_mail_request_info for flashId=390
+[2026-01-13 18:50:53] [INFO] sf_mail_request_info: CALLED for flashId=390
+[2026-01-13 18:50:53] [INFO] sf_mail_request_info: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-13 18:50:53] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-13 18:50:53] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 18:50:53] [INFO] request_info: sf_mail_request_info DONE for flashId=390
+[2026-01-13 18:51:06] [INFO] Worker starting for flash_id: 390
+[2026-01-13 18:51:06] [INFO] Worker successfully processed flash_id: 390
+[2026-01-13 18:51:13] [INFO] send_to_comms.php: Processing flash 390
+[2026-01-13 18:51:13] [INFO] send_to_comms.php: Flash 390 state updated to to_comms
+[2026-01-13 18:51:13] [INFO] send_to_comms.php: Attempting to send email for flash 390
+[2026-01-13 18:51:13] [INFO] sf_mail_to_comms: CALLED for flashId=390
+[2026-01-13 18:51:13] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-13 18:51:14] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 18:51:14] [INFO] send_to_comms.php: Email sent successfully for flash 390
+[2026-01-13 18:51:49] [INFO] sf_mail_published: CALLED for flashId=390
+[2026-01-13 18:51:49] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-13 18:51:49] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 19:08:17] [INFO] Worker starting for flash_id: 391
+[2026-01-13 19:08:17] [INFO] Worker successfully processed flash_id: 391
+[2026-01-13 19:08:31] [INFO] request_info: calling sf_mail_request_info for flashId=391
+[2026-01-13 19:08:31] [INFO] sf_mail_request_info: CALLED for flashId=391
+[2026-01-13 19:08:31] [INFO] sf_mail_request_info: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-13 19:08:31] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-13 19:08:31] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 19:08:31] [INFO] request_info: sf_mail_request_info DONE for flashId=391
+[2026-01-13 19:09:13] [INFO] Worker starting for flash_id: 391
+[2026-01-13 19:09:13] [INFO] Worker successfully processed flash_id: 391
+[2026-01-13 19:09:18] [INFO] send_to_comms.php: Processing flash 391
+[2026-01-13 19:09:18] [INFO] send_to_comms.php: Flash 391 state updated to to_comms
+[2026-01-13 19:09:18] [INFO] send_to_comms.php: Attempting to send email for flash 391
+[2026-01-13 19:09:18] [INFO] sf_mail_to_comms: CALLED for flashId=391
+[2026-01-13 19:09:18] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-13 19:09:18] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 19:09:18] [INFO] send_to_comms.php: Email sent successfully for flash 391
+[2026-01-13 19:09:24] [INFO] sf_mail_published: CALLED for flashId=391
+[2026-01-13 19:09:24] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-13 19:09:25] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 19:47:19] [INFO] Worker starting for flash_id: 392
+[2026-01-13 19:47:20] [INFO] Worker successfully processed flash_id: 392
+[2026-01-13 19:47:35] [INFO] send_to_comms.php: Processing flash 392
+[2026-01-13 19:47:35] [INFO] send_to_comms.php: Flash 392 state updated to to_comms
+[2026-01-13 19:47:35] [INFO] send_to_comms.php: Attempting to send email for flash 392
+[2026-01-13 19:47:35] [INFO] sf_mail_to_comms: CALLED for flashId=392
+[2026-01-13 19:47:35] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-13 19:47:35] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 19:47:35] [INFO] send_to_comms.php: Email sent successfully for flash 392
+[2026-01-13 19:57:54] [INFO] sf_mail_published: CALLED for flashId=392
+[2026-01-13 19:57:54] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-13 19:58:06] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 19:58:06] [INFO] sf_mail_to_distribution_by_country: flashId=392, country=fi
+[2026-01-13 19:58:06] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-13 19:58:07] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 19:58:07] [INFO] publish.php: Sent to fi, recipients: 1
+[2026-01-13 20:25:30] [INFO] Worker starting for flash_id: 393
+[2026-01-13 20:25:30] [INFO] Worker successfully processed flash_id: 393
+[2026-01-13 20:25:40] [INFO] send_to_comms.php: Processing flash 393
+[2026-01-13 20:25:40] [INFO] send_to_comms.php: Flash 393 state updated to to_comms
+[2026-01-13 20:25:40] [INFO] send_to_comms.php: Attempting to send email for flash 393
+[2026-01-13 20:25:40] [INFO] sf_mail_to_comms: CALLED for flashId=393
+[2026-01-13 20:25:40] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-13 20:25:40] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 20:25:40] [INFO] send_to_comms.php: Email sent successfully for flash 393
+[2026-01-13 22:23:16] [INFO] Worker starting for flash_id: 394
+[2026-01-13 22:23:16] [INFO] Worker successfully processed flash_id: 394
+[2026-01-13 22:51:45] [INFO] Worker starting for flash_id: 395
+[2026-01-13 22:51:46] [INFO] Worker successfully processed flash_id: 395
+[2026-01-13 22:53:52] [INFO] Worker starting for flash_id: 396
+[2026-01-13 22:53:53] [INFO] Worker successfully processed flash_id: 396
+[2026-01-13 22:55:40] [INFO] Worker starting for flash_id: 397
+[2026-01-13 22:55:41] [INFO] Worker successfully processed flash_id: 397
+[2026-01-13 23:02:10] [INFO] send_to_comms.php: Processing flash 397
+[2026-01-13 23:02:10] [INFO] send_to_comms.php: Flash 397 state updated to to_comms
+[2026-01-13 23:02:10] [INFO] send_to_comms.php: Attempting to send email for flash 397
+[2026-01-13 23:02:10] [INFO] sf_mail_to_comms: CALLED for flashId=397
+[2026-01-13 23:02:10] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-13 23:02:10] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-13 23:02:10] [INFO] send_to_comms.php: Email sent successfully for flash 397
+[2026-01-13 23:18:21] [INFO] Worker starting for flash_id: 398
+[2026-01-13 23:18:23] [INFO] Worker successfully processed flash_id: 398
+[2026-01-13 23:51:37] [INFO] Worker starting for flash_id: 399
+[2026-01-13 23:51:38] [INFO] Worker: Generating preview server-side for flash_id: 399
+[2026-01-13 23:51:38] [INFO] Worker: Server-side preview generated successfully: /home/deb4000107/domains/tapojarvi.online/public_html/safetyflash-system/uploads/previews/flash_399.jpg
+[2026-01-13 23:51:40] [INFO] Worker successfully processed flash_id: 399
+[2026-01-14 00:05:40] [INFO] Worker starting for flash_id: 400
+[2026-01-14 00:05:40] [INFO] Generating preview server-side for flash_id: 400
+[2026-01-14 00:05:40] [INFO] Preview generated successfully: flash_400.jpg
+[2026-01-14 00:05:41] [INFO] Worker successfully processed flash_id: 400
+[2026-01-14 00:24:21] [INFO] Worker starting for flash_id: 401
+[2026-01-14 00:24:22] [INFO] Worker successfully processed flash_id: 401
+[2026-01-14 00:39:21] [INFO] Worker starting for flash_id: 402
+[2026-01-14 00:39:22] [INFO] Worker successfully processed flash_id: 402
+[2026-01-14 00:41:06] [INFO] Worker starting for flash_id: 403
+[2026-01-14 00:41:07] [INFO] Worker successfully processed flash_id: 403
+[2026-01-14 00:44:50] [INFO] Worker starting for flash_id: 404
+[2026-01-14 00:44:51] [INFO] Worker successfully processed flash_id: 404
+[2026-01-14 00:46:38] [INFO] Worker starting for flash_id: 405
+[2026-01-14 00:46:39] [INFO] Worker successfully processed flash_id: 405
+[2026-01-14 00:47:58] [INFO] request_info: calling sf_mail_request_info for flashId=405
+[2026-01-14 00:47:58] [INFO] sf_mail_request_info: CALLED for flashId=405
+[2026-01-14 00:47:58] [INFO] sf_mail_request_info: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-14 00:47:58] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-14 00:47:58] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 00:47:58] [INFO] request_info: sf_mail_request_info DONE for flashId=405
+[2026-01-14 01:05:00] [INFO] Worker starting for flash_id: 406
+[2026-01-14 01:05:01] [INFO] Worker successfully processed flash_id: 406
+[2026-01-14 01:07:02] [INFO] Worker starting for flash_id: 407
+[2026-01-14 01:07:03] [INFO] Worker successfully processed flash_id: 407
+[2026-01-14 01:10:51] [INFO] Worker starting for flash_id: 408
+[2026-01-14 01:10:52] [INFO] Worker successfully processed flash_id: 408
+[2026-01-14 01:33:33] [INFO] Worker starting for flash_id: 409
+[2026-01-14 01:33:34] [INFO] Worker successfully processed flash_id: 409
+[2026-01-14 01:43:03] [INFO] Worker starting for flash_id: 410
+[2026-01-14 01:43:04] [INFO] Worker successfully processed flash_id: 410
+[2026-01-14 01:48:54] [INFO] Worker starting for flash_id: 411
+[2026-01-14 01:48:55] [INFO] Worker successfully processed flash_id: 411
+[2026-01-14 02:06:37] [INFO] Worker starting for flash_id: 412
+[2026-01-14 02:06:38] [INFO] Worker successfully processed flash_id: 412
+[2026-01-14 02:16:25] [INFO] send_to_comms.php: Processing flash 413
+[2026-01-14 02:16:25] [INFO] send_to_comms.php: Flash 413 state updated to to_comms
+[2026-01-14 02:16:25] [INFO] send_to_comms.php: Attempting to send email for flash 413
+[2026-01-14 02:16:25] [INFO] sf_mail_to_comms: CALLED for flashId=413
+[2026-01-14 02:16:25] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-14 02:16:25] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 02:16:25] [INFO] send_to_comms.php: Email sent successfully for flash 413
+[2026-01-14 02:29:18] [INFO] Worker starting for flash_id: 414
+[2026-01-14 02:29:19] [INFO] Worker successfully processed flash_id: 414
+[2026-01-14 02:30:24] [INFO] Worker starting for flash_id: 415
+[2026-01-14 02:30:24] [INFO] Worker successfully processed flash_id: 415
+[2026-01-14 02:35:36] [INFO] send_to_comms.php: Processing flash 416
+[2026-01-14 02:35:49] [INFO] send_to_comms.php: Processing flash 416
+[2026-01-14 02:46:48] [INFO] Worker starting for flash_id: 417
+[2026-01-14 02:46:48] [INFO] Worker successfully processed flash_id: 417
+[2026-01-14 02:47:39] [INFO] Worker starting for flash_id: 418
+[2026-01-14 02:47:40] [INFO] Worker successfully processed flash_id: 418
+[2026-01-14 02:49:58] [INFO] Worker starting for flash_id: 419
+[2026-01-14 02:49:59] [INFO] Worker successfully processed flash_id: 419
+[2026-01-14 02:50:17] [INFO] send_to_comms.php: Processing flash 420
+[2026-01-14 02:50:22] [INFO] send_to_comms.php: Processing flash 419
+[2026-01-14 02:53:43] [INFO] send_to_comms.php: Processing flash 420
+[2026-01-14 02:59:57] [INFO] send_to_comms.php: Processing flash 420
+[2026-01-14 02:59:57] [INFO] send_to_comms.php: Flash 420 state updated to to_comms for 2 language version(s)
+[2026-01-14 02:59:57] [INFO] send_to_comms.php: Attempting to send email for flash 420
+[2026-01-14 02:59:57] [INFO] sf_mail_to_comms: CALLED for flashId=420
+[2026-01-14 02:59:57] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-14 02:59:57] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 02:59:57] [INFO] send_to_comms.php: Email sent successfully for flash 420
+[2026-01-14 03:00:42] [INFO] sf_mail_published: CALLED for flashId=420
+[2026-01-14 03:00:42] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-14 03:00:52] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 03:00:52] [INFO] sf_mail_published_to_creator: CALLED for flashId=420
+[2026-01-14 03:00:52] [INFO] sf_mail_published_to_creator: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-14 03:00:52] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-14 03:00:52] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 03:00:52] [INFO] sf_mail_to_distribution_by_country: flashId=420, country=fi
+[2026-01-14 03:00:52] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-14 03:00:57] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 03:00:57] [INFO] publish.php: Sent to fi, recipients: 1
+[2026-01-14 11:43:10] [INFO] Worker starting for flash_id: 421
+[2026-01-14 11:43:11] [INFO] Worker successfully processed flash_id: 421
+[2026-01-14 12:02:09] [INFO] Worker starting for flash_id: 422
+[2026-01-14 12:02:10] [INFO] Worker successfully processed flash_id: 422
+[2026-01-14 12:05:26] [INFO] Worker starting for flash_id: 423
+[2026-01-14 12:05:27] [INFO] Worker successfully processed flash_id: 423
+[2026-01-14 12:29:10] [INFO] Worker starting for flash_id: 424
+[2026-01-14 12:29:10] [INFO] Worker successfully processed flash_id: 424
+[2026-01-14 12:30:27] [INFO] Worker starting for flash_id: 425
+[2026-01-14 12:30:27] [INFO] Worker successfully processed flash_id: 425
+[2026-01-14 13:58:58] [INFO] Worker starting for flash_id: 426
+[2026-01-14 13:58:59] [INFO] Worker successfully processed flash_id: 426
+[2026-01-14 14:04:10] [INFO] Worker starting for flash_id: 427
+[2026-01-14 14:04:10] [INFO] Worker successfully processed flash_id: 427
+[2026-01-14 14:04:26] [INFO] send_to_comms.php: Processing flash 427
+[2026-01-14 14:04:26] [INFO] send_to_comms.php: Flash 427 state updated to to_comms for 1 language version(s)
+[2026-01-14 14:04:26] [INFO] send_to_comms.php: Attempting to send email for flash 427
+[2026-01-14 14:04:26] [INFO] sf_mail_to_comms: CALLED for flashId=427
+[2026-01-14 14:04:26] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-14 14:04:26] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 14:04:26] [INFO] send_to_comms.php: Email sent successfully for flash 427
+[2026-01-14 14:04:36] [INFO] sf_mail_published: CALLED for flashId=427
+[2026-01-14 14:04:36] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-14 14:04:36] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 14:04:36] [INFO] sf_mail_published_to_creator: CALLED for flashId=427
+[2026-01-14 14:04:36] [INFO] sf_mail_published_to_creator: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-14 14:04:36] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-14 14:04:36] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 14:04:36] [INFO] sf_mail_to_distribution_by_country: flashId=427, country=fi
+[2026-01-14 14:04:36] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-14 14:04:36] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-14 14:04:36] [INFO] publish.php: Sent to fi, recipients: 1
+[2026-01-14 16:55:06] [INFO] Worker starting for flash_id: 428
+[2026-01-14 16:55:06] [INFO] Worker successfully processed flash_id: 428
+[2026-01-14 17:00:10] [INFO] Worker starting for flash_id: 429
+[2026-01-14 17:00:10] [INFO] Worker successfully processed flash_id: 429
+[2026-01-14 17:33:09] [INFO] Worker starting for flash_id: 430
+[2026-01-14 17:33:10] [INFO] Worker successfully processed flash_id: 430
+[2026-01-15 01:52:04] [INFO] Worker starting for flash_id: 431
+[2026-01-15 01:52:05] [INFO] Worker successfully processed flash_id: 431
+[2026-01-15 11:58:00] [INFO] Worker starting for flash_id: 433
+[2026-01-15 11:58:00] [INFO] Worker successfully processed flash_id: 433
+[2026-01-15 20:20:36] [INFO] Worker starting for flash_id: 434
+[2026-01-15 20:20:37] [INFO] Worker successfully processed flash_id: 434
+[2026-01-15 21:42:42] [INFO] Worker starting for flash_id: 435
+[2026-01-15 21:42:43] [INFO] Worker successfully processed flash_id: 435
+[2026-01-15 21:42:53] [INFO] send_to_comms.php: Processing flash 435
+[2026-01-15 21:42:53] [INFO] send_to_comms.php: Flash 435 state updated to to_comms for 1 language version(s)
+[2026-01-15 21:42:53] [INFO] send_to_comms.php: Attempting to send email for flash 435
+[2026-01-15 21:42:53] [INFO] sf_mail_to_comms: CALLED for flashId=435
+[2026-01-15 21:42:53] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-15 21:42:58] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 21:42:58] [INFO] send_to_comms.php: Email sent successfully for flash 435
+[2026-01-15 21:43:07] [INFO] sf_mail_published: CALLED for flashId=435
+[2026-01-15 21:43:07] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-15 21:43:07] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 21:43:07] [INFO] sf_mail_published_to_creator: CALLED for flashId=435
+[2026-01-15 21:43:07] [INFO] sf_mail_published_to_creator: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-15 21:43:07] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-15 21:43:12] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 21:45:45] [INFO] Worker starting for flash_id: 436
+[2026-01-15 21:45:46] [INFO] Worker successfully processed flash_id: 436
+[2026-01-15 21:45:50] [INFO] send_to_comms.php: Processing flash 436
+[2026-01-15 21:45:51] [INFO] send_to_comms.php: Flash 436 state updated to to_comms for 1 language version(s)
+[2026-01-15 21:45:51] [INFO] send_to_comms.php: Attempting to send email for flash 436
+[2026-01-15 21:45:51] [INFO] sf_mail_to_comms: CALLED for flashId=436
+[2026-01-15 21:45:51] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-15 21:45:51] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 21:45:51] [INFO] send_to_comms.php: Email sent successfully for flash 436
+[2026-01-15 21:45:53] [INFO] sf_mail_published: CALLED for flashId=436
+[2026-01-15 21:45:53] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-15 21:45:53] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 21:45:53] [INFO] sf_mail_published_to_creator: CALLED for flashId=436
+[2026-01-15 21:45:53] [INFO] sf_mail_published_to_creator: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-15 21:45:53] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-15 21:45:53] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 23:04:58] [INFO] Worker starting for flash_id: 437
+[2026-01-15 23:04:58] [INFO] Worker successfully processed flash_id: 437
+[2026-01-15 23:07:07] [INFO] request_info: calling sf_mail_request_info for flashId=437
+[2026-01-15 23:07:07] [INFO] sf_mail_request_info: CALLED for flashId=437
+[2026-01-15 23:07:07] [INFO] sf_mail_request_info: SENDING TO artowork1982@gmail.com
+[2026-01-15 23:07:07] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com
+[2026-01-15 23:07:07] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 23:07:07] [INFO] request_info: sf_mail_request_info DONE for flashId=437
+[2026-01-15 23:09:31] [INFO] Worker starting for flash_id: 437
+[2026-01-15 23:09:31] [INFO] Worker successfully processed flash_id: 437
+[2026-01-15 23:15:15] [INFO] send_to_comms.php: Processing flash 437
+[2026-01-15 23:15:15] [INFO] send_to_comms.php: Flash 437 state updated to to_comms for 1 language version(s)
+[2026-01-15 23:15:15] [INFO] send_to_comms.php: Attempting to send email for flash 437
+[2026-01-15 23:15:15] [INFO] sf_mail_to_comms: CALLED for flashId=437
+[2026-01-15 23:15:15] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,artowork1982@gmail.com
+[2026-01-15 23:15:15] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 23:15:15] [INFO] send_to_comms.php: Email sent successfully for flash 437
+[2026-01-15 23:20:17] [INFO] sf_mail_published: CALLED for flashId=437
+[2026-01-15 23:20:17] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-15 23:20:17] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 23:20:17] [INFO] sf_mail_published_to_creator: CALLED for flashId=437
+[2026-01-15 23:20:17] [INFO] sf_mail_published_to_creator: SENDING TO artowork1982@gmail.com
+[2026-01-15 23:20:17] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com
+[2026-01-15 23:20:17] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 23:20:17] [INFO] sf_mail_to_distribution_by_country: flashId=437, country=fi
+[2026-01-15 23:20:17] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-15 23:20:18] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-15 23:20:18] [INFO] publish.php: Sent to fi, recipients: 1
+[2026-01-15 23:53:11] [INFO] Worker starting for flash_id: 437
+[2026-01-15 23:53:12] [INFO] Worker successfully processed flash_id: 437
+[2026-01-16 00:43:12] [INFO] send_to_comms.php: Processing flash 437
+[2026-01-16 00:43:12] [INFO] send_to_comms.php: Flash 437 state updated to to_comms for 1 language version(s)
+[2026-01-16 00:43:12] [INFO] send_to_comms.php: Attempting to send email for flash 437
+[2026-01-16 00:43:12] [INFO] sf_mail_to_comms: CALLED for flashId=437
+[2026-01-16 00:43:12] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,artowork1982@gmail.com
+[2026-01-16 00:43:12] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 00:43:12] [INFO] send_to_comms.php: Email sent successfully for flash 437
+[2026-01-16 00:43:15] [INFO] sf_mail_published: CALLED for flashId=437
+[2026-01-16 00:43:15] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-16 00:43:15] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 00:43:15] [INFO] sf_mail_published_to_creator: CALLED for flashId=437
+[2026-01-16 00:43:15] [INFO] sf_mail_published_to_creator: SENDING TO artowork1982@gmail.com
+[2026-01-16 00:43:15] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com
+[2026-01-16 00:43:15] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 00:48:33] [WARNING] csrf_validation_failed | {"request_method":"POST","request_uri":"\/safetyflash-system\/app\/api\/profile_update.php"}
+[2026-01-16 00:49:25] [WARNING] csrf_validation_failed | {"request_method":"POST","request_uri":"\/safetyflash-system\/app\/api\/profile_update.php"}
+[2026-01-16 12:50:12] [INFO] Worker starting for flash_id: 439
+[2026-01-16 12:50:12] [INFO] Worker successfully processed flash_id: 439
+[2026-01-16 12:53:29] [INFO] send_to_comms.php: Processing flash 439
+[2026-01-16 12:53:29] [INFO] send_to_comms.php: Flash 439 state updated to to_comms for 1 language version(s)
+[2026-01-16 12:53:29] [INFO] send_to_comms.php: Attempting to send email for flash 439
+[2026-01-16 12:53:29] [INFO] sf_mail_to_comms: CALLED for flashId=439
+[2026-01-16 12:53:29] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-16 12:53:29] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 12:53:29] [INFO] send_to_comms.php: Email sent successfully for flash 439
+[2026-01-16 12:56:16] [INFO] sf_mail_published: CALLED for flashId=439
+[2026-01-16 12:56:16] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-16 12:56:16] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 12:56:16] [INFO] sf_mail_published_to_creator: CALLED for flashId=439
+[2026-01-16 12:56:16] [INFO] sf_mail_published_to_creator: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-16 12:56:16] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-16 12:56:16] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 12:56:16] [INFO] sf_mail_to_distribution_by_country: flashId=439, country=fi
+[2026-01-16 12:56:16] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-16 12:56:16] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 12:56:16] [INFO] publish.php: Sent to fi, recipients: 1
+[2026-01-16 12:57:04] [INFO] Worker starting for flash_id: 441
+[2026-01-16 12:57:04] [INFO] Worker successfully processed flash_id: 441
+[2026-01-16 12:57:08] [INFO] send_to_comms.php: Processing flash 441
+[2026-01-16 12:57:08] [INFO] send_to_comms.php: Flash 441 state updated to to_comms for 1 language version(s)
+[2026-01-16 12:57:08] [INFO] send_to_comms.php: Attempting to send email for flash 441
+[2026-01-16 12:57:08] [INFO] sf_mail_to_comms: CALLED for flashId=441
+[2026-01-16 12:57:08] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-16 12:57:08] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 12:57:08] [INFO] send_to_comms.php: Email sent successfully for flash 441
+[2026-01-16 12:57:50] [INFO] sf_mail_published: CALLED for flashId=441
+[2026-01-16 12:57:50] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-16 12:57:50] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 12:57:50] [INFO] sf_mail_published_to_creator: CALLED for flashId=441
+[2026-01-16 12:57:50] [INFO] sf_mail_published_to_creator: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-16 12:57:50] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-16 12:57:50] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 12:57:50] [INFO] sf_mail_to_distribution_by_country: flashId=441, country=fi
+[2026-01-16 12:57:50] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-16 12:57:50] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 12:57:50] [INFO] publish.php: Sent to fi, recipients: 1
+[2026-01-16 14:09:20] [INFO] Worker starting for flash_id: 442
+[2026-01-16 14:09:21] [INFO] Worker successfully processed flash_id: 442
+[2026-01-16 14:13:16] [INFO] send_to_comms.php: Processing flash 442
+[2026-01-16 14:13:16] [INFO] send_to_comms.php: Flash 442 state updated to to_comms for 1 language version(s)
+[2026-01-16 14:13:16] [INFO] send_to_comms.php: Attempting to send email for flash 442
+[2026-01-16 14:13:16] [INFO] sf_mail_to_comms: CALLED for flashId=442
+[2026-01-16 14:13:16] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-16 14:13:16] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 14:13:16] [INFO] send_to_comms.php: Email sent successfully for flash 442
+[2026-01-16 14:16:11] [INFO] sf_mail_published: CALLED for flashId=443
+[2026-01-16 14:16:11] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-16 14:16:11] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 14:16:11] [INFO] sf_mail_published_to_creator: CALLED for flashId=443
+[2026-01-16 14:16:11] [INFO] sf_mail_published_to_creator: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-16 14:16:11] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-16 14:16:11] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 14:16:11] [INFO] sf_mail_to_distribution_by_country: flashId=443, country=fi
+[2026-01-16 14:16:11] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-16 14:16:11] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 14:16:11] [INFO] publish.php: Sent to fi, recipients: 1
+[2026-01-16 14:20:14] [INFO] Worker starting for flash_id: 442
+[2026-01-16 14:20:14] [INFO] Worker successfully processed flash_id: 442
+[2026-01-16 14:24:47] [INFO] Worker starting for flash_id: 444
+[2026-01-16 14:24:47] [INFO] Worker successfully processed flash_id: 444
+[2026-01-16 14:24:53] [INFO] send_to_comms.php: Processing flash 444
+[2026-01-16 14:24:53] [INFO] send_to_comms.php: Flash 444 state updated to to_comms for 1 language version(s)
+[2026-01-16 14:24:53] [INFO] send_to_comms.php: Attempting to send email for flash 444
+[2026-01-16 14:24:53] [INFO] sf_mail_to_comms: CALLED for flashId=444
+[2026-01-16 14:24:53] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-16 14:24:53] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 14:24:53] [INFO] send_to_comms.php: Email sent successfully for flash 444
+[2026-01-16 14:25:36] [INFO] sf_mail_published: CALLED for flashId=444
+[2026-01-16 14:25:36] [INFO] sf_send_email: CALLED, recipients=arto.huhta@gmail.com
+[2026-01-16 14:25:36] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 14:25:36] [INFO] sf_mail_published_to_creator: CALLED for flashId=444
+[2026-01-16 14:25:36] [INFO] sf_mail_published_to_creator: SENDING TO arto.huhta@tapojarvi.com
+[2026-01-16 14:25:36] [INFO] sf_send_email: CALLED, recipients=arto.huhta@tapojarvi.com
+[2026-01-16 14:25:36] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 14:25:36] [INFO] sf_mail_to_distribution_by_country: flashId=444, country=fi
+[2026-01-16 14:25:36] [INFO] sf_send_email: CALLED, recipients=arto.huhta@hannukainenmining.fi
+[2026-01-16 14:25:36] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 14:25:36] [INFO] publish.php: Sent to fi, recipients: 1
+[2026-01-16 14:30:51] [INFO] Worker starting for flash_id: 445
+[2026-01-16 14:30:52] [INFO] Worker successfully processed flash_id: 445
+[2026-01-16 17:33:21] [INFO] send_to_comms.php: Processing flash 445
+[2026-01-16 17:33:21] [INFO] send_to_comms.php: Flash 445 state updated to to_comms for 1 language version(s)
+[2026-01-16 17:33:21] [INFO] send_to_comms.php: Attempting to send email for flash 445
+[2026-01-16 17:33:21] [INFO] sf_mail_to_comms: CALLED for flashId=445
+[2026-01-16 17:33:21] [INFO] sf_send_email: CALLED, recipients=artowork1982@gmail.com,arto.huhta@tapojarvi.com
+[2026-01-16 17:33:21] [INFO] sf_send_email: MAIL SENT OK
+[2026-01-16 17:33:21] [INFO] send_to_comms.php: Email sent successfully for flash 445
