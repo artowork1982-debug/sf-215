@@ -845,7 +845,7 @@ $allTranslations = sf_get_all_translations($pdo, array_values($allGroupIds));
                 <?= htmlspecialchars(sf_term('card_modified', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>:
                 <?= htmlspecialchars($r['updatedFmt'] ?? '') ?>
             </span>
-        </div>
+         </div>
     </div>
 
     <div class="card-actions">
@@ -855,7 +855,7 @@ $allTranslations = sf_get_all_translations($pdo, array_values($allGroupIds));
 
         <div class="card-lang-actions">
             <?php if (isset($supportedLangs[$baseLang])): ?>
-               <a href="<?= $baseUrl ?>/index.php?page=view&id=<?= (int)$r['id'] ?>" class="lang-flag-link">
+               <a href="<?= $baseUrl ?>/index.php? page=view&id=<?= (int)$r['id'] ?>" class="lang-flag-link">
                     <img class="list-lang-flag"
                          src="<?= $baseUrl ?>/assets/img/<?= $supportedLangs[$baseLang]['icon'] ?>"
                          alt="<?= htmlspecialchars($supportedLangs[$baseLang]['label']) ?>">
@@ -872,7 +872,6 @@ $allTranslations = sf_get_all_translations($pdo, array_values($allGroupIds));
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
-    </div>
     </div>
 </div>
 <?php endforeach; ?>    </div> <!-- .card-list -->
