@@ -903,29 +903,6 @@ form.filters {
     background: #d1d5db;
 }
 
-/* Thumbnail column: fixed width, overflow visible for badge */
-.card-thumb {
-    flex: 0 0 160px;
-    width: 160px;
-    background: #f1f5f9;
-    border-radius: 10px;
-    overflow: visible !important;
-    /* Allow badge to extend outside */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.card-thumb img {
-    width: 100%;
-    height: auto;
-    max-height: 120px;
-    object-fit: contain;
-    border-radius: 10px;
-    display: block;
-}
-
 /* Prevent layout shift for lazy-loaded images */
 .sf-card-image {
     aspect-ratio: 16 / 9;
@@ -2660,6 +2637,8 @@ jne.
     height: 10px !important;
     border-radius: 50% !important;
     flex-shrink: 0 !important;
+    order: 0 !important;
+    /* After checkbox (order: -1), before content */
 }
 
 .sf-list-container.view-compact .type-indicator.red {
@@ -2682,6 +2661,8 @@ jne.
     flex: 1 !important;
     min-width: 0 !important;
     justify-content: center !important;
+    order: 1 !important;
+    /* After type-indicator (order: 0) */
 }
 
 .sf-list-container.view-compact .card-top {
@@ -2737,6 +2718,8 @@ jne.
     gap: 8px !important;
     min-width: auto !important;
     flex-shrink: 0 !important;
+    order: 2 !important;
+    /* After content (order: 1), on the right */
 }
 
 .sf-list-container.view-compact .open-btn {
