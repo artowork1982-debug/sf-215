@@ -1,0 +1,1146 @@
+/* ===== NAVIGATION BAR ===== */
+
+.sf-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100000;
+    width: 100%;
+    background: #0f172a;
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.sf-nav-inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/* nav.css - lisää kielivalitsin-lomakkeiden tuki */
+/* ===== KIELIVALITSIN (LOMAKE-VERSIO) ===== */
+.sf-lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sf-lang-form {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+}
+
+.sf-lang-flag-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33px;
+    height: 33px;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.sf-lang-flag-btn:not(.active) {
+    opacity: 0.6;
+    transform: scale(0.9);
+}
+
+.sf-lang-flag-btn:not(.active):hover {
+    opacity: 0.9;
+    transform: scale(0.95);
+}
+
+.sf-lang-flag-btn.active {
+    border-color: #fff;
+    transform: scale(1);
+    opacity: 1;
+}
+
+.sf-lang-flag-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .sf-lang-switcher {
+        gap: 4px;
+    }
+
+    .sf-lang-flag-btn {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* ===== LEFT: LOGO ===== */
+.sf-nav-left {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.sf-brand-link {
+    display: inline-flex;
+    align-items: center;
+    transition: opacity 0.2s ease;
+}
+
+.sf-brand-link:hover {
+    opacity: 0.85;
+}
+
+.tapojarvi-logo-img {
+    height: 32px;
+    width: auto;
+    display: block;
+}
+
+/* ===== CENTER: NAV LINKS ===== */
+.sf-nav-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+}
+
+.sf-nav-links-wrapper {
+    display: flex;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.sf-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== PERUSLINKIT (Lista, Asetukset) ===== */
+.sf-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #0f172a;
+    background: #fee000;
+    padding: 10px 18px 10px 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(254, 224, 0, 0.3);
+}
+
+.sf-nav-link:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(254, 224, 0, 0.4);
+}
+
+.sf-nav-link.sf-nav-active {
+    background: #fff;
+    color: #0f172a;
+}
+
+.sf-nav-link-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* ===== CTA: UUSI SAFETYFLASH ===== */
+.sf-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px 10px 14px;
+    background: #8fc640;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(254, 224, 0, 0.3);
+}
+
+.sf-nav-cta:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(254, 224, 0, 0.4);
+}
+
+.sf-nav-cta.sf-nav-cta-active {
+    background: #fff;
+}
+
+.sf-nav-cta-icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.sf-nav-cta-text {
+    white-space: nowrap;
+}
+
+.sf-nav-cta:not(.sf-nav-cta-active):not(:hover) {
+    animation: sf-cta-pulse 2.5s ease-in-out infinite;
+}
+
+/* ===== RIGHT: LANGUAGE + USER + LOGOUT ===== */
+.sf-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* ===== KIELIVALITSIN ===== */
+.sf-lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sf-lang-flag-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33px;
+    height: 33px;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.sf-lang-flag-btn:not(.active) {
+    opacity: 0.6;
+    transform: scale(0.9);
+}
+
+.sf-lang-flag-btn:not(.active):hover {
+    opacity: 0.9;
+    transform: scale(0.95);
+}
+
+.sf-lang-flag-btn.active {
+    border-color: #fff;
+    transform: scale(1);
+    opacity: 1;
+}
+
+.sf-lang-flag-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+/* ===== KÄYTTÄJÄINFO ===== */
+.sf-user-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sf-user-info:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.sf-user-info.sf-user-active {
+    background: #fee000;
+    border-color: #fee000;
+}
+
+.sf-user-info.sf-user-active .sf-user-name {
+    color: #0f172a;
+}
+
+.sf-user-info.sf-user-active .sf-user-icon {
+    stroke: #0f172a;
+}
+
+.sf-user-name {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.sf-user-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    stroke: rgba(255, 255, 255, 0.8);
+}
+
+.sf-user-info:hover .sf-user-icon {
+    stroke: #fff;
+}
+
+/* ===== LOGOUT - PUNAINEN NAPPI ===== */
+.sf-nav-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: #ffffff !important;
+    background: #dc2626;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border-radius: 999px;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.25);
+}
+
+.sf-nav-logout:hover {
+    background: #b91c1c;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.35);
+}
+
+.sf-nav-logout .logout-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+}
+
+.sf-nav-logout .logout-text {
+    display: inline;
+}
+
+/* ===== HAMBURGER MENU ===== */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    height: 40px;
+    width: 40px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.hamburger-menu:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.hamburger-menu span {
+    background-color: #fff;
+    height: 2px;
+    width: 20px;
+    border-radius: 2px;
+    transition: all 0.25s ease;
+}
+
+.hamburger-menu [aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-menu [aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ===== TOAST NOTIFICATION ===== */
+.sf-toast {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    left: auto;
+    bottom: auto;
+    transform: none;
+
+    z-index: 100001;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    padding: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    animation: sf-toast-in 0.25s ease;
+
+    max-width: 340px;
+    width: auto;
+    height: auto;
+}
+
+@keyframes sf-toast-in {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.sf-toast.sf-toast-hide {
+    animation: sf-toast-out 0.3s ease forwards;
+}
+
+@keyframes sf-toast-out {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+}
+
+.sf-toast-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.sf-toast-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.sf-toast-text {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.sf-toast-close {
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.sf-toast-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Toast värit */
+.sf-toast-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+}
+
+.sf-toast-info {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: #fff;
+}
+
+.sf-toast-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #fff;
+}
+
+.sf-toast-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #fff;
+}
+
+/* ===== KIELIVALINTA MOBILE/DESKTOP ===== */
+/* Desktop näyttää liput */
+.sf-lang-mobile {
+    display: none;
+}
+
+.sf-lang-desktop {
+    display: flex;
+    gap: 8px;
+}
+
+/* ===== RESPONSIVE: TABLET & MOBILE - FULLSCREEN MODAL ===== */
+@media (max-width: 900px) {
+    .sf-nav-inner {
+        padding: 8px 14px;
+        gap: 10px;
+    }
+
+    .sf-nav-center {
+        justify-content: flex-end;
+        flex: 0 0 auto;
+    }
+
+    /* Fullscreen modal for mobile menu */
+    .sf-nav-links-wrapper {
+        /* Hidden by default */
+        display: none;
+
+        /* Fullscreen modal */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+
+        /* Background */
+        background: #0f172a;
+
+        /* Z-index above everything */
+        z-index: 10000;
+
+        /* Animation */
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    /* When menu is open */
+    .sf-nav-links-wrapper.sf-nav-visible {
+        display: flex;
+        flex-direction: column;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Content centered and scrollable */
+    .sf-nav-links {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        padding: 80px 20px 40px;
+        overflow-y: auto;
+        height: 100%;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Larger links for mobile */
+    .sf-nav-link,
+    .sf-nav-cta {
+        width: 100%;
+        max-width: 400px;
+        padding: 16px 24px !important;
+        font-size: 18px !important;
+        text-align: center;
+        border-radius: 12px;
+        justify-content: center;
+    }
+
+    .sf-nav-cta {
+        background: #8fc640 !important;
+        color: #0f172a !important;
+    }
+
+    /* Hamburger becomes X when open */
+    .hamburger-menu[aria-expanded="true"] {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 10001;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 8px;
+    }
+
+    .hamburger-menu[aria-expanded="true"] span {
+        background: #fff;
+    }
+
+    /* Transform hamburger to X */
+    .hamburger-menu[aria-expanded="true"] span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .hamburger-menu[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger-menu[aria-expanded="true"] span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    .hamburger-menu {
+        display: flex;
+    }
+
+    /* Mobiilissa: Kompakti dropdown */
+    .sf-lang-mobile {
+        display: block;
+        position: relative;
+    }
+
+    .sf-lang-desktop {
+        display: none;
+    }
+
+    .sf-lang-current {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 8px 12px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .sf-lang-current:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .sf-lang-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        min-width: 120px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+
+    .sf-lang-dropdown[hidden] {
+        display: none;
+    }
+
+    .sf-lang-option {
+        display: block;
+        padding: 10px 16px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.2s ease;
+    }
+
+    .sf-lang-option:last-child {
+        border-bottom: none;
+    }
+
+    .sf-lang-option:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sf-lang-option.active {
+        background: rgba(254, 224, 0, 0.1);
+        color: #fee000;
+        font-weight: 600;
+    }
+
+    .sf-user-info {
+        display: none;
+    }
+
+    /* Käyttäjänimi piilotetaan mobiilissa */
+    .sf-user-name {
+        display: none;
+    }
+
+    .sf-nav-logout {
+        padding: 8px;
+        min-width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: background 0.2s ease;
+    }
+
+
+    .logout-icon {
+        display: none;
+    }
+
+    .logout-text {
+        display: none;
+    }
+
+    .sf-nav-logout:hover {
+        background: rgba(185, 28, 28, 0.9);
+    }
+}
+
+/* ===== RESPONSIVE: MOBILE ===== */
+@media (max-width: 480px) {
+    .sf-nav-inner {
+        padding: 6px 8px;
+        gap: 6px;
+    }
+
+    .tapojarvi-logo-img {
+        height: 24px;
+    }
+
+    .sf-lang-switcher {
+        gap: 6px;
+    }
+
+    .sf-lang-flag-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .sf-nav-logout {
+        padding: 8px;
+        min-width: 15px;
+        justify-content: center;
+    }
+
+    .sf-nav-logout .logout-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .sf-nav-logout .logout-text {
+        display: none;
+    }
+
+    .sf-nav-right {
+        gap: 6px;
+    }
+
+    .sf-toast {
+        top: 12px;
+        right: 12px;
+        left: 12px;
+        max-width: none;
+        padding: 12px 14px;
+    }
+
+    .sf-toast-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .sf-toast-text {
+        font-size: 0.85rem;
+    }
+
+    .sf-toast-close {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ===== iOS SAFE AREA ===== */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .sf-nav-inner {
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+    }
+}
+
+.logout-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .logout-icon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logout-icon {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sf-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+/* ===== NAVIGAATIO KOMPAKTI ===== */
+@media (max-width: 768px) {
+    .sf-nav-inner {
+        padding: 8px 12px;
+        gap: 8px;
+    }
+
+    .tapojarvi-logo-img {
+        height: 24px;
+    }
+
+    .sf-lang-switcher {
+        gap: 4px;
+    }
+
+    .sf-lang-switcher {
+        gap: 6px;
+    }
+
+    .sf-lang-flag-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .hamburger-menu span {
+        width: 18px;
+    }
+
+    .sf-nav-logout {
+        padding: 6px 8px;
+    }
+
+    .sf-nav-logout .logout-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .sf-nav-logout .logout-text {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .sf-nav-inner {
+        padding: 4px 8px;
+        gap: 6px;
+    }
+
+    .tapojarvi-logo-img {
+        height: 20px;
+    }
+
+    .sf-lang-flag-btn {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Removed duplicate mobile navigation styles - now handled in main @media (max-width: 900px) block above */
+
+@media (min-width: 901px) {
+    .hamburger-menu {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   Language Switcher Improvements
+   ========================================================================== */
+
+.sf-lang-switcher {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.sf-lang-flag-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.sf-lang-flag-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.sf-lang-flag-btn.active {
+    border-color: var(--sf-yellow);
+    background: rgba(254, 224, 0, 0.2);
+}
+
+.sf-lang-flag-img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+@media (max-width: 480px) {
+    .sf-lang-switcher {
+        gap: 6px;
+    }
+
+    .sf-lang-flag-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .sf-lang-flag-img {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* ===== FLOATING ACTION BUTTON (FAB) ===== */
+.sf-fab {
+    position: fixed;
+    right: 20px;
+    bottom: 72px;
+    /* Above footer (52px new) + 20px margin */
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8fc640 0%, #7ab030 100%);
+    color: #0f172a;
+    display: none;
+    /* Hidden on desktop, shown on mobile */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(143, 198, 64, 0.4);
+    z-index: 100002;
+    /* Above footer (100001) to ensure visibility */
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sf-fab:hover,
+.sf-fab:active {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(143, 198, 64, 0.5);
+}
+
+.sf-fab-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.sf-fab-icon-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* Hide FAB on form pages (not needed when already creating) */
+body[data-page="form"] .sf-fab,
+body[data-page="form_language"] .sf-fab {
+    display: none !important;
+}
+
+/* Show FAB on mobile */
+@media (max-width: 720px) {
+    .sf-fab {
+        display: flex;
+    }
+}
+
+/* ===== BOTTOM NAVIGATION (MOBILE) - 3 BUTTONS ===== */
+.sf-bottom-nav {
+    display: none;
+    /* Hidden on desktop */
+}
+
+@media (max-width: 720px) {
+    .sf-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100001;
+        /* Above most content, including FAB baseline */
+        background: #0f172a;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 6px 12px;
+        padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+        gap: 8px;
+    }
+
+    .sf-bottom-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        padding: 8px 4px;
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+        min-width: 0;
+        min-height: 44px;
+        /* Touch target */
+    }
+
+    .sf-bottom-nav-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+    }
+
+    .sf-bottom-nav-item:hover,
+    .sf-bottom-nav-item:focus {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sf-bottom-nav-item.active {
+        color: #ffffff;
+    }
+
+    .sf-bottom-nav-item.active .sf-bottom-nav-icon {
+        stroke: #fee000;
+    }
+
+    .sf-bottom-nav-icon,
+    .sf-bottom-nav-icon-img {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        flex-shrink: 0;
+    }
+
+    /* Add space to bottom of page so content doesn't get hidden under nav */
+    body {
+        padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* Hide hamburger menu when bottom nav is active */
+    .hamburger-menu {
+        display: none !important;
+    }
+
+    /* Hide top nav links on mobile (replaced by bottom nav) */
+    .sf-nav-links-wrapper {
+        display: none !important;
+    }
+}
+
+/* Erittäin pienet näytöt (< 360px) */
+@media (max-width: 360px) {
+    .sf-bottom-nav {
+        padding: 6px 2px;
+        padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .sf-bottom-nav-icon,
+    .sf-bottom-nav-icon-img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .sf-bottom-nav-item span,
+    .sf-bottom-nav-label {
+        font-size: 9px;
+    }
+
+    /* Adjust FAB for smaller screens - reduced padding means footer is ~60px + 20px margin */
+    .sf-fab {
+        right: 16px;
+        bottom: 80px;
+        width: 52px;
+        height: 52px;
+    }
+
+    .sf-fab-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Haptic feedback */
+.sf-bottom-nav-item:active {
+    transform: scale(0.95);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .sf-bottom-nav-item,
+    .sf-fab {
+        transition: none;
+    }
+}
+
+/* Bottom Nav PNG icons */
+.sf-bottom-nav-icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* Make button bottom nav items look like links */
+.sf-bottom-nav-item[type="button"] {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}

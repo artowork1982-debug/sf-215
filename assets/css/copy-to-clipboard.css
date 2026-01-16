@@ -1,0 +1,181 @@
+/**
+ * SafetyFlash Copy-to-Clipboard Styles
+ */
+
+/* ===== COPY BUTTON ===== */
+.sf-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sf-copy-btn:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.sf-copy-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.sf-copy-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.sf-copy-btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.sf-copy-btn-label {
+    white-space: nowrap;
+}
+
+/* ===== LOADING SPINNER ===== */
+.sf-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #e2e8f0;
+    border-top-color: #0f172a;
+    border-radius: 50%;
+    animation: sf-spin 0.6s linear infinite;
+}
+
+@keyframes sf-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== BUTTON POSITIONING ===== */
+.sf-copy-btn[data-position="top-right"] {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 100;
+}
+
+.sf-copy-btn[data-position="bottom-right"] {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    z-index: 100;
+}
+
+.sf-copy-btn[data-position="bottom-left"],
+.sf-copy-btn-compact[data-position="bottom-left"] {
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 100 !important;
+}
+
+/* List page card positioning - BOTTOM-LEFT corner, inside card-thumb */
+.card-thumb .sf-copy-btn,
+.card-thumb .sf-copy-btn-compact {
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
+    opacity: 0.95 !important;
+    padding: 6px !important;
+    border-radius: 6px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    z-index: 15 !important;
+    /* Above thumbnail but below modal */
+    max-width: calc(100% - 16px) !important;
+    max-height: calc(100% - 16px) !important;
+}
+
+.card-thumb .sf-copy-btn:hover,
+.card-thumb .sf-copy-btn-compact:hover {
+    opacity: 1 !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Ensure card-actions doesn't overlap with copy button */
+.card-actions {
+    z-index: 5 !important;
+}
+
+/* Hide label in card thumbnails - show only icon */
+.card-thumb .sf-copy-btn .sf-copy-btn-label {
+    display: none;
+}
+
+/* ===== COMPACT BUTTON VARIANT (for list) ===== */
+.sf-copy-btn-compact {
+    padding: 6px 10px;
+    font-size: 12px;
+    gap: 4px;
+}
+
+.sf-copy-btn-compact svg,
+.sf-copy-btn-compact img {
+    width: 14px;
+    height: 14px;
+}
+
+/* Hide label on compact buttons */
+.sf-copy-btn-compact .sf-copy-btn-label {
+    display: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+
+    /* Hide label on mobile, show only icon */
+    .sf-copy-btn-label {
+        display: none;
+    }
+
+    .sf-copy-btn {
+        padding: 10px;
+        min-width: 40px;
+        justify-content: center;
+    }
+
+    .sf-copy-btn-compact {
+        padding: 8px;
+        min-width: 36px;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+
+    .sf-copy-btn,
+    .sf-spinner {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* Focus visible for keyboard navigation */
+.sf-copy-btn:focus-visible {
+    outline: 2px solid #0f172a;
+    outline-offset: 2px;
+}

@@ -1,0 +1,768 @@
+/**
+ * SAFETYFLASH - GLOBAALIT MODAALIT
+ * Yhtenäinen tyyli kaikille modaaleille
+ */
+
+/* ===== MODAALI OVERLAY ===== */
+.sf-modal,
+.sf-library-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 2147483647;
+    padding: 20px;
+
+    opacity: 1;
+    transition: opacity 0.2s ease;
+
+    isolation: isolate;
+}
+
+/* Piilotettu tila */
+.sf-modal.hidden,
+.sf-library-modal.hidden {
+    display: none;
+}
+
+/* Piilota footer kun modal on AKTIIVISESTI AUKI (näkyy käyttäjälle) */
+body.sf-modal-open .view-footer-actions {
+    display: none !important;
+}
+
+/* ===== MODAALI SISÄLTÖ ===== */
+.sf-modal-content,
+.sf-library-modal-content {
+    position: relative;
+    background: #ffffff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 560px;
+    /* desktop default */
+    max-height: 90vh;
+    overflow-y: auto;
+
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+
+    animation: sfModalSlideIn 0.25s ease;
+}
+
+@keyframes sfModalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98) translateY(-12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .sf-modal-content,
+    .sf-library-modal-content {
+        animation: none;
+    }
+}
+
+/* ===== MODAALI HEADER ===== */
+.sf-modal-header,
+.sf-library-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.sf-modal-header h2,
+.sf-modal-header h3,
+.sf-library-modal-header h2,
+.sf-library-modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.35;
+}
+
+/* Jos h2/h3 on suoraan content-sisällä ilman headeria */
+.sf-modal-content>h2,
+.sf-modal-content>h3 {
+    margin: 0;
+    padding: 24px 24px 16px 24px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.35;
+}
+
+/* ===== SULJE-PAINIKE ===== */
+.sf-modal-close,
+.sf-modal-close-btn,
+.sf-library-modal-close,
+[data-modal-close] {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+
+    border: none;
+    background: #f3f4f6;
+    border-radius: 50%;
+
+    font-size: 1.15rem;
+    color: #111827;
+
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+    flex-shrink: 0;
+
+    padding: 0;
+    line-height: 1;
+    /* estää fontti-“pompun” */
+}
+
+.sf-modal-close:hover,
+.sf-modal-close-btn:hover,
+.sf-library-modal-close:hover,
+[data-modal-close]:hover {
+    background: #e5e7eb;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12);
+}
+
+/* Ei liikuteta nappia hoverissa (ei transformia) */
+.sf-modal-close:active,
+.sf-modal-close-btn:active,
+.sf-library-modal-close:active,
+[data-modal-close]:active {
+    background: #dbeafe;
+}
+
+/* ===== MODAALI BODY ===== */
+.sf-modal-body {
+    padding: 20px 24px;
+}
+
+.sf-modal-body p {
+    margin: 0 0 12px 0;
+    padding: 0;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.sf-modal-content>p {
+    margin: 0 0 12px 0;
+    padding: 0 24px;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.sf-modal-body p:last-child,
+.sf-modal-content>p:last-of-type {
+    margin-bottom: 0;
+}
+
+.sf-modal-note,
+.sf-help-text {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* ===== MODAALI FORM ELEMENTIT ===== */
+.sf-modal-content form {
+    padding: 0 24px 24px 24px;
+}
+
+.sf-modal-content label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    margin-top: 16px;
+}
+
+.sf-modal-content input[type="text"],
+.sf-modal-content input[type="email"],
+.sf-modal-content input[type="password"],
+.sf-modal-content textarea,
+.sf-modal-content select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: #f9fafb;
+    color: #1f2937;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-sizing: border-box;
+}
+
+.sf-modal-content textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.sf-modal-content input:focus,
+.sf-modal-content textarea:focus,
+.sf-modal-content select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* ===== MODAALI FOOTER / ACTIONS ===== */
+.sf-modal-footer,
+.sf-modal-actions {
+    display: flex;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid #e5e7eb;
+    justify-content: flex-end;
+    margin-top: 0;
+}
+
+/* Jos form sisällä */
+.sf-modal-content form .sf-modal-actions {
+    margin-top: 20px;
+    padding: 20px 0 0 0;
+}
+
+/* ===== MODAALI PAINIKKEET ===== */
+.sf-modal-footer .sf-btn,
+.sf-modal-actions .sf-btn {
+    min-width: 100px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* HAPTIC FEEL (ei riko layoutia) */
+.sf-btn:active {
+    transform: scale(0.97);
+}
+
+/* Focus ring saavutettavuus */
+.sf-btn:focus-visible,
+.sf-modal-close-btn:focus-visible,
+[data-modal-close]:focus-visible {
+    outline: 3px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.sf-btn-primary {
+    background: #3b82f6;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.sf-btn-primary:hover {
+    background: #2563eb;
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+}
+
+.sf-btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.sf-btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+/* Modaalien sisällä olevat danger-napit */
+.sf-modal-actions .sf-btn-danger,
+.sf-modal-footer .sf-btn-danger {
+    background: #ef4444;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.sf-modal-actions .sf-btn-danger:hover,
+.sf-modal-footer .sf-btn-danger:hover {
+    background: #dc2626;
+}
+
+/* ===== MODAALI KOOT ===== */
+.sf-modal-small .sf-modal-content {
+    max-width: 420px;
+}
+
+.sf-modal-large .sf-modal-content,
+.sf-library-modal-content {
+    max-width: 640px;
+}
+
+.sf-modal-xl .sf-modal-content {
+    max-width: 900px;
+}
+
+/* ===== PRE/CODE DETAILS ===== */
+.sf-details-pre {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    max-height: 300px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ===== SCROLLBAR ===== */
+.sf-modal-content::-webkit-scrollbar,
+.sf-library-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sf-modal-content::-webkit-scrollbar-track,
+.sf-library-modal-content::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.sf-modal-content::-webkit-scrollbar-thumb,
+.sf-library-modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+/* ===== BODY SCROLL LOCK ===== */
+body.sf-modal-open {
+    overflow: hidden;
+}
+
+/* ===== MOBIILI BOTTOM-SHEET TYYLI ===== */
+@media (max-width: 640px) {
+
+    .sf-modal,
+    .sf-library-modal {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .sf-modal-content,
+    .sf-library-modal-content {
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: 20px 20px 0 0;
+        animation: sfModalSlideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    @keyframes sfModalSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Vedä-indikaattori */
+    .sf-modal-content::before,
+    .sf-library-modal-content::before {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 4px;
+        background: #d1d5db;
+        border-radius: 2px;
+        margin: 10px auto 0;
+    }
+
+    .sf-modal-header,
+    .sf-library-modal-header {
+        padding: 16px 20px;
+    }
+
+    .sf-modal-body {
+        padding: 16px 20px;
+    }
+
+    .sf-modal-content>p {
+        padding: 0 20px;
+    }
+
+    .sf-modal-footer,
+    .sf-modal-actions {
+        flex-direction: column-reverse;
+        padding: 16px 20px;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .sf-modal-footer .sf-btn,
+    .sf-modal-actions .sf-btn {
+        width: 100%;
+        min-height: 50px;
+    }
+}
+
+/* ===== LOGOUT MODAL: otsikko keskelle, X oikealle ilman “hyppimistä” ===== */
+#sfLogoutModal .sf-modal-header {
+    justify-content: space-between;
+}
+
+/* Keskitys: varataan vasemmalle sama tila kuin X-napille */
+#sfLogoutModal .sf-modal-header h3 {
+    flex: 1;
+    text-align: center;
+    padding-left: 36px;
+    /* sama kuin close-napin leveys */
+}
+
+/* Close pysyy oikealla */
+#sfLogoutModal .sf-modal-close-btn {
+    margin-left: auto;
+}
+
+/* ===== JULKAISUMODAALIN CHECKBOXIT ===== */
+.sf-publish-options {
+    margin: 20px 0;
+}
+
+.sf-checkbox-option {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sf-checkbox-option:hover {
+    background: #f1f5f9;
+}
+
+.sf-checkbox-option input[type="checkbox"] {
+    margin-right: 12px;
+    margin-top: 4px;
+    width: 18px;
+    height: 18px;
+}
+
+.sf-checkbox-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.sf-checkbox-label strong {
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.sf-checkbox-label small {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* Henkilövahinko-varoitus (punainen tausta) */
+.sf-checkbox-warning {
+    background: #fef2f2;
+    border-left: 4px solid #dc2626;
+}
+
+.sf-checkbox-warning:hover {
+    background: #fee2e2;
+}
+
+/* Otsikon esikatselu */
+.sf-email-subject-preview {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: #fefce8;
+    border-radius: 8px;
+    border-left: 4px solid #ca8a04;
+}
+
+.sf-email-subject-preview strong {
+    display: block;
+    color: #78350f;
+    font-size: 12px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.sf-email-subject-preview code {
+    display: block;
+    color: #0f172a;
+    font-family: inherit;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+/* ===== LANGUAGE SELECTION FOR PUBLISH ===== */
+.sf-language-selection {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.sf-language-selection .sf-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.sf-language-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sf-language-checkboxes .sf-checkbox-option {
+    padding: 0.5rem 0.75rem;
+}
+
+.sf-language-checkboxes .sf-checkbox-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f3f4f6;
+}
+
+.sf-language-checkboxes .lang-flag-img {
+    width: 20px;
+    height: 14px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.sf-language-checkboxes .text-muted {
+    color: #6b7280;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   SESSION TIMEOUT MODAL
+   ========================================================================== */
+
+/* Piilotettu oletuksena */
+.sf-session-modal.hidden {
+    display: none ! important;
+}
+
+/* Näkyvissä kun session vanhenemassa */
+.sf-session-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 16px;
+}
+
+.sf-session-modal-content {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.sf-session-modal-header {
+    margin-bottom: 16px;
+}
+
+.sf-session-modal-icon {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.sf-session-modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.sf-session-modal-message {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin: 0 0 24px;
+    line-height: 1.5;
+}
+
+.sf-session-modal-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.sf-session-btn {
+    background: #fee000;
+    color: #000;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.sf-session-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.sf-session-btn:active {
+    transform: translateY(0);
+}
+
+/* Mobiili */
+@media (max-width: 480px) {
+    .sf-session-modal-content {
+        padding: 24px 20px;
+        margin: 0 12px;
+    }
+
+    .sf-session-modal-icon {
+        font-size: 48px;
+    }
+
+    .sf-session-modal-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* ==========================================================================
+   PROFILE MODAL
+   ========================================================================== */
+
+.sf-profile-section {
+    margin-bottom: 24px;
+    padding: 0 24px;
+}
+
+.sf-profile-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 16px 0;
+}
+
+.sf-profile-section:first-of-type h3 {
+    margin-top: 8px;
+}
+
+.sf-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.sf-field {
+    margin-bottom: 16px;
+}
+
+.sf-field label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.sf-profile-readonly {
+    padding: 12px 14px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+.sf-modal-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 24px 0;
+}
+
+.sf-password-section {
+    padding: 0 24px 24px 24px;
+}
+
+.sf-password-section summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #374151;
+    padding: 12px 0;
+    list-style: none;
+    user-select: none;
+}
+
+.sf-password-section summary::-webkit-details-marker {
+    display: none;
+}
+
+.sf-password-section summary::before {
+    content: '▸';
+    display: inline-block;
+    margin-right: 8px;
+    transition: transform 0.2s ease;
+}
+
+.sf-password-section[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.sf-password-section form {
+    margin-top: 16px;
+    padding: 0;
+}
+
+.sf-password-section .sf-btn {
+    margin-top: 16px;
+}
+
+@media (max-width: 640px) {
+    .sf-field-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
