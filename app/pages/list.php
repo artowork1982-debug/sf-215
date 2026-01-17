@@ -777,34 +777,36 @@ $allTranslations = sf_get_all_translations($pdo, array_values($allGroupIds));
      data-date="<?= htmlspecialchars($cardDate) ?>"
      data-archived="<?= htmlspecialchars($cardArchived) ?>">
 
-<?php if ($isAdmin): ?>
-    <label class="card-checkbox" onclick="event.stopPropagation();">
-        <input
-            type="checkbox"
-            class="sf-flash-checkbox"
-            value="<?= (int) $r['id'] ?>"
-            onclick="event.stopPropagation();"
-        >
-    </label>
-<?php endif; ?>
+<div class="card-thumb-wrapper">
+    <a href="<?= $baseUrl ?>/index.php?page=view&id=<?= (int)$r['id'] ?>" class="card-thumb">
+        <img src="<?= htmlspecialchars($thumb) ?>" 
+             alt="thumb"
+             loading="lazy"
+             decoding="async"
+             class="sf-card-image">
+    </a>
 
-<a href="<?= $baseUrl ?>/index.php?page=view&id=<?= (int)$r['id'] ?>" class="card-thumb">
-    <img src="<?= htmlspecialchars($thumb) ?>" 
-         alt="thumb"
-         loading="lazy"
-         decoding="async"
-         class="sf-card-image">
+    <?php if ($isAdmin): ?>
+        <label class="card-checkbox" onclick="event.stopPropagation();">
+            <input
+                type="checkbox"
+                class="sf-flash-checkbox"
+                value="<?= (int)$r['id'] ?>"
+                onclick="event.stopPropagation();"
+            >
+        </label>
+    <?php endif; ?>
 
     <?php if (!empty($r['new_comment_count']) && (int)$r['new_comment_count'] > 0): ?>
-<span class="comment-badge" title="<?= (int)$r['new_comment_count'] ?> <?= htmlspecialchars(sf_term('new_comments', $uiLang), ENT_QUOTES, 'UTF-8') ?>">
+        <span class="comment-badge"
+              title="<?= (int)$r['new_comment_count'] ?> <?= htmlspecialchars(sf_term('new_comments', $uiLang), ENT_QUOTES, 'UTF-8') ?>">
             <svg class="comment-badge-icon" viewBox="0 0 100 100" fill="currentColor">
-                <path d="M100 10.495v67.2c0 2.212-1.793 4.005-4.005 4.005H68.53c-1.063 0-2.082.422-2.833 1.174L51.412 97.167c-1.564 1.565-4.1 1.565-5.665 0L31.453 82.874c-.751-.751-1.77-1.173-2.832-1.173H4.005C1.793 81.701 0 79.908 0 77.696V10.495C0 8.283 1.793 6.49 4.005 6.49h91.99C98.207 6.49 100 8.283 100 10.495Z"/>
+                <path d="M100 10.495v67.2c0 2.212-1.793 4.005-4.005 4.005H68.53c-1.063 0-2.082.422-2.833 1.174L51.412 97.167c-1.564 1.565-4.1 1.565-5.665 0L31.453 82.874c-.751-.751-1.77-1.173-2.833-1.173H4.005C1.793 81.7 0 79.907 0 77.695v-67.2C0 8.283 1.793 6.49 4.005 6.49h91.99C98.207 6.49 100 8.283 100 10.495z"/>
             </svg>
-
             <span class="comment-badge-count"><?= (int)$r['new_comment_count'] ?></span>
         </span>
     <?php endif; ?>
-</a>
+</div>
 
     <!-- Type indicator for compact view -->
     <div class="type-indicator <?= htmlspecialchars($r['type'] ?? 'default') ?>"></div>
