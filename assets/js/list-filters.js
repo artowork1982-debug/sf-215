@@ -892,6 +892,9 @@
     }
 
     // ===== SEARCH INPUT (HEADER) =====
+    // Flag to prevent infinite loops during bidirectional sync
+    let isSyncingSearch = false;
+
     if (searchInput) {
         // Sync initial values
         if (filterSearch.value && !searchInput.value) {
@@ -902,7 +905,11 @@
 
         // Bidirectional sync: sf-search-input -> f-q
         searchInput.addEventListener('input', function () {
-            filterSearch.value = this.value;
+            if (!isSyncingSearch) {
+                isSyncingSearch = true;
+                filterSearch.value = this.value;
+                isSyncingSearch = false;
+            }
         });
 
         // Handle Enter key on header search to trigger form submission
@@ -1150,9 +1157,12 @@
     filterSite.addEventListener('change', applyListFilters);
     
     // Bidirectional sync: f-q -> sf-search-input
+    // Search is triggered by form submission (Enter key or button click), not on every keystroke
     filterSearch.addEventListener('input', function() {
-        if (searchInput) {
+        if (searchInput && !isSyncingSearch) {
+            isSyncingSearch = true;
             searchInput.value = this.value;
+            isSyncingSearch = false;
         }
     });
     
