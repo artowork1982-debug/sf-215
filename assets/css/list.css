@@ -39,10 +39,9 @@
 form.filters {
     position: absolute !important;
     left: -9999px !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    height: 1px !important;
+    clip: rect(0, 0, 0, 0) !important;
     width: 1px !important;
+    height: 1px !important;
     overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -2977,7 +2976,7 @@ jne.
     position: static !important;
     display: flex !important;
     visibility: visible !important;
-    order: -10 !important;
+    order: -1 !important;
     flex-shrink: 0 !important;
     background: transparent !important;
     padding: 0 4px !important;
