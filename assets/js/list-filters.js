@@ -350,24 +350,21 @@
             const typeOptions = Array.from(filterType.options);
             options = typeOptions.map(opt => ({
                 value: opt.value,
-                label: opt.textContent,
-                count: calculateResultCount(filterName, opt.value)
+                label: opt.textContent
             }));
         } else if (filterName === 'state') {
             currentValue = filterState.value;
             const stateOptions = Array.from(filterState.options);
             options = stateOptions.map(opt => ({
                 value: opt.value,
-                label: opt.textContent,
-                count: calculateResultCount(filterName, opt.value)
+                label: opt.textContent
             }));
         } else if (filterName === 'site') {
             currentValue = filterSite.value;
             const siteOptions = Array.from(filterSite.options);
             options = siteOptions.map(opt => ({
                 value: opt.value,
-                label: opt.textContent,
-                count: calculateResultCount(filterName, opt.value)
+                label: opt.textContent
             }));
         }
 
@@ -382,13 +379,8 @@
             label.className = 'sf-chip-dropdown-label';
             label.textContent = opt.label;
 
-            const count = document.createElement('span');
-            count.className = 'sf-chip-dropdown-count';
-            count.textContent = opt.count;
-
             optEl.appendChild(radio);
             optEl.appendChild(label);
-            optEl.appendChild(count);
 
             optEl.addEventListener('click', (e) => {
                 e.stopPropagation();

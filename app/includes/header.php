@@ -1,4 +1,7 @@
 <?php
+// Output buffering to ensure redirects work properly
+ob_start();
+
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/session_activity.php';
