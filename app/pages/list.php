@@ -874,7 +874,7 @@ $allTranslations = sf_get_all_translations($pdo, array_values($allGroupIds));
 
         <div class="card-lang-actions">
             <?php if (isset($supportedLangs[$baseLang])): ?>
-               <a href="<?= $baseUrl ?>/index.php? page=view&id=<?= (int)$r['id'] ?>" class="lang-flag-link">
+               <a href="<?= $baseUrl ?>/index.php?page=view&id=<?= (int)$r['id'] ?>" class="lang-flag-link">
                     <img class="list-lang-flag"
                          src="<?= $baseUrl ?>/assets/img/<?= $supportedLangs[$baseLang]['icon'] ?>"
                          alt="<?= htmlspecialchars($supportedLangs[$baseLang]['label']) ?>">
