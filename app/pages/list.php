@@ -353,11 +353,28 @@ $currentUiLang = $uiLang ?? 'fi';
             value="<?= htmlspecialchars($q) ?>"
             aria-label="<?= htmlspecialchars(sf_term('filter_search_placeholder', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>"
         >
-        <button type="button" class="sf-filter-clear-btn<?= ($type === '' && $state === '' && $site === '' && $q === '' && $from === '' && $to === '') ? ' hidden' : '' ?>" id="sf-clear-all-btn" title="<?= htmlspecialchars(sf_term('filter_clear_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>">
+        <!-- Search button -->
+        <button type="button" class="sf-search-btn" id="sf-search-btn" title="<?= htmlspecialchars(sf_term('filter_search', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+        </button>
+        
+        <!-- Clear filters -->
+        <button type="button" class="sf-filter-clear-btn<?= ($type === '' && $state === '' && $site === '' && $q === '' && $from === '' && $to === '' && $archived === '') ? ' hidden' : '' ?>" id="sf-clear-all-btn" title="<?= htmlspecialchars(sf_term('filter_clear_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
+        </button>
+        
+        <!-- Reset button -->
+        <button type="button" class="sf-filter-reset-btn<?= ($type === '' && $state === '' && $site === '' && $q === '' && $from === '' && $to === '' && $archived === '') ? ' hidden' : '' ?>" id="sf-reset-all-btn" title="<?= htmlspecialchars(sf_term('filter_reset', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span><?= htmlspecialchars(sf_term('filter_reset', $currentUiLang), ENT_QUOTES, 'UTF-8') ?></span>
         </button>
     </div>
 

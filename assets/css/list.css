@@ -3009,3 +3009,48 @@ jne.
 .sf-list-container.view-compact .card-thumb-wrapper .sf-copy-btn-compact {
     display: none !important;
 }
+
+/* Search button in header */
+.sf-search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: var(--sf-primary, #3b82f6);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+
+.sf-search-btn:hover {
+    background: var(--sf-primary-dark, #2563eb);
+}
+
+/* Reset button */
+.sf-filter-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: #6b7280;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.sf-filter-reset-btn:hover {
+    background: #4b5563;
+}
+
+.sf-filter-reset-btn.hidden {
+    display: none;
+}
