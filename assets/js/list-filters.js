@@ -13,7 +13,7 @@
     const filterDateFrom = document.getElementById('f-from');
     const filterDateTo = document.getElementById('f-to');
     const filterArchived = document.getElementById('f-archived');
-    
+
     // New chip-based elements
     const searchInput = document.getElementById('sf-search-input');
     const clearAllBtn = document.getElementById('sf-clear-all-btn');
@@ -33,7 +33,7 @@
     // ===== SYNC SEARCH INPUTS =====
     // Bidirectional sync between sf-search-input and f-q
     if (searchInput && filterSearch) {
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             if (!isSyncingSearch) {
                 isSyncingSearch = true;
                 filterSearch.value = this.value;
@@ -42,7 +42,7 @@
             }
         });
 
-        filterSearch.addEventListener('input', function() {
+        filterSearch.addEventListener('input', function () {
             if (!isSyncingSearch) {
                 isSyncingSearch = true;
                 searchInput.value = this.value;
@@ -52,7 +52,7 @@
         });
 
         // Handle Enter key on search input
-        searchInput.addEventListener('keydown', function(e) {
+        searchInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 applyClientSideFilters();
@@ -62,7 +62,7 @@
 
     // ===== SEARCH BUTTON =====
     if (searchBtn) {
-        searchBtn.addEventListener('click', function(e) {
+        searchBtn.addEventListener('click', function (e) {
             e.preventDefault();
             applyClientSideFilters();
         });
@@ -70,7 +70,7 @@
 
     // ===== ARCHIVED TOGGLE (SEGMENTED CONTROL) =====
     toggleBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             const value = this.dataset.archivedValue;
 
             // If already active, do nothing
@@ -99,15 +99,15 @@
 
     // ===== CHIP CLICK HANDLERS =====
     chips.forEach(chip => {
-        chip.addEventListener('click', function(e) {
+        chip.addEventListener('click', function (e) {
             const filterName = this.dataset.filter;
-            
+
             // Toggle dropdown
             const wasOpen = this.classList.contains('open');
-            
+
             // Close all dropdowns first
             chips.forEach(c => c.classList.remove('open'));
-            
+
             if (!wasOpen) {
                 this.classList.add('open');
                 renderDropdown(this, filterName);
@@ -116,7 +116,7 @@
     });
 
     // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (!e.target.closest('.sf-chip') && !e.target.closest('.sf-chip-dropdown')) {
             chips.forEach(c => c.classList.remove('open'));
         }
@@ -167,7 +167,7 @@
             optEl.appendChild(radio);
             optEl.appendChild(label);
 
-            optEl.addEventListener('click', function(e) {
+            optEl.addEventListener('click', function (e) {
                 e.stopPropagation();
 
                 // Update hidden field
@@ -215,7 +215,7 @@
         const cards = document.querySelectorAll('.card');
         let visibleCount = 0;
 
-        cards.forEach(function(card) {
+        cards.forEach(function (card) {
             let show = true;
 
             // Type filter
@@ -261,8 +261,12 @@
             }
 
             // Apply visibility
-            card.style.display = show ? '' : 'none';
-            if (show) visibleCount++;
+            if (show) {
+                card.style.removeProperty('display');
+                visibleCount++;
+            } else {
+                card.style.setProperty('display', 'none', 'important');
+            }
         });
 
         // Update "no results" message
@@ -312,7 +316,7 @@
             if (!noResultsBox) {
                 noResultsBox = document.createElement('div');
                 noResultsBox.className = 'no-results-box js-filter-no-results';
-                
+
                 // Create elements safely without innerHTML
                 const iconWrap = document.createElement('div');
                 iconWrap.className = 'no-results-icon-wrap';
@@ -323,15 +327,15 @@
                         <line x1="8" y1="11" x2="14" y2="11"/>
                     </svg>
                 `;
-                
+
                 const textPara = document.createElement('p');
                 textPara.className = 'no-results-text';
                 textPara.textContent = window.SF_LIST_I18N?.filterNoResults || 'Ei tuloksia';
-                
+
                 const hintPara = document.createElement('p');
                 hintPara.className = 'no-results-hint';
                 hintPara.textContent = window.SF_LIST_I18N?.noResultsHint || 'Kokeile muuttaa suodattimia';
-                
+
                 noResultsBox.appendChild(iconWrap);
                 noResultsBox.appendChild(textPara);
                 noResultsBox.appendChild(hintPara);
@@ -348,7 +352,7 @@
 
     // ===== CLEAR/RESET BUTTONS =====
     function updateClearButtonVisibility() {
-        const hasFilters = 
+        const hasFilters =
             (filterType && filterType.value !== '') ||
             (filterState && filterState.value !== '') ||
             (filterSite && filterSite.value !== '') ||
@@ -366,13 +370,13 @@
     }
 
     if (clearAllBtn) {
-        clearAllBtn.addEventListener('click', function() {
+        clearAllBtn.addEventListener('click', function () {
             clearAllFilters();
         });
     }
 
     if (resetAllBtn) {
-        resetAllBtn.addEventListener('click', function(e) {
+        resetAllBtn.addEventListener('click', function (e) {
             e.preventDefault();
             clearAllFilters();
         });
