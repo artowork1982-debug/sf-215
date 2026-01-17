@@ -32,17 +32,22 @@
     margin-bottom: 22px;
 }
 
-/* Hide old filters-grid completely */
+/* Hide old filters form visually but keep in DOM for JavaScript */
 .filters,
-.filters-grid,
-.filters-toggle,
 form.filters {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
     overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Keep filters-grid and filters-toggle completely hidden */
+.filters-grid,
+.filters-toggle {
+    display: none !important;
 }
 
 .filters-grid {
