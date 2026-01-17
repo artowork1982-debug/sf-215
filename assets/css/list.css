@@ -2891,13 +2891,15 @@ jne.
 .sf-list-container.view-grid .card-thumb-wrapper .card-checkbox {
     position: absolute !important;
     bottom: 8px !important;
-    left: 8px ! important;
-    top: auto ! important;
-    right: auto ! important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
     z-index: 25 !important;
     background: rgba(255, 255, 255, 0.9) !important;
     border-radius: 6px !important;
     padding: 4px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    visibility: visible !important;
 }
 
 /* Comment badge in wrapper - top-right */
@@ -2951,20 +2953,6 @@ jne.
    CHECKBOX POSITIONING PER VIEW
    ========================================================================== */
 
-
-/* GRID VIEW - Checkbox stays in thumb area, bottom-left (already working) */
-.sf-list-container.view-grid .card-thumb-wrapper .card-checkbox {
-    position: absolute !important;
-    bottom: 8px !important;
-    left: 8px !important;
-    top: auto !important;
-    right: auto !important;
-    z-index: 25 !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-radius: 6px !important;
-    padding: 4px !important;
-    visibility: visible !important;
-}
 
 /* COMPACT VIEW - Wrapper uses display: contents so children flow into parent */
 .sf-list-container.view-compact .card-thumb-wrapper {
