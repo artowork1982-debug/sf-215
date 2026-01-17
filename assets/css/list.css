@@ -32,15 +32,17 @@
     margin-bottom: 22px;
 }
 
-/* Hide old filters-grid completely */
+/* Hide old filters-grid visually but keep in DOM for JavaScript */
 .filters,
 .filters-grid,
 .filters-toggle,
 form.filters {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
+    position: absolute !important;
+    clip-path: inset(50%) !important;
+    width: 1px !important;
+    height: 1px !important;
     overflow: hidden !important;
+    white-space: nowrap !important;
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -2889,13 +2891,15 @@ jne.
 .sf-list-container.view-grid .card-thumb-wrapper .card-checkbox {
     position: absolute !important;
     bottom: 8px !important;
-    left: 8px ! important;
-    top: auto ! important;
-    right: auto ! important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
     z-index: 25 !important;
     background: rgba(255, 255, 255, 0.9) !important;
     border-radius: 6px !important;
     padding: 4px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    visibility: visible !important;
 }
 
 /* Comment badge in wrapper - top-right */
@@ -2923,9 +2927,20 @@ jne.
     width: 160px !important;
 }
 
-/* Compact view - hide wrapper */
-.sf-list-container.view-compact .card-thumb-wrapper {
-    display: none !important;
+/* LIST VIEW - Checkbox visible, positioned in wrapper bottom-left */
+.sf-list-container.view-list .card-thumb-wrapper .card-checkbox {
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 25 !important;
+    display: flex !important;
+    visibility: visible !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 6px !important;
+    padding: 4px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Mobile - hide wrapper */
@@ -2938,75 +2953,28 @@ jne.
    CHECKBOX POSITIONING PER VIEW
    ========================================================================== */
 
-/* LIST VIEW - Checkbox in card's bottom-right corner */
-.sf-list-container.view-list .card-checkbox {
-    position: absolute ! important;
-    bottom: 12px ! important;
-    right: 12px !important;
-    top: auto !important;
-    left: auto !important;
-    z-index: 10 !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-radius: 8px !important;
-    padding: 4px !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
-}
 
-/* LIST VIEW - Move checkbox OUT of thumb-wrapper to card level */
-.sf-list-container.view-list .card-thumb-wrapper .card-checkbox {
-    position: absolute !important;
-    bottom: -999px !important;
-    /* Hide from wrapper */
-    visibility: hidden !important;
-}
-
-/* GRID VIEW - Checkbox stays in thumb area, bottom-left (already working) */
-.sf-list-container.view-grid .card-thumb-wrapper .card-checkbox {
-    position: absolute !important;
-    bottom: 8px !important;
-    left: 8px !important;
-    top: auto !important;
-    right: auto !important;
-    z-index: 25 !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-radius: 6px !important;
-    padding: 4px !important;
-    visibility: visible !important;
-}
-
-/* COMPACT VIEW - Checkbox at start of row (inline, not absolute) */
-.sf-list-container.view-compact .card-checkbox {
-    position: static !important;
-    display: flex !important;
-    align-items: center !important;
-    order: -2 !important;
-    flex-shrink: 0 !important;
-    background: transparent !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    visibility: visible !important;
-}
-
-.sf-list-container.view-compact .card-thumb-wrapper .card-checkbox {
-    position: static !important;
-    visibility: visible !important;
-    bottom: auto !important;
-}
-
-/* COMPACT VIEW - Hide thumb wrapper but show checkbox */
+/* COMPACT VIEW - Wrapper uses display: contents so children flow into parent */
 .sf-list-container.view-compact .card-thumb-wrapper {
     display: contents !important;
-    /* Allows children to be placed in parent's flow */
 }
 
-.sf-list-container.view-compact .card-thumb-wrapper .card-thumb {
-    display: none !important;
+/* COMPACT VIEW - Checkbox inline at start of row */
+.sf-list-container.view-compact .card-thumb-wrapper .card-checkbox {
+    position: static !important;
+    display: flex !important;
+    visibility: visible !important;
+    order: -1 !important;
+    flex-shrink: 0 !important;
+    background: transparent !important;
+    padding: 0 4px !important;  /* Horizontal spacing only - maintains inline alignment */
+    box-shadow: none !important;
+    align-items: center !important;
 }
 
-.sf-list-container.view-compact .card-thumb-wrapper .comment-badge {
-    display: none !important;
-}
-
+/* COMPACT VIEW - Hide thumbnail, badge, and copy button */
+.sf-list-container.view-compact .card-thumb-wrapper .card-thumb,
+.sf-list-container.view-compact .card-thumb-wrapper .comment-badge,
 .sf-list-container.view-compact .card-thumb-wrapper .sf-copy-btn,
 .sf-list-container.view-compact .card-thumb-wrapper .sf-copy-btn-compact {
     display: none !important;
