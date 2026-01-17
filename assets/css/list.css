@@ -38,11 +38,11 @@
 .filters-toggle,
 form.filters {
     position: absolute !important;
-    left: -9999px !important;
     clip-path: inset(50%) !important;
     width: 1px !important;
     height: 1px !important;
     overflow: hidden !important;
+    white-space: nowrap !important;
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -2979,7 +2979,7 @@ jne.
     order: -1 !important;
     flex-shrink: 0 !important;
     background: transparent !important;
-    padding: 0 4px !important;
+    padding: 0 4px !important;  /* Horizontal spacing only - maintains inline alignment */
     box-shadow: none !important;
     align-items: center !important;
 }
