@@ -3054,3 +3054,232 @@ jne.
 .sf-filter-reset-btn.hidden {
     display: none;
 }
+
+/* ===== DATE DROPDOWN ===== */
+.sf-chip-dropdown-date {
+    min-width: 280px;
+    padding: 12px;
+}
+
+.sf-date-section {
+    margin-bottom: 16px;
+}
+
+.sf-date-section:last-child {
+    margin-bottom: 0;
+}
+
+.sf-date-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+/* Presets grid */
+.sf-date-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.sf-date-preset-btn {
+    padding: 6px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sf-date-preset-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.sf-date-preset-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+/* Year navigation */
+.sf-date-year-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.sf-date-year-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #6b7280;
+    transition: all 0.15s ease;
+}
+
+.sf-date-year-btn:hover {
+    background: #f1f5f9;
+    color: #374151;
+}
+
+.sf-date-year-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Month grid */
+.sf-date-month-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+}
+
+.sf-date-month-btn {
+    padding: 8px 4px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sf-date-month-btn:hover:not(.disabled) {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.sf-date-month-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+.sf-date-month-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Custom date range */
+.sf-date-custom-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.sf-date-input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.sf-date-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.sf-date-separator {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.sf-date-custom-btn-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sf-date-apply-btn {
+    padding: 8px 16px;
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.sf-date-apply-btn:hover {
+    background: #2563eb;
+}
+
+/* ===== RESULTS BAR ===== */
+.sf-results-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #0369a1;
+}
+
+.sf-results-count {
+    font-weight: 600;
+}
+
+/* ===== FILTER ANIMATIONS ===== */
+.card.sf-filtering-out {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.card.sf-filtering-in {
+    animation: sf-card-filter-in 0.25s ease-out;
+}
+
+@keyframes sf-card-filter-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 720px) {
+    .sf-chip-dropdown-date {
+        min-width: 260px;
+    }
+    
+    .sf-date-month-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .sf-date-preset-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
