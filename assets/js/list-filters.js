@@ -238,20 +238,25 @@
                 show = false;
             }
 
-            // Date from filter
-            if (dateFromVal && card.dataset.date && card.dataset.date < dateFromVal) {
-                show = false;
+            // Date from filter - only apply if card has a date
+            if (dateFromVal && card.dataset.date) {
+                if (card.dataset.date < dateFromVal) {
+                    show = false;
+                }
             }
 
-            // Date to filter
-            if (dateToVal && card.dataset.date && card.dataset.date > dateToVal) {
-                show = false;
+            // Date to filter - only apply if card has a date
+            if (dateToVal && card.dataset.date) {
+                if (card.dataset.date > dateToVal) {
+                    show = false;
+                }
             }
 
             // Archived filter
-            if (archivedVal === '' && card.dataset.archived === '1') {
+            const cardArchivedValue = card.dataset.archived || '0';
+            if (archivedVal === '' && cardArchivedValue === '1') {
                 show = false;
-            } else if (archivedVal === 'only' && card.dataset.archived !== '1') {
+            } else if (archivedVal === 'only' && cardArchivedValue !== '1') {
                 show = false;
             }
 
@@ -307,17 +312,29 @@
             if (!noResultsBox) {
                 noResultsBox = document.createElement('div');
                 noResultsBox.className = 'no-results-box js-filter-no-results';
-                noResultsBox.innerHTML = `
-                    <div class="no-results-icon-wrap">
-                        <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <circle cx="11" cy="11" r="8"/>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                            <line x1="8" y1="11" x2="14" y2="11"/>
-                        </svg>
-                    </div>
-                    <p class="no-results-text">${window.SF_LIST_I18N?.filterNoResults || 'Ei tuloksia'}</p>
-                    <p class="no-results-hint">${window.SF_LIST_I18N?.noResultsHint || 'Kokeile muuttaa suodattimia'}</p>
+                
+                // Create elements safely without innerHTML
+                const iconWrap = document.createElement('div');
+                iconWrap.className = 'no-results-icon-wrap';
+                iconWrap.innerHTML = `
+                    <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        <line x1="8" y1="11" x2="14" y2="11"/>
+                    </svg>
                 `;
+                
+                const textPara = document.createElement('p');
+                textPara.className = 'no-results-text';
+                textPara.textContent = window.SF_LIST_I18N?.filterNoResults || 'Ei tuloksia';
+                
+                const hintPara = document.createElement('p');
+                hintPara.className = 'no-results-hint';
+                hintPara.textContent = window.SF_LIST_I18N?.noResultsHint || 'Kokeile muuttaa suodattimia';
+                
+                noResultsBox.appendChild(iconWrap);
+                noResultsBox.appendChild(textPara);
+                noResultsBox.appendChild(hintPara);
                 cardList.appendChild(noResultsBox);
             } else {
                 noResultsBox.style.display = '';
