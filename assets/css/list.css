@@ -3054,11 +3054,3 @@ jne.
 .sf-filter-reset-btn.hidden {
     display: none;
 }
-
-/* Ensure sf-filter-search uses flexbox */
-.sf-filter-search {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: nowrap;
-}
