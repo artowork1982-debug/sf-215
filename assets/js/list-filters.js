@@ -376,6 +376,45 @@
         }
     }
 
+    // ===== UPDATE RESULTS BAR =====
+    function updateResultsBar() {
+        const allCards = document.querySelectorAll('.card');
+        const visibleCards = document.querySelectorAll('.card:not([style*="display: none"])');
+        
+        let resultsBar = document.querySelector('.sf-results-bar');
+        
+        const hasFilters = 
+            (filterType && filterType.value !== '') ||
+            (filterState && filterState.value !== '') ||
+            (filterSite && filterSite.value !== '') ||
+            (searchInput && searchInput.value !== '') ||
+            (filterDateFrom && filterDateFrom.value !== '') ||
+            (filterDateTo && filterDateTo.value !== '');
+        
+        if (hasFilters) {
+            if (!resultsBar) {
+                resultsBar = document.createElement('div');
+                resultsBar.className = 'sf-results-bar';
+                const cardList = document.querySelector('.card-list');
+                if (cardList && cardList.parentNode) {
+                    cardList.parentNode.insertBefore(resultsBar, cardList);
+                }
+            }
+            
+            const i18n = window.SF_LIST_I18N || {};
+            const countText = (i18n.filterResultsCount || 'Näytetään {visible} / {total} tulosta')
+                .replace('{visible}', visibleCards.length)
+                .replace('{total}', allCards.length);
+            
+            resultsBar.innerHTML = '<span class="sf-results-count">' + countText + '</span>';
+            resultsBar.style.display = '';
+        } else {
+            if (resultsBar) {
+                resultsBar.style.display = 'none';
+            }
+        }
+    }
+
     if (clearAllBtn) {
         clearAllBtn.addEventListener('click', function () {
             clearAllFilters();
@@ -561,7 +600,7 @@
                 monthBtn.className = 'sf-date-month-btn';
                 monthBtn.textContent = monthNames[m];
                 
-                const monthFrom = selectedYear + '-' + String(m + 1).padStart(2, '0') + '-01';
+                const monthFrom = formatDateISO(new Date(selectedYear, m, 1));
                 const monthTo = lastDayOfMonthByYearMonth(selectedYear, m);
                 
                 // Check if this month is currently selected
@@ -571,9 +610,8 @@
                     monthBtn.classList.add('active');
                 }
                 
-                // Disable future months
-                const monthDate = new Date(selectedYear, m, 1);
-                if (monthDate > today) {
+                // Disable future months - compare year and month only
+                if (selectedYear > today.getFullYear() || (selectedYear === today.getFullYear() && m > today.getMonth())) {
                     monthBtn.disabled = true;
                     monthBtn.classList.add('disabled');
                 }
@@ -707,45 +745,6 @@
         }, 150);
     }
 
-    // ===== UPDATE RESULTS BAR =====
-    function updateResultsBar() {
-        const allCards = document.querySelectorAll('.card');
-        const visibleCards = document.querySelectorAll('.card:not([style*="display: none"])');
-        
-        let resultsBar = document.querySelector('.sf-results-bar');
-        
-        const hasFilters = 
-            (filterType && filterType.value !== '') ||
-            (filterState && filterState.value !== '') ||
-            (filterSite && filterSite.value !== '') ||
-            (searchInput && searchInput.value !== '') ||
-            (filterDateFrom && filterDateFrom.value !== '') ||
-            (filterDateTo && filterDateTo.value !== '');
-        
-        if (hasFilters) {
-            if (!resultsBar) {
-                resultsBar = document.createElement('div');
-                resultsBar.className = 'sf-results-bar';
-                const cardList = document.querySelector('.card-list');
-                if (cardList && cardList.parentNode) {
-                    cardList.parentNode.insertBefore(resultsBar, cardList);
-                }
-            }
-            
-            const i18n = window.SF_LIST_I18N || {};
-            const countText = (i18n.filterResultsCount || 'Näytetään {visible} / {total} tulosta')
-                .replace('{visible}', visibleCards.length)
-                .replace('{total}', allCards.length);
-            
-            resultsBar.innerHTML = '<span class="sf-results-count">' + countText + '</span>';
-            resultsBar.style.display = '';
-        } else {
-            if (resultsBar) {
-                resultsBar.style.display = 'none';
-            }
-        }
-    }
-
     // ===== HELPER FUNCTIONS =====
     function formatDateISO(date) {
         return date.getFullYear() + '-' + 
@@ -784,8 +783,9 @@
 
     function getMonthShortName(monthIndex) {
         const i18n = window.SF_LIST_I18N || {};
-        const names = i18n.monthNamesShort || ['Tammi', 'Helmi', 'Maalis', 'Huhti', 'Touko', 'Kesä', 
-                       'Heinä', 'Elo', 'Syys', 'Loka', 'Marras', 'Joulu'];
+        // Use English month names as fallback for language neutrality
+        const names = i18n.monthNamesShort || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return names[monthIndex] || '';
     }
 
