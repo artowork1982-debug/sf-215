@@ -2502,27 +2502,94 @@ jne.
 
 /* Thumbnail first (at top) */
 .sf-list-container.view-grid .card-thumb {
-    display: block !important;
+    display: flex !important;
+    /* CHANGED */
+    align-items: center !important;
+    /* NEW: vertical centering */
+    justify-content: center !important;
+    /* NEW: horizontal centering */
     width: 100% !important;
     flex: none !important;
-    height: 180px !important;
+    height: 200px !important;
+    /* NEW: fixed visual area */
+    min-height: 160px !important;
     border-radius: 12px 12px 0 0 !important;
-    overflow: hidden !important;
-    /* Clip thumbnail content to rounded border */
+    overflow: visible !important;
+    /* badges & copy button can overflow */
     order: -1 !important;
     background: #f1f5f9 !important;
     position: relative !important;
-    /* Required for absolute positioned elements like copy button and badges */
+    padding: 10px !important;
 }
 
+/* Centered image */
 .sf-list-container.view-grid .card-thumb img {
-    width: 100% !important;
-    height: 100% !important;
+    width: auto !important;
+    /* CHANGED */
+    height: auto !important;
+    max-width: 100% !important;
+    /* NEW */
+    max-height: 100% !important;
+    /* NEW */
     object-fit: contain !important;
-    /* Show full image without cropping */
-    border-radius: 0 !important;
+    border-radius: 12px 12px 0 0 !important;
+    display: block !important;
+}
+/* Comment badge in grid view - INSIDE thumbnail, top-right corner */
+.sf-list-container.view-grid .comment-badge {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    z-index: 30 !important;
 }
 
+/* Copy button in grid view - INSIDE thumbnail, bottom-left */
+.sf-list-container.view-grid .card-thumb .sf-copy-btn,
+.sf-list-container.view-grid .card-thumb .sf-copy-btn-compact {
+    position: absolute ! important;
+    bottom: 8px ! important;
+    left: 8px ! important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 25 !important;
+}
+/* Copy button in grid view - INSIDE card-thumb, BOTTOM-RIGHT corner of IMAGE area */
+.sf-list-container.view-grid .card-thumb .sf-copy-btn,
+.sf-list-container.view-grid .card-thumb .sf-copy-btn-compact {
+    position: absolute !important;
+    bottom: 18px !important;
+    right: 8px !important;
+    top: auto ! important;
+    left: auto !important;
+    z-index: 25 ! important;
+}
+/* Checkbox in grid view - move to thumbnail area, bottom-right */
+.sf-list-container.view-grid .card-checkbox {
+    position: absolute !important;
+    bottom: 8px !important;
+    right: 8px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 25 !important;
+}
+/* Comment badge in grid view - visible in top-right corner */
+.sf-list-container.view-grid .comment-badge {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    z-index: 30 !important;
+}
+
+/* Copy button in grid view - inside thumbnail, bottom-left */
+.sf-list-container.view-grid .card-thumb .sf-copy-btn,
+.sf-list-container.view-grid .card-thumb .sf-copy-btn-compact {
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 25 !important;
+}
 /* Type indicator hidden in grid view */
 .sf-list-container.view-grid .type-indicator {
     display: none !important;
@@ -2789,4 +2856,158 @@ jne.
         border-top: none !important;
         background: transparent !important;
     }
+}
+/* ===== CARD THUMB WRAPPER - contains thumbnail, checkbox, badge, copy button ===== */
+.card-thumb-wrapper {
+    position: relative;
+    flex: 0 0 160px;
+    width: 160px;
+}
+
+/* Grid view - wrapper takes full width */
+.sf-list-container.view-grid .card-thumb-wrapper {
+    flex: none ! important;
+    width: 100% !important;
+    order: -1 !important;
+}
+
+/* Grid view - thumbnail inside wrapper */
+.sf-list-container.view-grid .card-thumb-wrapper .card-thumb {
+    display: flex ! important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 200px !important;
+    min-height: 160px !important;
+    border-radius: 12px 12px 0 0 ! important;
+    overflow: hidden !important;
+    background: #f1f5f9 !important;
+    padding: 10px !important;
+}
+
+/* Checkbox in wrapper - bottom-left */
+.sf-list-container.view-grid .card-thumb-wrapper .card-checkbox {
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 8px ! important;
+    top: auto ! important;
+    right: auto ! important;
+    z-index: 25 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 6px !important;
+    padding: 4px !important;
+}
+
+/* Comment badge in wrapper - top-right */
+.sf-list-container.view-grid .card-thumb-wrapper .comment-badge {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    z-index: 30 ! important;
+}
+
+/* Copy button in wrapper - bottom-right (added by JS) */
+.sf-list-container.view-grid .card-thumb-wrapper .sf-copy-btn,
+.sf-list-container.view-grid .card-thumb-wrapper .sf-copy-btn-compact {
+    position: absolute ! important;
+    bottom: 8px !important;
+    right: 8px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 25 ! important;
+}
+
+/* List view - wrapper styling */
+.sf-list-container.view-list .card-thumb-wrapper {
+    flex: 0 0 160px ! important;
+    width: 160px !important;
+}
+
+/* Compact view - hide wrapper */
+.sf-list-container.view-compact .card-thumb-wrapper {
+    display: none !important;
+}
+
+/* Mobile - hide wrapper */
+@media (max-width: 720px) {
+    .card-thumb-wrapper {
+        display: none !important;
+    }
+}
+/* ==========================================================================
+   CHECKBOX POSITIONING PER VIEW
+   ========================================================================== */
+
+/* LIST VIEW - Checkbox in card's bottom-right corner */
+.sf-list-container.view-list .card-checkbox {
+    position: absolute ! important;
+    bottom: 12px ! important;
+    right: 12px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 10 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 8px !important;
+    padding: 4px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* LIST VIEW - Move checkbox OUT of thumb-wrapper to card level */
+.sf-list-container.view-list .card-thumb-wrapper .card-checkbox {
+    position: absolute !important;
+    bottom: -999px !important;
+    /* Hide from wrapper */
+    visibility: hidden !important;
+}
+
+/* GRID VIEW - Checkbox stays in thumb area, bottom-left (already working) */
+.sf-list-container.view-grid .card-thumb-wrapper .card-checkbox {
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 25 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 6px !important;
+    padding: 4px !important;
+    visibility: visible !important;
+}
+
+/* COMPACT VIEW - Checkbox at start of row (inline, not absolute) */
+.sf-list-container.view-compact .card-checkbox {
+    position: static !important;
+    display: flex !important;
+    align-items: center !important;
+    order: -2 !important;
+    flex-shrink: 0 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    visibility: visible !important;
+}
+
+.sf-list-container.view-compact .card-thumb-wrapper .card-checkbox {
+    position: static !important;
+    visibility: visible !important;
+    bottom: auto !important;
+}
+
+/* COMPACT VIEW - Hide thumb wrapper but show checkbox */
+.sf-list-container.view-compact .card-thumb-wrapper {
+    display: contents !important;
+    /* Allows children to be placed in parent's flow */
+}
+
+.sf-list-container.view-compact .card-thumb-wrapper .card-thumb {
+    display: none !important;
+}
+
+.sf-list-container.view-compact .card-thumb-wrapper .comment-badge {
+    display: none !important;
+}
+
+.sf-list-container.view-compact .card-thumb-wrapper .sf-copy-btn,
+.sf-list-container.view-compact .card-thumb-wrapper .sf-copy-btn-compact {
+    display: none !important;
 }
