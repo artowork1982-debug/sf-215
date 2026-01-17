@@ -473,6 +473,80 @@ $currentUiLang = $uiLang ?? 'fi';
     </button>
 </div>
 
+<!-- HIDDEN FILTER FIELDS (for JavaScript access) -->
+<div style="display: none;">
+    <select id="f-type" name="type">
+        <option value="">
+            <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="red" <?= $type === 'red' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('first_release', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="yellow" <?= $type === 'yellow' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('dangerous_situation', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="green" <?= $type === 'green' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('investigation_report', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+    </select>
+
+    <select id="f-state" name="state">
+        <option value="">
+            <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="draft" <?= $state==='draft' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('draft', $currentUiLang)) ?>
+        </option>
+        <option value="pending_review" <?= $state==='pending_review' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('pending_review', $currentUiLang)) ?>
+        </option>
+        <option value="reviewed" <?= $state==='reviewed' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('reviewed', $currentUiLang)) ?>
+        </option>
+        <option value="to_comms" <?= $state==='to_comms' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('to_comms', $currentUiLang)) ?>
+        </option>
+        <option value="published" <?= $state==='published' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('published', $currentUiLang)) ?>
+        </option>
+    </select>
+
+    <select id="f-site" name="site">
+        <option value="">
+            <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <?php foreach ($sites as $s): ?>
+            <option value="<?= htmlspecialchars($s) ?>"
+                <?= ($site !== '' ? $site : $autoSite) === $s ? 'selected' : '' ?>>
+                <?= htmlspecialchars($s) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+    <input
+        id="f-q"
+        type="text"
+        name="q"
+        value="<?= htmlspecialchars($q) ?>"
+    >
+
+    <input id="f-from" type="date" name="date_from" value="<?= htmlspecialchars($from) ?>">
+
+    <input id="f-to" type="date" name="date_to" value="<?= htmlspecialchars($to) ?>">
+
+    <select id="f-archived" name="archived">
+        <option value="" <?= $archived === '' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('filter_show_active', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="only" <?= $archived === 'only' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('filter_archived', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="all" <?= $archived === 'all' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+    </select>
+</div>
+
 <!-- FILTER BAR -->
 <form method="get" class="filters">
     <input type="hidden" name="page" value="list">
@@ -493,10 +567,10 @@ $currentUiLang = $uiLang ?? 'fi';
 
     <div class="filters-grid" id="filtersGrid" role="search" aria-label="<?= htmlspecialchars(sf_term('list_filters', $uiLang), ENT_QUOTES, 'UTF-8') ?>">
             <div class="filter-item">
-                <label for="f-type">
+                <label>
                     <?= htmlspecialchars(sf_term('filter_type', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                 </label>
-                <select id="f-type" name="type">
+                <select name="type">
                     <option value="">
                         <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                     </option>
@@ -513,10 +587,10 @@ $currentUiLang = $uiLang ?? 'fi';
             </div>
 
             <div class="filter-item">
-                <label for="f-state">
+                <label>
                     <?= htmlspecialchars(sf_term('filter_state', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                 </label>
-                <select id="f-state" name="state">
+                <select name="state">
                     <option value="">
                         <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                     </option>
@@ -540,10 +614,10 @@ $currentUiLang = $uiLang ?? 'fi';
             </div>
 
             <div class="filter-item">
-                <label for="f-site">
+                <label>
                     <?= htmlspecialchars(sf_term('filter_site', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                 </label>
-                <select id="f-site" name="site">
+                <select name="site">
                     <option value="">
                         <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                     </option>
@@ -557,16 +631,16 @@ $currentUiLang = $uiLang ?? 'fi';
             </div>
 
             <div class="filter-item filter-search">
-                <label for="f-q">
+                <label>
                     <?= htmlspecialchars(sf_term('filter_search_label', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                 </label>
                 <div class="search-row">
                     <input
-                        id="f-q"
                         type="text"
                         name="q"
                         placeholder="<?= htmlspecialchars(sf_term('filter_search_placeholder', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>"
                         value="<?= htmlspecialchars($q) ?>"
+                        aria-label="<?= htmlspecialchars(sf_term('filter_search_label', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>"
                     >
                     <button class="btn-icon" type="submit">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -577,24 +651,24 @@ $currentUiLang = $uiLang ?? 'fi';
             </div>
 
             <div class="filter-item">
-                <label for="f-from">
+                <label>
                     <?= htmlspecialchars(sf_term('filter_date_from', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                 </label>
-                <input id="f-from" type="date" name="date_from" value="<?= htmlspecialchars($from) ?>">
+                <input type="date" name="date_from" value="<?= htmlspecialchars($from) ?>">
             </div>
 
             <div class="filter-item">
-                <label for="f-to">
+                <label>
                     <?= htmlspecialchars(sf_term('filter_date_to', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                 </label>
-                <input id="f-to" type="date" name="date_to" value="<?= htmlspecialchars($to) ?>">
+                <input type="date" name="date_to" value="<?= htmlspecialchars($to) ?>">
             </div>
 
             <div class="filter-item">
-                <label for="f-archived">
+                <label>
                     <?= htmlspecialchars(sf_term('filter_archived', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                 </label>
-                <select id="f-archived" name="archived">
+                <select name="archived">
                     <option value="" <?= $archived === '' ? 'selected' : '' ?>>
                         <?= htmlspecialchars(sf_term('filter_show_active', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
                     </option>
