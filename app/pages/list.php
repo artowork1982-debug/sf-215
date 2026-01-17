@@ -1238,6 +1238,7 @@ document.addEventListener('change', function (e) {
 window.SF_LIST_I18N = {
     currentLang: <?= json_encode($currentUiLang, JSON_UNESCAPED_UNICODE) ?>,
     filterNoResults: <?= json_encode(sf_term('filter_no_results', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
+    noResultsHint: <?= json_encode(sf_term('no_results_hint', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     filterResultsCount: <?= json_encode(sf_term('filter_results_count', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     typeRed: <?= json_encode(sf_term('first_release', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     typeYellow: <?= json_encode(sf_term('dangerous_situation', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
@@ -1246,6 +1247,9 @@ window.SF_LIST_I18N = {
     filterState: <?= json_encode(sf_term('filter_state', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     filterSite: <?= json_encode(sf_term('filter_site', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     filterDate: <?= json_encode(sf_term('filter_chip_date', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
+    filterChipTypeAll: <?= json_encode(sf_term('filter_chip_type_all', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
+    filterChipStateAll: <?= json_encode(sf_term('filter_chip_state_all', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
+    filterChipSiteAll: <?= json_encode(sf_term('filter_chip_site_all', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     filterDateFrom: <?= json_encode(sf_term('date_from', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     filterDateTo: <?= json_encode(sf_term('date_to', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     filterApply: <?= json_encode(sf_term('filter_apply', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
