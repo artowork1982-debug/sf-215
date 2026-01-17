@@ -59,6 +59,9 @@
     const searchInput = document.getElementById('sf-search-input');
     const clearAllBtn = document.getElementById('sf-clear-all-btn');
 
+    // Flag to prevent infinite loops during bidirectional search sync
+    let isSyncingSearch = false;
+
     // Check if we're on the list page
     if (!filterType || !filterState || !filterSite || !filterSearch || !filterDateFrom || !filterDateTo || !filterArchived) {
         return; // Not on list page, exit
@@ -892,9 +895,6 @@
     }
 
     // ===== SEARCH INPUT (HEADER) =====
-    // Flag to prevent infinite loops during bidirectional sync
-    let isSyncingSearch = false;
-
     if (searchInput) {
         // Sync initial values
         if (filterSearch.value && !searchInput.value) {
