@@ -816,5 +816,6 @@
     // Apply filters on page load
     applyClientSideFilters();
     updateClearButtonVisibility();
+    updateResultsBar();
 
 })();
