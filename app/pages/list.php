@@ -473,6 +473,80 @@ $currentUiLang = $uiLang ?? 'fi';
     </button>
 </div>
 
+<!-- HIDDEN FILTER FIELDS (for JavaScript access) -->
+<div style="display: none;">
+    <select id="f-type" name="type">
+        <option value="">
+            <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="red" <?= $type === 'red' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('first_release', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="yellow" <?= $type === 'yellow' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('dangerous_situation', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="green" <?= $type === 'green' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('investigation_report', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+    </select>
+
+    <select id="f-state" name="state">
+        <option value="">
+            <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="draft" <?= $state==='draft' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('draft', $currentUiLang)) ?>
+        </option>
+        <option value="pending_review" <?= $state==='pending_review' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('pending_review', $currentUiLang)) ?>
+        </option>
+        <option value="reviewed" <?= $state==='reviewed' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('reviewed', $currentUiLang)) ?>
+        </option>
+        <option value="to_comms" <?= $state==='to_comms' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('to_comms', $currentUiLang)) ?>
+        </option>
+        <option value="published" <?= $state==='published' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_status_label('published', $currentUiLang)) ?>
+        </option>
+    </select>
+
+    <select id="f-site" name="site">
+        <option value="">
+            <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <?php foreach ($sites as $s): ?>
+            <option value="<?= htmlspecialchars($s) ?>"
+                <?= ($site !== '' ? $site : $autoSite) === $s ? 'selected' : '' ?>>
+                <?= htmlspecialchars($s) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+    <input
+        id="f-q"
+        type="text"
+        name="q"
+        value="<?= htmlspecialchars($q) ?>"
+    >
+
+    <input id="f-from" type="date" name="date_from" value="<?= htmlspecialchars($from) ?>">
+
+    <input id="f-to" type="date" name="date_to" value="<?= htmlspecialchars($to) ?>">
+
+    <select id="f-archived" name="archived">
+        <option value="" <?= $archived === '' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('filter_show_active', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="only" <?= $archived === 'only' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('filter_archived', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+        <option value="all" <?= $archived === 'all' ? 'selected' : '' ?>>
+            <?= htmlspecialchars(sf_term('filter_all', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>
+        </option>
+    </select>
+</div>
+
 <!-- FILTER BAR -->
 <form method="get" class="filters">
     <input type="hidden" name="page" value="list">
