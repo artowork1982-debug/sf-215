@@ -907,8 +907,11 @@
         searchInput.addEventListener('input', function () {
             if (!isSyncingSearch) {
                 isSyncingSearch = true;
-                filterSearch.value = this.value;
-                isSyncingSearch = false;
+                try {
+                    filterSearch.value = this.value;
+                } finally {
+                    isSyncingSearch = false;
+                }
             }
         });
 
@@ -1161,8 +1164,11 @@
     filterSearch.addEventListener('input', function() {
         if (searchInput && !isSyncingSearch) {
             isSyncingSearch = true;
-            searchInput.value = this.value;
-            isSyncingSearch = false;
+            try {
+                searchInput.value = this.value;
+            } finally {
+                isSyncingSearch = false;
+            }
         }
     });
     
