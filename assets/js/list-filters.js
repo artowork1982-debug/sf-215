@@ -59,6 +59,9 @@
     const searchInput = document.getElementById('sf-search-input');
     const clearAllBtn = document.getElementById('sf-clear-all-btn');
 
+    // Flag to prevent infinite loops during bidirectional search sync
+    let isSyncingSearch = false;
+
     // Check if we're on the list page
     if (!filterType || !filterState || !filterSite || !filterSearch || !filterDateFrom || !filterDateTo || !filterArchived) {
         return; // Not on list page, exit
@@ -900,15 +903,24 @@
             filterSearch.value = searchInput.value;
         }
 
-        let searchTimeout = null;
+        // Bidirectional sync: sf-search-input -> f-q
         searchInput.addEventListener('input', function () {
-            filterSearch.value = this.value;
-            
-            // Debounce search to avoid too many page reloads
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
+            if (!isSyncingSearch) {
+                isSyncingSearch = true;
+                try {
+                    filterSearch.value = this.value;
+                } finally {
+                    isSyncingSearch = false;
+                }
+            }
+        });
+
+        // Handle Enter key on header search to trigger form submission
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
                 applyListFilters();
-            }, 500); // Wait 500ms after user stops typing
+            }
         });
     }
 
@@ -1147,13 +1159,17 @@
     filterState.addEventListener('change', applyListFilters);
     filterSite.addEventListener('change', applyListFilters);
     
-    // Debounce search input to avoid too many page reloads
-    let filterSearchTimeout = null;
+    // Bidirectional sync: f-q -> sf-search-input
+    // Search is triggered by form submission (Enter key or button click), not on every keystroke
     filterSearch.addEventListener('input', function() {
-        clearTimeout(filterSearchTimeout);
-        filterSearchTimeout = setTimeout(() => {
-            applyListFilters();
-        }, 500); // Wait 500ms after user stops typing
+        if (searchInput && !isSyncingSearch) {
+            isSyncingSearch = true;
+            try {
+                searchInput.value = this.value;
+            } finally {
+                isSyncingSearch = false;
+            }
+        }
     });
     
     filterDateFrom.addEventListener('change', applyListFilters);
