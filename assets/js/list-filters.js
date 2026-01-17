@@ -941,6 +941,71 @@
         });
     }
 
+    // ===== SEARCH BUTTON =====
+    const searchBtn = document.getElementById('sf-search-btn');
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            applyListFilters();
+        });
+    }
+
+    // ===== RESET ALL FILTERS BUTTON =====
+    const resetAllBtn = document.getElementById('sf-reset-all-btn');
+    if (resetAllBtn) {
+        resetAllBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Nollaa kaikki suodattimet
+            filterType.value = '';
+            filterState.value = '';
+            filterSite.value = '';
+            filterSearch.value = '';
+            if (searchInput) searchInput.value = '';
+            filterDateFrom.value = '';
+            filterDateTo.value = '';
+            filterArchived.value = '';
+            
+            // Nollaa archived-toggle oletukseen (aktiiviset)
+            toggleBtns.forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+                if (btn.dataset.archivedValue === '') {
+                    btn.classList.add('active');
+                    btn.setAttribute('aria-pressed', 'true');
+                }
+            });
+            
+            // Päivitä chip-näkymä
+            updateChipsDisplay();
+            
+            // Uudelleenohjaa puhtaaseen list-sivuun
+            const url = new URL(window.location.href);
+            url.search = '';
+            url.searchParams.set('page', 'list');
+            window.location.href = url.toString();
+        });
+    }
+
+    // ===== UPDATE RESET BUTTON VISIBILITY =====
+    function updateResetButtonVisibility() {
+        if (!resetAllBtn) return;
+        
+        const hasFilters = filterType.value !== '' || filterState.value !== '' ||
+            filterSite.value !== '' || filterSearch.value !== '' ||
+            filterDateFrom.value !== '' || filterDateTo.value !== '' ||
+            filterArchived.value !== '';
+        
+        if (hasFilters) {
+            resetAllBtn.classList.remove('hidden');
+        } else {
+            resetAllBtn.classList.add('hidden');
+        }
+    }
+
+    // Kutsu päivitysfunktiota
+    updateResetButtonVisibility();
+
     // ===== CALCULATE RESULT COUNT =====
     // This function is kept for showing approximate counts in filter dropdowns
     // Counts are based on currently loaded cards and may not reflect server-side filtering accurately
