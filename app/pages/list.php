@@ -1261,8 +1261,11 @@ window.SF_LIST_I18N = {
     datePreset30daysShort: <?= json_encode(sf_term('date_preset_30days_short', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     datePresetMonth: <?= json_encode(sf_term('date_preset_month', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     datePresetMonthShort: <?= json_encode(sf_term('date_preset_month_short', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
+    datePresetYear: <?= json_encode(sf_term('date_preset_year', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
     datePresetCustom: <?= json_encode(sf_term('date_preset_custom', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
-    dateClear: <?= json_encode(sf_term('date_clear', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>
+    dateMonthHeader: <?= json_encode(sf_term('date_month_header', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
+    dateClear: <?= json_encode(sf_term('date_clear', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>,
+    monthNamesShort: <?= json_encode(sf_term('month_names_short', $currentUiLang), JSON_UNESCAPED_UNICODE) ?>
 };
 </script>
 <script src="<?= $baseUrl ?>/assets/js/list-filters.js"></script>
