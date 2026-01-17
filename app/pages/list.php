@@ -640,6 +640,7 @@ $currentUiLang = $uiLang ?? 'fi';
                         name="q"
                         placeholder="<?= htmlspecialchars(sf_term('filter_search_placeholder', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>"
                         value="<?= htmlspecialchars($q) ?>"
+                        aria-label="<?= htmlspecialchars(sf_term('filter_search_label', $currentUiLang), ENT_QUOTES, 'UTF-8') ?>"
                     >
                     <button class="btn-icon" type="submit">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
