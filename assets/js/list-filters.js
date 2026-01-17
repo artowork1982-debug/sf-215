@@ -900,15 +900,17 @@
             filterSearch.value = searchInput.value;
         }
 
-        let searchTimeout = null;
+        // Bidirectional sync: sf-search-input -> f-q
         searchInput.addEventListener('input', function () {
             filterSearch.value = this.value;
-            
-            // Debounce search to avoid too many page reloads
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
+        });
+
+        // Handle Enter key on header search to trigger form submission
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
                 applyListFilters();
-            }, 500); // Wait 500ms after user stops typing
+            }
         });
     }
 
@@ -1147,13 +1149,11 @@
     filterState.addEventListener('change', applyListFilters);
     filterSite.addEventListener('change', applyListFilters);
     
-    // Debounce search input to avoid too many page reloads
-    let filterSearchTimeout = null;
+    // Bidirectional sync: f-q -> sf-search-input
     filterSearch.addEventListener('input', function() {
-        clearTimeout(filterSearchTimeout);
-        filterSearchTimeout = setTimeout(() => {
-            applyListFilters();
-        }, 500); // Wait 500ms after user stops typing
+        if (searchInput) {
+            searchInput.value = this.value;
+        }
     });
     
     filterDateFrom.addEventListener('change', applyListFilters);
