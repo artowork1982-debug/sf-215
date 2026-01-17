@@ -71,64 +71,8 @@
 
     // ===== HELPER FUNCTIONS =====
 
-    // Show filter result toast
-    function showFilterResultToast() {
-        const visibleCount = document.querySelectorAll('.card:not([style*="display: none"])').length;
-        const i18n = window.SF_LIST_I18N || {};
-        let message = i18n.filterResultsCount || 'Näytetään {count} tulosta';
-        message = message.replace('{count}', visibleCount).replace('%d', visibleCount);
 
-        if (typeof window.sfToast === 'function') {
-            window.sfToast(message, 'success');
-        }
-    }
 
-    // Check if card should be shown based on archived filter
-    function shouldShowCardWithArchivedFilter(archivedVal, card) {
-        const cardArchived = card.dataset.archived;
-        if (archivedVal === '' && cardArchived === '1') {
-            return false; // Hide archived when showing only active
-        }
-        if (archivedVal === 'only' && cardArchived !== '1') {
-            return false; // Hide active when showing only archived
-        }
-        return true; // Show all when 'all' is selected
-    }
-
-    // Debounced toast notification
-    let toastTimeout = null;
-    function showToastDebounced(message, type = 'info', delay = 500) {
-        if (toastTimeout) {
-            clearTimeout(toastTimeout);
-        }
-        toastTimeout = setTimeout(() => {
-            showToast(message, type);
-        }, delay);
-    }
-
-    // ===== TOAST NOTIFICATIONS =====
-    function showToast(message, type = 'info') {
-        // Check if sfToast exists globally
-        if (typeof window.sfToast === 'function') {
-            window.sfToast(type, message);
-            return;
-        }
-
-        // Fallback: create simple toast
-        let toast = document.querySelector('.sf-toast');
-        if (!toast) {
-            toast = document.createElement('div');
-            toast.className = 'sf-toast';
-            document.body.appendChild(toast);
-        }
-
-        toast.textContent = message;
-        toast.className = 'sf-toast show ' + type;
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
-    }
 
     // ===== ARCHIVED TOGGLE (SEGMENTED CONTROL) =====
     const toggleBtns = document.querySelectorAll('.sf-toggle-btn');
@@ -228,9 +172,6 @@
                 setTimeout(() => {
                     closeBottomSheet();
                     applyListFilters();
-
-                    // Show toast with result count
-                    showFilterResultToast();
                 }, MOBILE_BOTTOM_SHEET_CLOSE_DELAY);
             });
 
@@ -464,11 +405,8 @@
                 // Update chip display BEFORE filtering
                 updateChipsDisplay();
 
-                // Apply filters
+                // Apply filters (page will reload)
                 applyListFilters();
-
-                // Show toast with result count
-                showFilterResultToast();
             });
 
             dropdown.appendChild(optEl);
@@ -638,11 +576,8 @@
                 // Close dropdown
                 chip.classList.remove('open');
 
-                // Apply filters
+                // Apply filters (page will reload)
                 applyListFilters();
-
-                // Show toast
-                showFilterResultToast();
             });
 
             dropdown.appendChild(option);
@@ -785,32 +720,16 @@
     }
 
     function calculateDateResultCount(from, to) {
+        // Simplified count based on currently loaded cards
+        // May not reflect server-side filtering accurately after page reload
         const cards = document.querySelectorAll('.card');
         let count = 0;
 
         cards.forEach(card => {
-            let show = true;
-
-            // Apply all other current filters
-            const typeVal = filterType.value;
-            const stateVal = filterState.value;
-            const siteVal = filterSite.value;
-            const searchVal = filterSearch.value.toLowerCase().trim();
-            const archivedVal = filterArchived.value;
-
-            if (typeVal && card.dataset.type !== typeVal) show = false;
-            if (stateVal && card.dataset.state !== stateVal) show = false;
-            if (siteVal && card.dataset.site !== siteVal) show = false;
-            if (searchVal && !(card.dataset.title || '').toLowerCase().includes(searchVal)) show = false;
-            if (!shouldShowCardWithArchivedFilter(archivedVal, card)) show = false;
-
-            // Apply date filtering using helper function
             const cardDate = card.dataset.date;
-            if (!shouldShowCardWithDateFilter(cardDate, from, to)) {
-                show = false;
+            if (shouldShowCardWithDateFilter(cardDate, from, to)) {
+                count++;
             }
-
-            if (show) count++;
         });
 
         return count;
@@ -880,11 +799,10 @@
                     updateDateChipLabel(dateChip, preset);
                 }
 
-                // Close and apply
+                // Close and apply (page will reload)
                 setTimeout(() => {
                     closeBottomSheet();
                     applyListFilters();
-                    showFilterResultToast();
                 }, MOBILE_BOTTOM_SHEET_CLOSE_DELAY);
             });
 
@@ -953,7 +871,7 @@
         // Update done button handler
         bottomSheetDone.onclick = () => {
             closeBottomSheet();
-            showFilterResultToast();
+            // Filters are applied on change, no need to reload here
         };
 
         // Update clear button handler
@@ -982,9 +900,15 @@
             filterSearch.value = searchInput.value;
         }
 
+        let searchTimeout = null;
         searchInput.addEventListener('input', function () {
             filterSearch.value = this.value;
-            applyListFilters();
+            
+            // Debounce search to avoid too many page reloads
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                applyListFilters();
+            }, 500); // Wait 500ms after user stops typing
         });
     }
 
@@ -1006,23 +930,14 @@
     }
 
     // ===== CALCULATE RESULT COUNT =====
+    // This function is kept for showing approximate counts in filter dropdowns
+    // Counts are based on currently loaded cards and may not reflect server-side filtering accurately
     function calculateResultCount(filterName, filterValue) {
         const cards = document.querySelectorAll('.card');
         let count = 0;
 
         cards.forEach(card => {
             let show = true;
-
-            // Apply current filters except the one we're calculating for
-            if (filterName !== 'type' && filterType.value && card.dataset.type !== filterType.value) {
-                show = false;
-            }
-            if (filterName !== 'state' && filterState.value && card.dataset.state !== filterState.value) {
-                show = false;
-            }
-            if (filterName !== 'site' && filterSite.value && card.dataset.site !== filterSite.value) {
-                show = false;
-            }
 
             // Apply the filter we're calculating for
             if (filterName === 'type' && filterValue && card.dataset.type !== filterValue) {
@@ -1035,26 +950,6 @@
                 show = false;
             }
 
-            // Apply search filter (always applied)
-            const searchVal = filterSearch.value.toLowerCase().trim();
-            if (searchVal && !(card.dataset.title || '').toLowerCase().includes(searchVal)) {
-                show = false;
-            }
-
-            // Apply date filters using helper function
-            const dateFromVal = filterDateFrom.value;
-            const dateToVal = filterDateTo.value;
-            const cardDate = card.dataset.date;
-
-            if (!shouldShowCardWithDateFilter(cardDate, dateFromVal, dateToVal)) {
-                show = false;
-            }
-
-            // Archived filter - use helper function
-            if (!shouldShowCardWithArchivedFilter(filterArchived.value, card)) {
-                show = false;
-            }
-
             if (show) count++;
         });
 
@@ -1063,94 +958,62 @@
 
     // ===== APPLY FILTERS =====
     function applyListFilters() {
+        // Build URL with all filter parameters and reload page
+        const url = new URL(window.location.href);
+        
         const typeVal = filterType.value;
         const stateVal = filterState.value;
         const siteVal = filterSite.value;
-        const searchVal = filterSearch.value.toLowerCase().trim();
+        const searchVal = filterSearch.value.trim();
         const dateFromVal = filterDateFrom.value;
         const dateToVal = filterDateTo.value;
         const archivedVal = filterArchived.value;
 
-        const cards = document.querySelectorAll('.card');
-        let visibleCount = 0;
-
-        if (DEBUG_FILTERS) {
-            console.log('Applying filters:', {
-                type: typeVal,
-                state: stateVal,
-                site: siteVal,
-                search: searchVal,
-                dateFrom: dateFromVal,
-                dateTo: dateToVal,
-                archived: archivedVal,
-                totalCards: cards.length
-            });
+        // Set or remove parameters
+        if (typeVal) {
+            url.searchParams.set('type', typeVal);
+        } else {
+            url.searchParams.delete('type');
         }
 
-        cards.forEach(function (card) {
-            let show = true;
-
-            // Type filter
-            if (typeVal && card.dataset.type !== typeVal) {
-                show = false;
-            }
-
-            // State filter
-            if (stateVal && card.dataset.state !== stateVal) {
-                show = false;
-            }
-
-            // Site filter
-            if (siteVal && card.dataset.site !== siteVal) {
-                show = false;
-            }
-
-            // Search filter (title)
-            if (searchVal && !(card.dataset.title || '').toLowerCase().includes(searchVal)) {
-                show = false;
-            }
-
-            // Date filtering using helper function
-            const cardDate = card.dataset.date;
-            if (!shouldShowCardWithDateFilter(cardDate, dateFromVal, dateToVal)) {
-                show = false;
-            }
-
-            // Debug logging (only when DEBUG_DATE_FILTER is enabled)
-            if (DEBUG_DATE_FILTER && (dateFromVal || dateToVal)) {
-                console.log('Date filter check:', {
-                    cardDate: cardDate,
-                    dateFromVal: dateFromVal,
-                    dateToVal: dateToVal,
-                    show: show
-                });
-            }
-
-            // Archived filter - use helper function
-            if (!shouldShowCardWithArchivedFilter(archivedVal, card)) {
-                show = false;
-            }
-
-            // Apply visibility
-            card.style.display = show ? '' : 'none';
-            if (show) visibleCount++;
-        });
-
-        if (DEBUG_FILTERS) {
-            console.log('Filters applied - visible cards:', visibleCount);
+        if (stateVal) {
+            url.searchParams.set('state', stateVal);
+        } else {
+            url.searchParams.delete('state');
         }
 
-        // Update chips display
-        updateChipsDisplay();
+        if (siteVal) {
+            url.searchParams.set('site', siteVal);
+        } else {
+            url.searchParams.delete('site');
+        }
 
-        // Show "no results" message if all cards are hidden
-        updateNoResultsMessage(visibleCount);
+        if (searchVal) {
+            url.searchParams.set('q', searchVal);
+        } else {
+            url.searchParams.delete('q');
+        }
 
-        // Update clear button visibility
-        updateClearButtonVisibility();
+        if (dateFromVal) {
+            url.searchParams.set('date_from', dateFromVal);
+        } else {
+            url.searchParams.delete('date_from');
+        }
 
-        // Update URL
-        updateListUrl();
+        if (dateToVal) {
+            url.searchParams.set('date_to', dateToVal);
+        } else {
+            url.searchParams.delete('date_to');
+        }
+
+        if (archivedVal) {
+            url.searchParams.set('archived', archivedVal);
+        } else {
+            url.searchParams.delete('archived');
+        }
+
+        // Reload page with new filters
+        window.location.href = url.toString();
     }
 
     // ===== UPDATE CLEAR BUTTON VISIBILITY =====
@@ -1267,110 +1130,9 @@
         });
     }
 
-    // ===== UPDATE URL =====
-    function updateListUrl() {
-        const params = new URLSearchParams(window.location.search);
 
-        const typeVal = filterType.value;
-        const stateVal = filterState.value;
-        const siteVal = filterSite.value;
-        const searchVal = filterSearch.value.trim();
-        const dateFromVal = filterDateFrom.value;
-        const dateToVal = filterDateTo.value;
-        const archivedVal = filterArchived.value;
 
-        if (typeVal) {
-            params.set('type', typeVal);
-        } else {
-            params.delete('type');
-        }
 
-        if (stateVal) {
-            params.set('state', stateVal);
-        } else {
-            params.delete('state');
-        }
-
-        if (siteVal) {
-            params.set('site', siteVal);
-        } else {
-            params.delete('site');
-        }
-
-        if (searchVal) {
-            params.set('q', searchVal);
-        } else {
-            params.delete('q');
-        }
-
-        if (dateFromVal) {
-            params.set('date_from', dateFromVal);
-        } else {
-            params.delete('date_from');
-        }
-
-        if (dateToVal) {
-            params.set('date_to', dateToVal);
-        } else {
-            params.delete('date_to');
-        }
-
-        if (archivedVal) {
-            params.set('archived', archivedVal);
-        } else {
-            params.delete('archived');
-        }
-
-        const paramsString = params.toString();
-        const newUrl = paramsString ? window.location.pathname + '?' + paramsString : window.location.pathname;
-        window.history.replaceState({}, '', newUrl);
-    }
-
-    // ===== UPDATE NO RESULTS MESSAGE =====
-    function updateNoResultsMessage(visibleCount) {
-        const cardList = document.querySelector('.card-list');
-        if (!cardList) return;
-
-        // Find or create the filter no-results element
-        let noResultsEl = cardList.querySelector('.sf-no-results-filter');
-
-        if (visibleCount === 0) {
-            if (!noResultsEl) {
-                // Create elements safely without innerHTML
-                noResultsEl = document.createElement('div');
-                noResultsEl.className = 'sf-no-results-filter';
-
-                const iconDiv = document.createElement('div');
-                iconDiv.className = 'sf-no-results-icon';
-                iconDiv.textContent = '🔍';
-
-                const textP = document.createElement('p');
-                textP.className = 'sf-no-results-text';
-                textP.textContent = window.SF_LIST_I18N?.filterNoResults || 'Ei hakutuloksia';
-
-                const hintP = document.createElement('p');
-                hintP.className = 'sf-no-results-hint';
-                hintP.textContent = window.SF_LIST_I18N?.filterNoResultsHint || 'Kokeile muuttaa suodattimia';
-
-                noResultsEl.appendChild(iconDiv);
-                noResultsEl.appendChild(textP);
-                noResultsEl.appendChild(hintP);
-
-                cardList.appendChild(noResultsEl);
-            }
-            noResultsEl.style.display = 'flex';
-        } else {
-            if (noResultsEl) {
-                noResultsEl.style.display = 'none';
-            }
-        }
-
-        // Handle the PHP-rendered no-results box separately
-        const phpNoResultsBox = cardList.querySelector('.no-results-box:not(.sf-no-results-filter)');
-        if (phpNoResultsBox) {
-            phpNoResultsBox.style.display = 'none';
-        }
-    }
 
     // ===== FORM SUBMISSION =====
     if (filtersForm) {
@@ -1384,10 +1146,19 @@
     filterType.addEventListener('change', applyListFilters);
     filterState.addEventListener('change', applyListFilters);
     filterSite.addEventListener('change', applyListFilters);
-    filterSearch.addEventListener('input', applyListFilters);
+    
+    // Debounce search input to avoid too many page reloads
+    let filterSearchTimeout = null;
+    filterSearch.addEventListener('input', function() {
+        clearTimeout(filterSearchTimeout);
+        filterSearchTimeout = setTimeout(() => {
+            applyListFilters();
+        }, 500); // Wait 500ms after user stops typing
+    });
+    
     filterDateFrom.addEventListener('change', applyListFilters);
     filterDateTo.addEventListener('change', applyListFilters);
-    filterArchived.addEventListener('change', applyListFilters);
+    // Note: filterArchived is handled by the toggle buttons above
 
     // ===== CLEAR FILTERS =====
     if (clearBtn) {
@@ -1417,16 +1188,6 @@
     }
 
     // ===== INITIAL LOAD =====
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasFilters = urlParams.get('type') || urlParams.get('state') ||
-        urlParams.get('site') || urlParams.get('q') ||
-        urlParams.get('date_from') || urlParams.get('date_to') ||
-        urlParams.get('archived');
-
-    if (hasFilters) {
-        applyListFilters();
-    } else {
-        // Update chips on initial load
-        updateChipsDisplay();
-    }
+    // Server already handles filtering, just update chip display
+    updateChipsDisplay();
 })();
