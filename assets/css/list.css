@@ -2938,26 +2938,19 @@ jne.
    CHECKBOX POSITIONING PER VIEW
    ========================================================================== */
 
-/* LIST VIEW - Checkbox in card's bottom-right corner */
-.sf-list-container.view-list .card-checkbox {
-    position: absolute ! important;
-    bottom: 12px ! important;
-    right: 12px !important;
-    top: auto !important;
-    left: auto !important;
-    z-index: 10 !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-radius: 8px !important;
-    padding: 4px !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* LIST VIEW - Move checkbox OUT of thumb-wrapper to card level */
+/* LIST VIEW - Checkbox in thumbnail bottom-left corner */
 .sf-list-container.view-list .card-thumb-wrapper .card-checkbox {
     position: absolute !important;
-    bottom: -999px !important;
-    /* Hide from wrapper */
-    visibility: hidden !important;
+    bottom: 8px !important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 25 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 6px !important;
+    padding: 4px !important;
+    visibility: visible !important;
+    display: flex !important;
 }
 
 /* GRID VIEW - Checkbox stays in thumb area, bottom-left (already working) */
@@ -2987,10 +2980,15 @@ jne.
     visibility: visible !important;
 }
 
+/* COMPACT VIEW - Ensure checkbox from wrapper is visible */
 .sf-list-container.view-compact .card-thumb-wrapper .card-checkbox {
     position: static !important;
     visibility: visible !important;
+    display: flex !important;
     bottom: auto !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
 }
 
 /* COMPACT VIEW - Hide thumb wrapper but show checkbox */

@@ -381,7 +381,8 @@
 
     // Close dropdown when clicking outside
     document.addEventListener('click', function (e) {
-        if (!e.target.closest('.sf-chip')) {
+        // Don't close dropdown if clicking inside the chip or its dropdown options
+        if (!e.target.closest('.sf-chip') && !e.target.closest('.sf-chip-dropdown')) {
             document.querySelectorAll('.sf-chip.open').forEach(c => {
                 c.classList.remove('open');
             });
