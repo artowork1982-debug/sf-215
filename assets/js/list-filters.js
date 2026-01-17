@@ -956,7 +956,7 @@
         resetAllBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Nollaa kaikki suodattimet
+            // Reset all filters
             filterType.value = '';
             filterState.value = '';
             filterSite.value = '';
@@ -966,7 +966,7 @@
             filterDateTo.value = '';
             filterArchived.value = '';
             
-            // Nollaa archived-toggle oletukseen (aktiiviset)
+            // Reset archived toggle to default (active)
             toggleBtns.forEach(btn => {
                 btn.classList.remove('active');
                 btn.setAttribute('aria-pressed', 'false');
@@ -976,10 +976,10 @@
                 }
             });
             
-            // Päivitä chip-näkymä
+            // Update chip display
             updateChipsDisplay();
             
-            // Uudelleenohjaa puhtaaseen list-sivuun
+            // Redirect to clean list page
             const url = new URL(window.location.href);
             url.search = '';
             url.searchParams.set('page', 'list');
@@ -1003,7 +1003,7 @@
         }
     }
 
-    // Kutsu päivitysfunktiota
+    // Call update function
     updateResetButtonVisibility();
 
     // ===== CALCULATE RESULT COUNT =====
