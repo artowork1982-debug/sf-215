@@ -411,14 +411,12 @@ svg {
         --sf-spacing-section: 16px;
     }
 }
-
 /* ==========================================================================
    Unified Page Width - All pages same max-width
    ========================================================================== */
 
 /* Desktop - same width for all pages */
 .sf-page-content,
-.sf-list-container,
 .sf-form,
 .sf-settings-container,
 .sf-profile-container {
@@ -427,11 +425,18 @@ svg {
     padding: 24px;
 }
 
+/* List container - full width, no restrictions */
+.sf-list-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 /* Mobile - full width utilization */
 @media (max-width: 768px) {
 
     .sf-page-content,
-    .sf-list-container,
     .sf-form,
     .sf-settings-container,
     .sf-profile-container {
@@ -556,7 +561,7 @@ svg {
 }
 
 /* --- Lisätty: luokkien mappaus ja fallbackit --- */
-/* Näin kaikki variaatiot, esim. log-status-pending-review, saavat perus-pending-tyylin */
+/* Näin kaikki variaatiot, esim.log-status-pending-review, saavat perus-pending-tyylin */
 .log-status-pill[class*="log-status-pending"],
 .log-status-pending-review,
 .log-status-pill.log-status-pending-review {
@@ -919,7 +924,7 @@ body.sf-modal-open {
 
 /* ===== Toast / Ilmoitukset =====
    HUOM: Toastin peruslayout (sijainti, padding, värit, animaatiot) on nav.css:ssä.
-   Tässä pidetään vain yhteiset apu-tyylit (progressbar + yhteensopivuus). */
+   Tässä pidetään vain yhteiset apu-tyylit (progressbar + yhteensopivuus).*/
 
 .sf-toast-content {
     flex: 1;

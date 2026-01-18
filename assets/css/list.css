@@ -903,6 +903,29 @@ form.filters {
     background: #d1d5db;
 }
 
+/* Thumbnail column: fixed width, overflow visible for badge */
+.card-thumb {
+    flex: 0 0 160px;
+    width: 160px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    overflow: visible !important;
+    /* Allow badge to extend outside */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.card-thumb img {
+    width: 100%;
+    height: auto;
+    max-height: 120px;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+}
+
 /* Prevent layout shift for lazy-loaded images */
 .sf-card-image {
     aspect-ratio: 16 / 9;
@@ -2502,94 +2525,27 @@ jne.
 
 /* Thumbnail first (at top) */
 .sf-list-container.view-grid .card-thumb {
-    display: flex !important;
-    /* CHANGED */
-    align-items: center !important;
-    /* NEW: vertical centering */
-    justify-content: center !important;
-    /* NEW: horizontal centering */
+    display: block !important;
     width: 100% !important;
     flex: none !important;
-    height: 200px !important;
-    /* NEW: fixed visual area */
-    min-height: 160px !important;
+    height: 180px !important;
     border-radius: 12px 12px 0 0 !important;
-    overflow: visible !important;
-    /* badges & copy button can overflow */
+    overflow: hidden !important;
+    /* Clip thumbnail content to rounded border */
     order: -1 !important;
     background: #f1f5f9 !important;
     position: relative !important;
-    padding: 10px !important;
+    /* Required for absolute positioned elements like copy button and badges */
 }
 
-/* Centered image */
 .sf-list-container.view-grid .card-thumb img {
-    width: auto !important;
-    /* CHANGED */
-    height: auto !important;
-    max-width: 100% !important;
-    /* NEW */
-    max-height: 100% !important;
-    /* NEW */
+    width: 100% !important;
+    height: 100% !important;
     object-fit: contain !important;
-    border-radius: 12px 12px 0 0 !important;
-    display: block !important;
-}
-/* Comment badge in grid view - INSIDE thumbnail, top-right corner */
-.sf-list-container.view-grid .comment-badge {
-    position: absolute !important;
-    top: 8px !important;
-    right: 8px !important;
-    z-index: 30 !important;
+    /* Show full image without cropping */
+    border-radius: 0 !important;
 }
 
-/* Copy button in grid view - INSIDE thumbnail, bottom-left */
-.sf-list-container.view-grid .card-thumb .sf-copy-btn,
-.sf-list-container.view-grid .card-thumb .sf-copy-btn-compact {
-    position: absolute ! important;
-    bottom: 8px ! important;
-    left: 8px ! important;
-    top: auto !important;
-    right: auto !important;
-    z-index: 25 !important;
-}
-/* Copy button in grid view - INSIDE card-thumb, BOTTOM-RIGHT corner of IMAGE area */
-.sf-list-container.view-grid .card-thumb .sf-copy-btn,
-.sf-list-container.view-grid .card-thumb .sf-copy-btn-compact {
-    position: absolute !important;
-    bottom: 18px !important;
-    right: 8px !important;
-    top: auto ! important;
-    left: auto !important;
-    z-index: 25 ! important;
-}
-/* Checkbox in grid view - move to thumbnail area, bottom-right */
-.sf-list-container.view-grid .card-checkbox {
-    position: absolute !important;
-    bottom: 8px !important;
-    right: 8px !important;
-    top: auto !important;
-    left: auto !important;
-    z-index: 25 !important;
-}
-/* Comment badge in grid view - visible in top-right corner */
-.sf-list-container.view-grid .comment-badge {
-    position: absolute !important;
-    top: 8px !important;
-    right: 8px !important;
-    z-index: 30 !important;
-}
-
-/* Copy button in grid view - inside thumbnail, bottom-left */
-.sf-list-container.view-grid .card-thumb .sf-copy-btn,
-.sf-list-container.view-grid .card-thumb .sf-copy-btn-compact {
-    position: absolute !important;
-    bottom: 8px !important;
-    left: 8px !important;
-    top: auto !important;
-    right: auto !important;
-    z-index: 25 !important;
-}
 /* Type indicator hidden in grid view */
 .sf-list-container.view-grid .type-indicator {
     display: none !important;
@@ -2704,8 +2660,6 @@ jne.
     height: 10px !important;
     border-radius: 50% !important;
     flex-shrink: 0 !important;
-    order: 0 !important;
-    /* After checkbox (order: -1), before content */
 }
 
 .sf-list-container.view-compact .type-indicator.red {
@@ -2728,8 +2682,6 @@ jne.
     flex: 1 !important;
     min-width: 0 !important;
     justify-content: center !important;
-    order: 1 !important;
-    /* After type-indicator (order: 0) */
 }
 
 .sf-list-container.view-compact .card-top {
@@ -2785,8 +2737,6 @@ jne.
     gap: 8px !important;
     min-width: auto !important;
     flex-shrink: 0 !important;
-    order: 2 !important;
-    /* After content (order: 1), on the right */
 }
 
 .sf-list-container.view-compact .open-btn {
@@ -2855,431 +2805,5 @@ jne.
         padding: 0 !important;
         border-top: none !important;
         background: transparent !important;
-    }
-}
-/* ===== CARD THUMB WRAPPER - contains thumbnail, checkbox, badge, copy button ===== */
-.card-thumb-wrapper {
-    position: relative;
-    flex: 0 0 160px;
-    width: 160px;
-}
-
-/* Grid view - wrapper takes full width */
-.sf-list-container.view-grid .card-thumb-wrapper {
-    flex: none ! important;
-    width: 100% !important;
-    order: -1 !important;
-}
-
-/* Grid view - thumbnail inside wrapper */
-.sf-list-container.view-grid .card-thumb-wrapper .card-thumb {
-    display: flex ! important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    height: 200px !important;
-    min-height: 160px !important;
-    border-radius: 12px 12px 0 0 ! important;
-    overflow: hidden !important;
-    background: #f1f5f9 !important;
-    padding: 10px !important;
-}
-
-/* Checkbox in wrapper - bottom-left */
-.sf-list-container.view-grid .card-thumb-wrapper .card-checkbox {
-    position: absolute !important;
-    bottom: 8px !important;
-    left: 8px ! important;
-    top: auto ! important;
-    right: auto ! important;
-    z-index: 25 !important;
-    background: rgba(255, 255, 255, 0.9) !important;
-    border-radius: 6px !important;
-    padding: 4px !important;
-}
-
-/* Comment badge in wrapper - top-right */
-.sf-list-container.view-grid .card-thumb-wrapper .comment-badge {
-    position: absolute !important;
-    top: 8px !important;
-    right: 8px !important;
-    z-index: 30 ! important;
-}
-
-/* Copy button in wrapper - bottom-right (added by JS) */
-.sf-list-container.view-grid .card-thumb-wrapper .sf-copy-btn,
-.sf-list-container.view-grid .card-thumb-wrapper .sf-copy-btn-compact {
-    position: absolute ! important;
-    bottom: 8px !important;
-    right: 8px !important;
-    top: auto !important;
-    left: auto !important;
-    z-index: 25 ! important;
-}
-
-/* List view - wrapper styling */
-.sf-list-container.view-list .card-thumb-wrapper {
-    flex: 0 0 160px ! important;
-    width: 160px !important;
-}
-
-/* Compact view - hide wrapper */
-.sf-list-container.view-compact .card-thumb-wrapper {
-    display: none !important;
-}
-
-/* Mobile - hide wrapper */
-@media (max-width: 720px) {
-    .card-thumb-wrapper {
-        display: none !important;
-    }
-}
-/* ==========================================================================
-   CHECKBOX POSITIONING PER VIEW
-   ========================================================================== */
-
-/* LIST VIEW - Checkbox in thumbnail bottom-left corner */
-.sf-list-container.view-list .card-thumb-wrapper .card-checkbox {
-    position: absolute !important;
-    bottom: 8px !important;
-    left: 8px !important;
-    top: auto !important;
-    right: auto !important;
-    z-index: 25 !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-radius: 6px !important;
-    padding: 4px !important;
-    visibility: visible !important;
-    display: flex !important;
-}
-
-/* GRID VIEW - Checkbox stays in thumb area, bottom-left (already working) */
-.sf-list-container.view-grid .card-thumb-wrapper .card-checkbox {
-    position: absolute !important;
-    bottom: 8px !important;
-    left: 8px !important;
-    top: auto !important;
-    right: auto !important;
-    z-index: 25 !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-radius: 6px !important;
-    padding: 4px !important;
-    visibility: visible !important;
-}
-
-/* COMPACT VIEW - Checkbox at start of row (inline, not absolute) */
-.sf-list-container.view-compact .card-checkbox {
-    position: static !important;
-    display: flex !important;
-    align-items: center !important;
-    order: -2 !important;
-    flex-shrink: 0 !important;
-    background: transparent !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    visibility: visible !important;
-}
-
-/* COMPACT VIEW - Ensure checkbox from wrapper is visible */
-.sf-list-container.view-compact .card-thumb-wrapper .card-checkbox {
-    position: static !important;
-    visibility: visible !important;
-    display: flex !important;
-    bottom: auto !important;
-    background: transparent !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-}
-
-/* COMPACT VIEW - Hide thumb wrapper but show checkbox */
-.sf-list-container.view-compact .card-thumb-wrapper {
-    display: contents !important;
-    /* Allows children to be placed in parent's flow */
-}
-
-.sf-list-container.view-compact .card-thumb-wrapper .card-thumb {
-    display: none !important;
-}
-
-.sf-list-container.view-compact .card-thumb-wrapper .comment-badge {
-    display: none !important;
-}
-
-.sf-list-container.view-compact .card-thumb-wrapper .sf-copy-btn,
-.sf-list-container.view-compact .card-thumb-wrapper .sf-copy-btn-compact {
-    display: none !important;
-}
-
-/* Search button in header */
-.sf-search-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    background: var(--sf-primary, #3b82f6);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    flex-shrink: 0;
-}
-
-.sf-search-btn:hover {
-    background: var(--sf-primary-dark, #2563eb);
-}
-
-/* Reset button */
-.sf-filter-reset-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    background: #6b7280;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.sf-filter-reset-btn:hover {
-    background: #4b5563;
-}
-
-.sf-filter-reset-btn.hidden {
-    display: none;
-}
-
-/* ===== DATE DROPDOWN ===== */
-.sf-chip-dropdown-date {
-    min-width: 280px;
-    padding: 12px;
-}
-
-.sf-date-section {
-    margin-bottom: 16px;
-}
-
-.sf-date-section:last-child {
-    margin-bottom: 0;
-}
-
-.sf-date-section-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-}
-
-/* Presets grid */
-.sf-date-presets {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.sf-date-preset-btn {
-    padding: 6px 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 999px;
-    background: #fff;
-    font-size: 13px;
-    font-weight: 500;
-    color: #374151;
-    cursor: pointer;
-    transition: all 0.15s ease;
-}
-
-.sf-date-preset-btn:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.sf-date-preset-btn.active {
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: #fff;
-}
-
-/* Year navigation */
-.sf-date-year-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 8px;
-}
-
-.sf-date-year-btn {
-    width: 28px;
-    height: 28px;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    background: #fff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #6b7280;
-    transition: all 0.15s ease;
-}
-
-.sf-date-year-btn:hover {
-    background: #f1f5f9;
-    color: #374151;
-}
-
-.sf-date-year-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #111827;
-    min-width: 50px;
-    text-align: center;
-}
-
-/* Month grid */
-.sf-date-month-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 4px;
-}
-
-.sf-date-month-btn {
-    padding: 8px 4px;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    background: #fff;
-    font-size: 12px;
-    font-weight: 500;
-    color: #374151;
-    cursor: pointer;
-    transition: all 0.15s ease;
-}
-
-.sf-date-month-btn:hover:not(.disabled) {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.sf-date-month-btn.active {
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: #fff;
-}
-
-.sf-date-month-btn.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-/* Custom date range */
-.sf-date-custom-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-.sf-date-input {
-    flex: 1;
-    padding: 8px 10px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 13px;
-}
-
-.sf-date-input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-}
-
-.sf-date-separator {
-    color: #9ca3af;
-    font-size: 14px;
-}
-
-.sf-date-custom-btn-row {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.sf-date-apply-btn {
-    padding: 8px 16px;
-    background: #3b82f6;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s ease;
-}
-
-.sf-date-apply-btn:hover {
-    background: #2563eb;
-}
-
-/* ===== RESULTS BAR ===== */
-.sf-results-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    background: #f0f9ff;
-    border: 1px solid #bae6fd;
-    border-radius: 10px;
-    margin-bottom: 16px;
-    font-size: 14px;
-    color: #0369a1;
-}
-
-.sf-results-count {
-    font-weight: 600;
-}
-
-/* ===== FILTER ANIMATIONS ===== */
-.card.sf-filtering-out {
-    opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 0.15s ease, transform 0.15s ease;
-}
-
-.card.sf-filtering-in {
-    animation: sf-card-filter-in 0.25s ease-out;
-}
-
-@keyframes sf-card-filter-in {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Mobile adjustments */
-@media (max-width: 720px) {
-    .sf-chip-dropdown-date {
-        min-width: 260px;
-    }
-    
-    .sf-date-month-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .sf-date-preset-btn {
-        padding: 8px 10px;
-        font-size: 12px;
     }
 }

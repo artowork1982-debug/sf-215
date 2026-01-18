@@ -1,11 +1,49 @@
 // assets/js/list-filters.js
-// Client-side filtering for list page with chip-based UI
+// Client-side filtering for list page with Filter Chips + Bottom Sheet
 
 (function () {
     'use strict';
 
-    // ===== GET FILTER ELEMENTS =====
-    // Hidden form elements (used for storing values)
+    // Constants
+    const MOBILE_BOTTOM_SHEET_CLOSE_DELAY = 300; // ms - delay before closing bottom sheet to show selection
+    const DEBUG_DATE_FILTER = false; // Set to true to enable debug logging
+    const DEBUG_FILTERS = false; // Set to true to enable filter debug logging
+
+    // ===== HELPER FUNCTIONS =====
+
+    /**
+     * Check if a card should be shown based on date filtering
+     * @param {string} cardDate - The card's date in YYYY-MM-DD format (may be empty)
+     * @param {string} dateFromVal - Filter start date in YYYY-MM-DD format (may be empty)
+     * @param {string} dateToVal - Filter end date in YYYY-MM-DD format (may be empty)
+     * @returns {boolean} - True if card should be shown, false if it should be hidden
+     */
+    function shouldShowCardWithDateFilter(cardDate, dateFromVal, dateToVal) {
+        // If no date filter is active, show the card
+        if (!dateFromVal && !dateToVal) {
+            return true;
+        }
+
+        // If date filter is active but card has no date, hide it
+        if (!cardDate) {
+            return false;
+        }
+
+        // Check if card date is before start date
+        if (dateFromVal && cardDate < dateFromVal) {
+            return false;
+        }
+
+        // Check if card date is after end date
+        if (dateToVal && cardDate > dateToVal) {
+            return false;
+        }
+
+        // Card passes all date filters
+        return true;
+    }
+
+    // Get filter elements
     const filterType = document.getElementById('f-type');
     const filterState = document.getElementById('f-state');
     const filterSite = document.getElementById('f-site');
@@ -13,62 +51,87 @@
     const filterDateFrom = document.getElementById('f-from');
     const filterDateTo = document.getElementById('f-to');
     const filterArchived = document.getElementById('f-archived');
+    const filtersForm = document.querySelector('.filters');
+    const submitBtn = document.getElementById('filter-submit-btn');
+    const clearBtn = document.getElementById('filter-clear-btn');
 
-    // New chip-based elements
+    // New elements for the chip-based filtering
     const searchInput = document.getElementById('sf-search-input');
     const clearAllBtn = document.getElementById('sf-clear-all-btn');
-    const resetAllBtn = document.getElementById('sf-reset-all-btn');
-    const searchBtn = document.getElementById('sf-search-btn');
-    const chips = document.querySelectorAll('.sf-chip');
-    const toggleBtns = document.querySelectorAll('.sf-toggle-btn');
 
-    // Check if we're on the list page - need at least one filter element
-    if (!filterType && !filterState && !filterSite && !searchInput) {
+    // Check if we're on the list page
+    if (!filterType || !filterState || !filterSite || !filterSearch || !filterDateFrom || !filterDateTo || !filterArchived) {
         return; // Not on list page, exit
     }
 
-    // Flag to prevent infinite loops during bidirectional search sync
-    let isSyncingSearch = false;
-
-    // ===== SYNC SEARCH INPUTS =====
-    // Bidirectional sync between sf-search-input and f-q
-    if (searchInput && filterSearch) {
-        searchInput.addEventListener('input', function () {
-            if (!isSyncingSearch) {
-                isSyncingSearch = true;
-                filterSearch.value = this.value;
-                applyClientSideFilters();
-                isSyncingSearch = false;
-            }
-        });
-
-        filterSearch.addEventListener('input', function () {
-            if (!isSyncingSearch) {
-                isSyncingSearch = true;
-                searchInput.value = this.value;
-                applyClientSideFilters();
-                isSyncingSearch = false;
-            }
-        });
-
-        // Handle Enter key on search input
-        searchInput.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                applyClientSideFilters();
-            }
-        });
+    // Hide the submit button since filtering is now real-time
+    if (submitBtn) {
+        submitBtn.style.display = 'none';
     }
 
-    // ===== SEARCH BUTTON =====
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            applyClientSideFilters();
-        });
+    // ===== HELPER FUNCTIONS =====
+
+    // Show filter result toast
+    function showFilterResultToast() {
+        const visibleCount = document.querySelectorAll('.card:not([style*="display: none"])').length;
+        const i18n = window.SF_LIST_I18N || {};
+        let message = i18n.filterResultsCount || 'Näytetään {count} tulosta';
+        message = message.replace('{count}', visibleCount).replace('%d', visibleCount);
+
+        if (typeof window.sfToast === 'function') {
+            window.sfToast(message, 'success');
+        }
+    }
+
+    // Check if card should be shown based on archived filter
+    function shouldShowCardWithArchivedFilter(archivedVal, card) {
+        const cardArchived = card.dataset.archived;
+        if (archivedVal === '' && cardArchived === '1') {
+            return false; // Hide archived when showing only active
+        }
+        if (archivedVal === 'only' && cardArchived !== '1') {
+            return false; // Hide active when showing only archived
+        }
+        return true; // Show all when 'all' is selected
+    }
+
+    // Debounced toast notification
+    let toastTimeout = null;
+    function showToastDebounced(message, type = 'info', delay = 500) {
+        if (toastTimeout) {
+            clearTimeout(toastTimeout);
+        }
+        toastTimeout = setTimeout(() => {
+            showToast(message, type);
+        }, delay);
+    }
+
+    // ===== TOAST NOTIFICATIONS =====
+    function showToast(message, type = 'info') {
+        // Check if sfToast exists globally
+        if (typeof window.sfToast === 'function') {
+            window.sfToast(type, message);
+            return;
+        }
+
+        // Fallback: create simple toast
+        let toast = document.querySelector('.sf-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.className = 'sf-toast';
+            document.body.appendChild(toast);
+        }
+
+        toast.textContent = message;
+        toast.className = 'sf-toast show ' + type;
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
     }
 
     // ===== ARCHIVED TOGGLE (SEGMENTED CONTROL) =====
+    const toggleBtns = document.querySelectorAll('.sf-toggle-btn');
     toggleBtns.forEach(btn => {
         btn.addEventListener('click', function () {
             const value = this.dataset.archivedValue;
@@ -78,51 +141,254 @@
                 return;
             }
 
-            // Update UI
-            toggleBtns.forEach(b => {
-                b.classList.remove('active');
-                b.setAttribute('aria-pressed', 'false');
-            });
-            this.classList.add('active');
-            this.setAttribute('aria-pressed', 'true');
+            // Reload page with archived parameter
+            // This is needed because SQL query filters archived items server-side
+            const url = new URL(window.location.href);
 
-            // Update hidden field
-            if (filterArchived) {
-                filterArchived.value = value;
+            // Preserve other filters
+            // No value (empty string) = show active only (default), remove parameter
+            // Value 'only' = show archived only, Value 'all' = show both
+            if (!value) {
+                url.searchParams.delete('archived');
+            } else {
+                url.searchParams.set('archived', value);
             }
 
-            // Apply client-side filter
-            applyClientSideFilters();
-            updateClearButtonVisibility();
+            // Reload page
+            window.location.href = url.toString();
         });
     });
 
-    // ===== CHIP CLICK HANDLERS =====
+    // ===== BOTTOM SHEET =====
+    const bottomSheet = document.getElementById('sfBottomSheet');
+    const bottomSheetBackdrop = document.getElementById('sfBottomSheetBackdrop');
+    const bottomSheetContent = document.getElementById('sfBottomSheetContent');
+    const bottomSheetTitle = document.getElementById('sfBottomSheetTitle');
+    const bottomSheetBody = document.getElementById('sfBottomSheetBody');
+    const bottomSheetDone = document.getElementById('sfBottomSheetDone');
+    const bottomSheetClear = document.getElementById('sfBottomSheetClear');
+
+    let currentFilterType = null;
+    let touchStartY = 0;
+    let touchCurrentY = 0;
+
+    function openBottomSheet(filterName, options) {
+        if (window.innerWidth > 768) return; // Desktop: don't show bottom sheet
+
+        currentFilterType = filterName;
+        bottomSheetTitle.textContent = options.title;
+        bottomSheetBody.textContent = ''; // Clear safely
+
+        // Create options
+        options.items.forEach(item => {
+            const optionEl = document.createElement('div');
+            optionEl.className = 'sf-bottom-sheet-option';
+            if (item.selected) {
+                optionEl.classList.add('selected');
+            }
+
+            // Create elements safely without innerHTML to prevent XSS
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'sf-bottom-sheet-option-label';
+
+            const radioDiv = document.createElement('div');
+            radioDiv.className = 'sf-bottom-sheet-option-radio';
+
+            const labelSpan = document.createElement('span');
+            labelSpan.textContent = item.label; // Safe - uses textContent
+
+            labelDiv.appendChild(radioDiv);
+            labelDiv.appendChild(labelSpan);
+            optionEl.appendChild(labelDiv);
+
+            if (item.count !== undefined) {
+                const countSpan = document.createElement('span');
+                countSpan.className = 'sf-bottom-sheet-option-count';
+                countSpan.textContent = item.count;
+                optionEl.appendChild(countSpan);
+            }
+
+            optionEl.addEventListener('click', () => {
+                // Update selection
+                bottomSheetBody.querySelectorAll('.sf-bottom-sheet-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                optionEl.classList.add('selected');
+
+                // Update filter value
+                if (currentFilterType === 'type') {
+                    filterType.value = item.value;
+                } else if (currentFilterType === 'state') {
+                    filterState.value = item.value;
+                } else if (currentFilterType === 'site') {
+                    filterSite.value = item.value;
+                }
+
+                // Auto-close bottom sheet after selection with delay
+                setTimeout(() => {
+                    closeBottomSheet();
+                    applyListFilters();
+
+                    // Show toast with result count
+                    showFilterResultToast();
+                }, MOBILE_BOTTOM_SHEET_CLOSE_DELAY);
+            });
+
+            bottomSheetBody.appendChild(optionEl);
+        });
+
+        // Show bottom sheet
+        bottomSheet.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeBottomSheet() {
+        bottomSheet.classList.remove('open');
+        document.body.style.overflow = '';
+        currentFilterType = null;
+    }
+
+    // Bottom sheet event listeners
+    if (bottomSheetBackdrop) {
+        bottomSheetBackdrop.addEventListener('click', closeBottomSheet);
+    }
+
+    if (bottomSheetDone) {
+        bottomSheetDone.addEventListener('click', () => {
+            closeBottomSheet();
+            applyListFilters();
+        });
+    }
+
+    if (bottomSheetClear) {
+        bottomSheetClear.addEventListener('click', () => {
+            if (currentFilterType === 'type') {
+                filterType.value = '';
+            } else if (currentFilterType === 'state') {
+                filterState.value = '';
+            } else if (currentFilterType === 'site') {
+                filterSite.value = '';
+            }
+            closeBottomSheet();
+            applyListFilters();
+        });
+    }
+
+    // Touch gestures for bottom sheet
+    if (bottomSheetContent) {
+        bottomSheetContent.addEventListener('touchstart', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                touchStartY = e.touches[0].clientY;
+            }
+        });
+
+        bottomSheetContent.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                touchCurrentY = e.touches[0].clientY;
+                const diff = touchCurrentY - touchStartY;
+
+                if (diff > 0) {
+                    bottomSheetContent.style.transform = `translateY(${diff}px)`;
+                }
+            }
+        });
+
+        bottomSheetContent.addEventListener('touchend', () => {
+            const diff = touchCurrentY - touchStartY;
+
+            if (diff > 100) {
+                closeBottomSheet();
+            }
+
+            bottomSheetContent.style.transform = '';
+            touchStartY = 0;
+            touchCurrentY = 0;
+        });
+    }
+
+    // ===== FILTER CHIPS =====
+    const chips = document.querySelectorAll('.sf-chip');
+
     chips.forEach(chip => {
-        chip.addEventListener('click', function (e) {
+        chip.addEventListener('click', function () {
             const filterName = this.dataset.filter;
 
-            // Toggle dropdown
-            const wasOpen = this.classList.contains('open');
+            if (window.innerWidth <= 768) {
+                // Mobile: open bottom sheet
+                let options = { title: '', items: [] };
+                const i18n = window.SF_LIST_I18N || {};
 
-            // Close all dropdowns first
-            chips.forEach(c => c.classList.remove('open'));
+                if (filterName === 'type') {
+                    options.title = filterType.previousElementSibling?.textContent || i18n.filterType || 'Type';
+                    const allTypesOption = filterType.querySelector('option[value=""]');
+                    options.items = [
+                        { value: '', label: allTypesOption?.textContent || 'All types', selected: filterType.value === '' },
+                        { value: 'red', label: document.querySelector('#f-type option[value="red"]')?.textContent || i18n.typeRed || 'Red', selected: filterType.value === 'red' },
+                        { value: 'yellow', label: document.querySelector('#f-type option[value="yellow"]')?.textContent || i18n.typeYellow || 'Yellow', selected: filterType.value === 'yellow' },
+                        { value: 'green', label: document.querySelector('#f-type option[value="green"]')?.textContent || i18n.typeGreen || 'Green', selected: filterType.value === 'green' }
+                    ];
+                } else if (filterName === 'state') {
+                    options.title = filterState.previousElementSibling?.textContent || i18n.filterState || 'State';
+                    const stateOptions = Array.from(filterState.options);
+                    options.items = stateOptions.map(opt => ({
+                        value: opt.value,
+                        label: opt.textContent,
+                        selected: filterState.value === opt.value
+                    }));
+                } else if (filterName === 'site') {
+                    options.title = filterSite.previousElementSibling?.textContent || i18n.filterSite || 'Site';
+                    const siteOptions = Array.from(filterSite.options);
+                    options.items = siteOptions.map(opt => ({
+                        value: opt.value,
+                        label: opt.textContent,
+                        selected: filterSite.value === opt.value
+                    }));
+                } else if (filterName === 'date') {
+                    options.title = i18n.filterDate || 'Date Range';
+                    options.isDatePicker = true;
+                    openDateBottomSheet(options);
+                    return;
+                }
 
-            if (!wasOpen) {
-                this.classList.add('open');
-                renderDropdown(this, filterName);
+                // Calculate counts for each option
+                options.items.forEach(item => {
+                    item.count = calculateResultCount(filterName, item.value);
+                });
+
+                openBottomSheet(filterName, options);
+            } else {
+                // Desktop: Toggle dropdown
+                if (filterName === 'date') {
+                    // Date filter: open dropdown with date inputs
+                    openDateDropdown(this);
+                } else {
+                    // Other filters: open dropdown
+                    const wasOpen = this.classList.contains('open');
+
+                    // Close all dropdowns
+                    document.querySelectorAll('.sf-chip.open').forEach(c => {
+                        c.classList.remove('open');
+                    });
+
+                    if (!wasOpen) {
+                        this.classList.add('open');
+                        renderDropdown(this, filterName);
+                    }
+                }
             }
         });
     });
 
     // Close dropdown when clicking outside
     document.addEventListener('click', function (e) {
-        if (!e.target.closest('.sf-chip') && !e.target.closest('.sf-chip-dropdown')) {
-            chips.forEach(c => c.classList.remove('open'));
+        if (!e.target.closest('.sf-chip')) {
+            document.querySelectorAll('.sf-chip.open').forEach(c => {
+                c.classList.remove('open');
+            });
         }
     });
 
-    // ===== RENDER DROPDOWN =====
+    // ===== DESKTOP DROPDOWN RENDERING =====
     function renderDropdown(chip, filterName) {
         // Remove old dropdown
         const oldDropdown = chip.querySelector('.sf-chip-dropdown');
@@ -131,32 +397,32 @@
         const dropdown = document.createElement('div');
         dropdown.className = 'sf-chip-dropdown';
 
-        // ===== DATE FILTER - Special handling =====
-        if (filterName === 'date') {
-            renderDateDropdown(chip, dropdown);
-            chip.appendChild(dropdown);
-            return;
-        }
-
         let options = [];
         let currentValue = '';
-        let sourceElement = null;
 
-        if (filterName === 'type' && filterType) {
-            sourceElement = filterType;
+        if (filterName === 'type') {
             currentValue = filterType.value;
-        } else if (filterName === 'state' && filterState) {
-            sourceElement = filterState;
-            currentValue = filterState.value;
-        } else if (filterName === 'site' && filterSite) {
-            sourceElement = filterSite;
-            currentValue = filterSite.value;
-        }
-
-        if (sourceElement) {
-            options = Array.from(sourceElement.options).map(opt => ({
+            const typeOptions = Array.from(filterType.options);
+            options = typeOptions.map(opt => ({
                 value: opt.value,
-                label: opt.textContent
+                label: opt.textContent,
+                count: calculateResultCount(filterName, opt.value)
+            }));
+        } else if (filterName === 'state') {
+            currentValue = filterState.value;
+            const stateOptions = Array.from(filterState.options);
+            options = stateOptions.map(opt => ({
+                value: opt.value,
+                label: opt.textContent,
+                count: calculateResultCount(filterName, opt.value)
+            }));
+        } else if (filterName === 'site') {
+            currentValue = filterSite.value;
+            const siteOptions = Array.from(filterSite.options);
+            options = siteOptions.map(opt => ({
+                value: opt.value,
+                label: opt.textContent,
+                count: calculateResultCount(filterName, opt.value)
             }));
         }
 
@@ -171,36 +437,37 @@
             label.className = 'sf-chip-dropdown-label';
             label.textContent = opt.label;
 
+            const count = document.createElement('span');
+            count.className = 'sf-chip-dropdown-count';
+            count.textContent = opt.count;
+
             optEl.appendChild(radio);
             optEl.appendChild(label);
+            optEl.appendChild(count);
 
-            optEl.addEventListener('click', function (e) {
+            optEl.addEventListener('click', (e) => {
                 e.stopPropagation();
 
-                // Update hidden field
-                if (sourceElement) {
-                    sourceElement.value = opt.value;
-                }
-
-                // Update chip display
-                const chipLabel = chip.querySelector('.chip-label');
-                if (chipLabel) {
-                    chipLabel.textContent = opt.label;
-                }
-
-                // Update chip active state
-                if (opt.value) {
-                    chip.classList.add('active');
-                } else {
-                    chip.classList.remove('active');
+                // Set value - EMPTY when "All"
+                if (filterName === 'type') {
+                    filterType.value = opt.value; // '' when All
+                } else if (filterName === 'state') {
+                    filterState.value = opt.value;
+                } else if (filterName === 'site') {
+                    filterSite.value = opt.value;
                 }
 
                 // Close dropdown
                 chip.classList.remove('open');
 
-                // Apply filter
-                applyClientSideFilters();
-                updateClearButtonVisibility();
+                // Update chip display BEFORE filtering
+                updateChipsDisplay();
+
+                // Apply filters
+                applyListFilters();
+
+                // Show toast with result count
+                showFilterResultToast();
             });
 
             dropdown.appendChild(optEl);
@@ -209,18 +476,615 @@
         chip.appendChild(dropdown);
     }
 
-    // ===== CLIENT-SIDE FILTERING =====
-    function applyClientSideFilters() {
-        const typeVal = filterType ? filterType.value : '';
-        const stateVal = filterState ? filterState.value : '';
-        const siteVal = filterSite ? filterSite.value : '';
-        const searchVal = (searchInput ? searchInput.value : (filterSearch ? filterSearch.value : '')).toLowerCase().trim();
-        const dateFromVal = filterDateFrom ? filterDateFrom.value : '';
-        const dateToVal = filterDateTo ? filterDateTo.value : '';
-        const archivedVal = filterArchived ? filterArchived.value : '';
+    // ===== DATE PRESETS CONFIGURATION =====
+    function getDatePresets() {
+        const i18n = window.SF_LIST_I18N || {};
+
+        return [
+            {
+                value: 'all',
+                label: i18n.datePresetAll || 'Kaikki ajat',
+                labelShort: i18n.filterDate || 'Päivämäärä',
+                getRange: () => ({ from: '', to: '' })
+            },
+            {
+                value: '7days',
+                label: i18n.datePreset7days || 'Viimeiset 7 päivää',
+                labelShort: i18n.datePreset7daysShort || 'Viim. 7 pv',
+                getRange: () => {
+                    const to = new Date();
+                    const from = new Date();
+                    from.setDate(from.getDate() - 6); // Today + 6 days ago = 7 days total
+                    return {
+                        from: formatDateForInput(from),
+                        to: formatDateForInput(to)
+                    };
+                }
+            },
+            {
+                value: '30days',
+                label: i18n.datePreset30days || 'Viimeiset 30 päivää',
+                labelShort: i18n.datePreset30daysShort || 'Viim. 30 pv',
+                getRange: () => {
+                    const to = new Date();
+                    const from = new Date();
+                    from.setDate(from.getDate() - 29); // Today + 29 days ago = 30 days total
+                    return {
+                        from: formatDateForInput(from),
+                        to: formatDateForInput(to)
+                    };
+                }
+            },
+            {
+                value: 'month',
+                label: i18n.datePresetMonth || 'Tämä kuukausi',
+                labelShort: i18n.datePresetMonthShort || 'Tämä kk',
+                getRange: () => {
+                    const now = new Date();
+                    const from = new Date(now.getFullYear(), now.getMonth(), 1);
+                    const to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                    return {
+                        from: formatDateForInput(from),
+                        to: formatDateForInput(to)
+                    };
+                }
+            },
+            {
+                value: 'custom',
+                label: i18n.datePresetCustom || 'Mukautettu aikaväli...',
+                labelShort: null,
+                getRange: () => null
+            }
+        ];
+    }
+
+    function formatDateForInput(date) {
+        return date.toISOString().split('T')[0]; // YYYY-MM-DD
+    }
+
+    function formatDateDisplay(dateStr) {
+        if (!dateStr) return '';
+        const [y, m, d] = dateStr.split('-');
+        return `${d}.${m}`; // DD.MM
+    }
+
+    function getCurrentDatePreset() {
+        const from = filterDateFrom.value;
+        const to = filterDateTo.value;
+
+        if (!from && !to) return 'all';
+
+        const presets = getDatePresets();
+        for (const preset of presets) {
+            if (preset.value === 'all' || preset.value === 'custom') continue;
+            const range = preset.getRange();
+            if (range && range.from === from && range.to === to) {
+                return preset.value;
+            }
+        }
+
+        return 'custom';
+    }
+
+    // ===== DATE DROPDOWN (DESKTOP) =====
+    function openDateDropdown(chip) {
+        const i18n = window.SF_LIST_I18N || {};
+
+        // Remove old dropdown
+        const oldDropdown = chip.querySelector('.sf-chip-dropdown');
+        if (oldDropdown) oldDropdown.remove();
+
+        const dropdown = document.createElement('div');
+        dropdown.className = 'sf-chip-dropdown sf-date-dropdown';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'sf-dropdown-header';
+        header.textContent = i18n.dateTimespanHeader || '📅 Aikaväli';
+        dropdown.appendChild(header);
+
+        // Date presets
+        const presets = getDatePresets();
+        const currentPreset = getCurrentDatePreset();
+
+        presets.forEach(preset => {
+            const option = document.createElement('div');
+            option.className = 'sf-chip-dropdown-option';
+
+            if (preset.value === currentPreset) {
+                option.classList.add('selected');
+            }
+
+            const radio = document.createElement('span');
+            radio.className = 'sf-chip-dropdown-radio';
+
+            const label = document.createElement('span');
+            label.className = 'sf-chip-dropdown-label';
+            label.textContent = preset.label;
+
+            option.appendChild(radio);
+            option.appendChild(label);
+
+            // Calculate and show count
+            if (preset.value !== 'custom') {
+                const range = preset.getRange ? preset.getRange() : null;
+                if (range) {
+                    const count = calculateDateResultCount(range.from, range.to);
+                    const countSpan = document.createElement('span');
+                    countSpan.className = 'sf-chip-dropdown-count';
+                    countSpan.textContent = count;
+                    option.appendChild(countSpan);
+                }
+            }
+
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                if (preset.value === 'custom') {
+                    // Show custom date fields
+                    showCustomDateFields(dropdown, chip);
+                    return;
+                }
+
+                // Set date range
+                const range = preset.getRange();
+                filterDateFrom.value = range.from;
+                filterDateTo.value = range.to;
+
+                // Update chip label
+                updateDateChipLabel(chip, preset);
+
+                // Close dropdown
+                chip.classList.remove('open');
+
+                // Apply filters
+                applyListFilters();
+
+                // Show toast
+                showFilterResultToast();
+            });
+
+            dropdown.appendChild(option);
+        });
+
+        // Custom date fields container (hidden initially)
+        const customFields = document.createElement('div');
+        customFields.className = 'sf-date-custom-fields';
+        customFields.style.display = 'none';
+
+        const customRow = document.createElement('div');
+        customRow.className = 'sf-date-custom-row';
+
+        // From field
+        const fromField = document.createElement('div');
+        fromField.className = 'sf-date-field';
+        const fromLabel = document.createElement('label');
+        fromLabel.textContent = i18n.filterDateFrom || 'Alkaen';
+        const fromInput = document.createElement('input');
+        fromInput.type = 'date';
+        fromInput.id = 'sfDateFromDesktop';
+        fromInput.value = filterDateFrom.value;
+        fromInput.addEventListener('change', () => {
+            filterDateFrom.value = fromInput.value;
+            updateCustomDateChipLabel(chip);
+            applyListFilters();
+        });
+        fromField.appendChild(fromLabel);
+        fromField.appendChild(fromInput);
+
+        // Arrow
+        const arrow = document.createElement('span');
+        arrow.className = 'sf-date-arrow';
+        arrow.textContent = '→';
+
+        // To field
+        const toField = document.createElement('div');
+        toField.className = 'sf-date-field';
+        const toLabel = document.createElement('label');
+        toLabel.textContent = i18n.filterDateTo || 'Päättyen';
+        const toInput = document.createElement('input');
+        toInput.type = 'date';
+        toInput.id = 'sfDateToDesktop';
+        toInput.value = filterDateTo.value;
+        toInput.addEventListener('change', () => {
+            filterDateTo.value = toInput.value;
+            updateCustomDateChipLabel(chip);
+            applyListFilters();
+        });
+        toField.appendChild(toLabel);
+        toField.appendChild(toInput);
+
+        customRow.appendChild(fromField);
+        customRow.appendChild(arrow);
+        customRow.appendChild(toField);
+        customFields.appendChild(customRow);
+
+        // Prevent dropdown close when clicking in custom fields
+        customFields.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        dropdown.appendChild(customFields);
+
+        // Clear button
+        const footer = document.createElement('div');
+        footer.className = 'sf-dropdown-footer';
+        const clearLink = document.createElement('a');
+        clearLink.href = '#';
+        clearLink.className = 'sf-date-clear';
+        clearLink.textContent = i18n.dateClear || 'Tyhjennä';
+        clearLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            filterDateFrom.value = '';
+            filterDateTo.value = '';
+
+            const allPreset = getDatePresets()[0];
+            updateDateChipLabel(chip, allPreset);
+            chip.classList.remove('open');
+            applyListFilters();
+        });
+        footer.appendChild(clearLink);
+        dropdown.appendChild(footer);
+
+        chip.appendChild(dropdown);
+        chip.classList.add('open');
+    }
+
+    function showCustomDateFields(dropdown, chip) {
+        const customFields = dropdown.querySelector('.sf-date-custom-fields');
+        if (customFields) {
+            customFields.style.display = 'block';
+
+            // Focus first input
+            const firstInput = customFields.querySelector('input');
+            if (firstInput) {
+                setTimeout(() => firstInput.focus(), 100);
+            }
+        }
+
+        // Mark "Custom" as selected
+        dropdown.querySelectorAll('.sf-chip-dropdown-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        const options = dropdown.querySelectorAll('.sf-chip-dropdown-option');
+        const customOption = options[options.length - 1]; // Last option is custom
+        if (customOption) {
+            customOption.classList.add('selected');
+        }
+    }
+
+    function updateDateChipLabel(chip, preset) {
+        const chipLabel = chip.querySelector('.chip-label');
+
+        if (preset.value === 'all' || !preset.labelShort) {
+            chip.classList.remove('active');
+            chipLabel.textContent = preset.labelShort || (window.SF_LIST_I18N?.filterDate || 'Päivämäärä');
+        } else {
+            chip.classList.add('active');
+            chipLabel.textContent = preset.labelShort;
+        }
+    }
+
+    function updateCustomDateChipLabel(chip) {
+        const chipLabel = chip.querySelector('.chip-label');
+        const from = filterDateFrom.value;
+        const to = filterDateTo.value;
+
+        if (from || to) {
+            chip.classList.add('active');
+            const fromDisplay = formatDateDisplay(from) || '...';
+            const toDisplay = formatDateDisplay(to) || '...';
+            chipLabel.textContent = `${fromDisplay} - ${toDisplay}`;
+        } else {
+            chip.classList.remove('active');
+            chipLabel.textContent = window.SF_LIST_I18N?.filterDate || 'Päivämäärä';
+        }
+    }
+
+    function calculateDateResultCount(from, to) {
+        const cards = document.querySelectorAll('.card');
+        let count = 0;
+
+        cards.forEach(card => {
+            let show = true;
+
+            // Apply all other current filters
+            const typeVal = filterType.value;
+            const stateVal = filterState.value;
+            const siteVal = filterSite.value;
+            const searchVal = filterSearch.value.toLowerCase().trim();
+            const archivedVal = filterArchived.value;
+
+            if (typeVal && card.dataset.type !== typeVal) show = false;
+            if (stateVal && card.dataset.state !== stateVal) show = false;
+            if (siteVal && card.dataset.site !== siteVal) show = false;
+            if (searchVal && !(card.dataset.title || '').toLowerCase().includes(searchVal)) show = false;
+            if (!shouldShowCardWithArchivedFilter(archivedVal, card)) show = false;
+
+            // Apply date filtering using helper function
+            const cardDate = card.dataset.date;
+            if (!shouldShowCardWithDateFilter(cardDate, from, to)) {
+                show = false;
+            }
+
+            if (show) count++;
+        });
+
+        return count;
+    }
+
+    // ===== DATE BOTTOM SHEET (MOBILE) =====
+    function openDateBottomSheet(options) {
+        const i18n = window.SF_LIST_I18N || {};
+        currentFilterType = 'date';
+        bottomSheetTitle.textContent = i18n.dateTimespanHeader || '📅 Aikaväli';
+        bottomSheetBody.textContent = '';
+
+        // Get date chip for updating label
+        const dateChip = document.querySelector('.sf-chip[data-filter="date"]');
+
+        // Date presets
+        const presets = getDatePresets();
+        const currentPreset = getCurrentDatePreset();
+
+        presets.forEach(preset => {
+            if (preset.value === 'custom') return; // Skip custom in mobile, will show inputs below
+
+            const option = document.createElement('div');
+            option.className = 'sf-bottom-sheet-option';
+
+            if (preset.value === currentPreset) {
+                option.classList.add('selected');
+            }
+
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'sf-bottom-sheet-option-label';
+
+            const radioDiv = document.createElement('div');
+            radioDiv.className = 'sf-bottom-sheet-option-radio';
+
+            const labelSpan = document.createElement('span');
+            labelSpan.textContent = preset.label;
+
+            labelDiv.appendChild(radioDiv);
+            labelDiv.appendChild(labelSpan);
+            option.appendChild(labelDiv);
+
+            // Calculate and show count
+            const range = preset.getRange ? preset.getRange() : null;
+            if (range) {
+                const count = calculateDateResultCount(range.from, range.to);
+                const countSpan = document.createElement('span');
+                countSpan.className = 'sf-bottom-sheet-option-count';
+                countSpan.textContent = count;
+                option.appendChild(countSpan);
+            }
+
+            option.addEventListener('click', () => {
+                // Update selection
+                bottomSheetBody.querySelectorAll('.sf-bottom-sheet-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+
+                // Set date range
+                const range = preset.getRange();
+                filterDateFrom.value = range.from;
+                filterDateTo.value = range.to;
+
+                // Update chip label
+                if (dateChip) {
+                    updateDateChipLabel(dateChip, preset);
+                }
+
+                // Close and apply
+                setTimeout(() => {
+                    closeBottomSheet();
+                    applyListFilters();
+                    showFilterResultToast();
+                }, MOBILE_BOTTOM_SHEET_CLOSE_DELAY);
+            });
+
+            bottomSheetBody.appendChild(option);
+        });
+
+        // Custom date range section
+        const customSection = document.createElement('div');
+        customSection.className = 'sf-date-custom-section';
+
+        const customHeader = document.createElement('div');
+        customHeader.className = 'sf-date-custom-header';
+        customHeader.textContent = i18n.datePresetCustom || 'Mukautettu aikaväli...';
+        customSection.appendChild(customHeader);
+
+        const dateInputs = document.createElement('div');
+        dateInputs.className = 'sf-date-inputs';
+
+        // From date
+        const fromGroup = document.createElement('div');
+        fromGroup.className = 'sf-date-input-group';
+        const fromLabel = document.createElement('label');
+        fromLabel.textContent = i18n.filterDateFrom || 'Alkaen';
+        const fromInput = document.createElement('input');
+        fromInput.type = 'date';
+        fromInput.value = filterDateFrom.value;
+        fromInput.id = 'sf-date-from-mobile';
+        fromInput.addEventListener('change', () => {
+            filterDateFrom.value = fromInput.value;
+            if (dateChip) {
+                updateCustomDateChipLabel(dateChip);
+            }
+            applyListFilters();
+        });
+        fromGroup.appendChild(fromLabel);
+        fromGroup.appendChild(fromInput);
+
+        // To date
+        const toGroup = document.createElement('div');
+        toGroup.className = 'sf-date-input-group';
+        const toLabel = document.createElement('label');
+        toLabel.textContent = i18n.filterDateTo || 'Päättyen';
+        const toInput = document.createElement('input');
+        toInput.type = 'date';
+        toInput.value = filterDateTo.value;
+        toInput.id = 'sf-date-to-mobile';
+        toInput.addEventListener('change', () => {
+            filterDateTo.value = toInput.value;
+            if (dateChip) {
+                updateCustomDateChipLabel(dateChip);
+            }
+            applyListFilters();
+        });
+        toGroup.appendChild(toLabel);
+        toGroup.appendChild(toInput);
+
+        dateInputs.appendChild(fromGroup);
+        dateInputs.appendChild(toGroup);
+        customSection.appendChild(dateInputs);
+        bottomSheetBody.appendChild(customSection);
+
+        // Show bottom sheet
+        bottomSheet.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // Update done button handler
+        bottomSheetDone.onclick = () => {
+            closeBottomSheet();
+            showFilterResultToast();
+        };
+
+        // Update clear button handler
+        bottomSheetClear.onclick = () => {
+            filterDateFrom.value = '';
+            filterDateTo.value = '';
+            fromInput.value = '';
+            toInput.value = '';
+
+            if (dateChip) {
+                const allPreset = getDatePresets()[0];
+                updateDateChipLabel(dateChip, allPreset);
+            }
+
+            closeBottomSheet();
+            applyListFilters();
+        };
+    }
+
+    // ===== SEARCH INPUT (HEADER) =====
+    if (searchInput) {
+        // Sync initial values
+        if (filterSearch.value && !searchInput.value) {
+            searchInput.value = filterSearch.value;
+        } else if (searchInput.value && !filterSearch.value) {
+            filterSearch.value = searchInput.value;
+        }
+
+        searchInput.addEventListener('input', function () {
+            filterSearch.value = this.value;
+            applyListFilters();
+        });
+    }
+
+    // ===== CLEAR ALL FILTERS BUTTON =====
+    if (clearAllBtn) {
+        clearAllBtn.addEventListener('click', function () {
+            filterType.value = '';
+            filterState.value = '';
+            filterSite.value = '';
+            filterSearch.value = '';
+            if (searchInput) searchInput.value = '';
+            filterDateFrom.value = '';
+            filterDateTo.value = '';
+
+            // Don't reset archived toggle - keep current selection
+
+            applyListFilters();
+        });
+    }
+
+    // ===== CALCULATE RESULT COUNT =====
+    function calculateResultCount(filterName, filterValue) {
+        const cards = document.querySelectorAll('.card');
+        let count = 0;
+
+        cards.forEach(card => {
+            let show = true;
+
+            // Apply current filters except the one we're calculating for
+            if (filterName !== 'type' && filterType.value && card.dataset.type !== filterType.value) {
+                show = false;
+            }
+            if (filterName !== 'state' && filterState.value && card.dataset.state !== filterState.value) {
+                show = false;
+            }
+            if (filterName !== 'site' && filterSite.value && card.dataset.site !== filterSite.value) {
+                show = false;
+            }
+
+            // Apply the filter we're calculating for
+            if (filterName === 'type' && filterValue && card.dataset.type !== filterValue) {
+                show = false;
+            }
+            if (filterName === 'state' && filterValue && card.dataset.state !== filterValue) {
+                show = false;
+            }
+            if (filterName === 'site' && filterValue && card.dataset.site !== filterValue) {
+                show = false;
+            }
+
+            // Apply search filter (always applied)
+            const searchVal = filterSearch.value.toLowerCase().trim();
+            if (searchVal && !(card.dataset.title || '').toLowerCase().includes(searchVal)) {
+                show = false;
+            }
+
+            // Apply date filters using helper function
+            const dateFromVal = filterDateFrom.value;
+            const dateToVal = filterDateTo.value;
+            const cardDate = card.dataset.date;
+
+            if (!shouldShowCardWithDateFilter(cardDate, dateFromVal, dateToVal)) {
+                show = false;
+            }
+
+            // Archived filter - use helper function
+            if (!shouldShowCardWithArchivedFilter(filterArchived.value, card)) {
+                show = false;
+            }
+
+            if (show) count++;
+        });
+
+        return count;
+    }
+
+    // ===== APPLY FILTERS =====
+    function applyListFilters() {
+        const typeVal = filterType.value;
+        const stateVal = filterState.value;
+        const siteVal = filterSite.value;
+        const searchVal = filterSearch.value.toLowerCase().trim();
+        const dateFromVal = filterDateFrom.value;
+        const dateToVal = filterDateTo.value;
+        const archivedVal = filterArchived.value;
 
         const cards = document.querySelectorAll('.card');
         let visibleCount = 0;
+
+        if (DEBUG_FILTERS) {
+            console.log('Applying filters:', {
+                type: typeVal,
+                state: stateVal,
+                site: siteVal,
+                search: searchVal,
+                dateFrom: dateFromVal,
+                dateTo: dateToVal,
+                archived: archivedVal,
+                totalCards: cards.length
+            });
+        }
 
         cards.forEach(function (card) {
             let show = true;
@@ -245,577 +1109,323 @@
                 show = false;
             }
 
-            // Date from filter - only apply if card has a date
-            if (dateFromVal && card.dataset.date) {
-                if (card.dataset.date < dateFromVal) {
-                    show = false;
-                }
-            }
-
-            // Date to filter - only apply if card has a date
-            if (dateToVal && card.dataset.date) {
-                if (card.dataset.date > dateToVal) {
-                    show = false;
-                }
-            }
-
-            // Archived filter
-            const cardArchivedValue = card.dataset.archived || '0';
-            if (archivedVal === '' && cardArchivedValue === '1') {
+            // Date filtering using helper function
+            const cardDate = card.dataset.date;
+            if (!shouldShowCardWithDateFilter(cardDate, dateFromVal, dateToVal)) {
                 show = false;
-            } else if (archivedVal === 'only' && cardArchivedValue !== '1') {
+            }
+
+            // Debug logging (only when DEBUG_DATE_FILTER is enabled)
+            if (DEBUG_DATE_FILTER && (dateFromVal || dateToVal)) {
+                console.log('Date filter check:', {
+                    cardDate: cardDate,
+                    dateFromVal: dateFromVal,
+                    dateToVal: dateToVal,
+                    show: show
+                });
+            }
+
+            // Archived filter - use helper function
+            if (!shouldShowCardWithArchivedFilter(archivedVal, card)) {
                 show = false;
             }
 
             // Apply visibility
-            if (show) {
-                card.style.removeProperty('display');
-                visibleCount++;
-            } else {
-                card.style.setProperty('display', 'none', 'important');
-            }
+            card.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
         });
 
-        // Update "no results" message
+        if (DEBUG_FILTERS) {
+            console.log('Filters applied - visible cards:', visibleCount);
+        }
+
+        // Update chips display
+        updateChipsDisplay();
+
+        // Show "no results" message if all cards are hidden
         updateNoResultsMessage(visibleCount);
 
-        // Update URL without reloading
+        // Update clear button visibility
+        updateClearButtonVisibility();
+
+        // Update URL
         updateListUrl();
+    }
+
+    // ===== UPDATE CLEAR BUTTON VISIBILITY =====
+    function updateClearButtonVisibility() {
+        if (!clearAllBtn) return;
+
+        const hasFilters = filterType.value !== '' || filterState.value !== '' ||
+            filterSite.value !== '' || filterSearch.value !== '' ||
+            filterDateFrom.value !== '' || filterDateTo.value !== '';
+
+        if (hasFilters) {
+            clearAllBtn.classList.remove('hidden');
+        } else {
+            clearAllBtn.classList.add('hidden');
+        }
+    }
+
+    // ===== UPDATE CHIPS DISPLAY =====
+    function updateChipsDisplay() {
+        // Get locale mapping
+        const localeMap = {
+            'fi': 'fi-FI',
+            'sv': 'sv-SE',
+            'en': 'en-GB',
+            'it': 'it-IT',
+            'el': 'el-GR'
+        };
+        const i18n = window.SF_LIST_I18N || {};
+        const currentLang = i18n.currentLang || 'fi';
+        const locale = localeMap[currentLang] || 'fi-FI';
+
+        chips.forEach(chip => {
+            const filterName = chip.dataset.filter;
+            const chipLabel = chip.querySelector('.chip-label');
+
+            if (filterName === 'type') {
+                const currentValue = filterType.value;
+
+                // Check for empty value
+                if (!currentValue) {
+                    chip.classList.remove('active');
+                    // Use the default label from HTML or i18n
+                    const defaultLabel = i18n.filterChipTypeAll || 'Kaikki tyypit';
+                    chipLabel.textContent = defaultLabel;
+                } else {
+                    chip.classList.add('active');
+                    const selectedOption = filterType.querySelector(`option[value="${currentValue}"]`);
+                    chipLabel.textContent = selectedOption?.textContent || currentValue;
+                }
+            } else if (filterName === 'state') {
+                const currentValue = filterState.value;
+
+                if (!currentValue) {
+                    chip.classList.remove('active');
+                    const defaultLabel = i18n.filterChipStateAll || 'Kaikki tilat';
+                    chipLabel.textContent = defaultLabel;
+                } else {
+                    chip.classList.add('active');
+                    const selectedOption = filterState.querySelector(`option[value="${currentValue}"]`);
+                    chipLabel.textContent = selectedOption?.textContent || currentValue;
+                }
+            } else if (filterName === 'site') {
+                const currentValue = filterSite.value;
+
+                // Important: Check empty value to show "All sites" label
+                if (!currentValue) {
+                    chip.classList.remove('active');
+                    const defaultLabel = i18n.filterChipSiteAll || 'Kaikki työmaat';
+                    chipLabel.textContent = defaultLabel;
+                } else {
+                    chip.classList.add('active');
+                    chipLabel.textContent = currentValue;
+                }
+            } else if (filterName === 'date') {
+                const from = filterDateFrom.value;
+                const to = filterDateTo.value;
+
+                if (from || to) {
+                    chip.classList.add('active');
+                    chip.dataset.from = from;
+                    chip.dataset.to = to;
+
+                    // Check if this matches a preset
+                    const currentPreset = getCurrentDatePreset();
+                    const presets = getDatePresets();
+                    const matchedPreset = presets.find(p => p.value === currentPreset);
+
+                    if (matchedPreset && matchedPreset.labelShort && currentPreset !== 'custom') {
+                        // Display preset short label
+                        chipLabel.textContent = matchedPreset.labelShort;
+                    } else {
+                        // Display custom date range
+                        if (from && to) {
+                            const fromDate = new Date(from);
+                            const toDate = new Date(to);
+                            const fromFormatted = fromDate.toLocaleDateString(locale, { day: 'numeric', month: 'numeric' });
+                            const toFormatted = toDate.toLocaleDateString(locale, { day: 'numeric', month: 'numeric', year: 'numeric' });
+                            chipLabel.textContent = `${fromFormatted} - ${toFormatted}`;
+                        } else if (from) {
+                            const fromDate = new Date(from);
+                            const fromFormatted = fromDate.toLocaleDateString(locale, { day: 'numeric', month: 'numeric', year: 'numeric' });
+                            chipLabel.textContent = `${fromFormatted} →`;
+                        } else {
+                            const toDate = new Date(to);
+                            const toFormatted = toDate.toLocaleDateString(locale, { day: 'numeric', month: 'numeric', year: 'numeric' });
+                            chipLabel.textContent = `→ ${toFormatted}`;
+                        }
+                    }
+                } else {
+                    chip.classList.remove('active');
+                    chipLabel.textContent = i18n.filterDate || 'Päivämäärä';
+                }
+            }
+        });
     }
 
     // ===== UPDATE URL =====
     function updateListUrl() {
         const params = new URLSearchParams(window.location.search);
 
-        // Preserve page parameter
-        if (!params.has('page')) {
-            params.set('page', 'list');
+        const typeVal = filterType.value;
+        const stateVal = filterState.value;
+        const siteVal = filterSite.value;
+        const searchVal = filterSearch.value.trim();
+        const dateFromVal = filterDateFrom.value;
+        const dateToVal = filterDateTo.value;
+        const archivedVal = filterArchived.value;
+
+        if (typeVal) {
+            params.set('type', typeVal);
+        } else {
+            params.delete('type');
         }
 
-        const typeVal = filterType ? filterType.value : '';
-        const stateVal = filterState ? filterState.value : '';
-        const siteVal = filterSite ? filterSite.value : '';
-        const searchVal = (searchInput ? searchInput.value : (filterSearch ? filterSearch.value : '')).trim();
-        const dateFromVal = filterDateFrom ? filterDateFrom.value : '';
-        const dateToVal = filterDateTo ? filterDateTo.value : '';
-        const archivedVal = filterArchived ? filterArchived.value : '';
+        if (stateVal) {
+            params.set('state', stateVal);
+        } else {
+            params.delete('state');
+        }
 
-        if (typeVal) params.set('type', typeVal); else params.delete('type');
-        if (stateVal) params.set('state', stateVal); else params.delete('state');
-        if (siteVal) params.set('site', siteVal); else params.delete('site');
-        if (searchVal) params.set('q', searchVal); else params.delete('q');
-        if (dateFromVal) params.set('date_from', dateFromVal); else params.delete('date_from');
-        if (dateToVal) params.set('date_to', dateToVal); else params.delete('date_to');
-        if (archivedVal) params.set('archived', archivedVal); else params.delete('archived');
+        if (siteVal) {
+            params.set('site', siteVal);
+        } else {
+            params.delete('site');
+        }
 
-        const newUrl = window.location.pathname + '?' + params.toString();
+        if (searchVal) {
+            params.set('q', searchVal);
+        } else {
+            params.delete('q');
+        }
+
+        if (dateFromVal) {
+            params.set('date_from', dateFromVal);
+        } else {
+            params.delete('date_from');
+        }
+
+        if (dateToVal) {
+            params.set('date_to', dateToVal);
+        } else {
+            params.delete('date_to');
+        }
+
+        if (archivedVal) {
+            params.set('archived', archivedVal);
+        } else {
+            params.delete('archived');
+        }
+
+        const paramsString = params.toString();
+        const newUrl = paramsString ? window.location.pathname + '?' + paramsString : window.location.pathname;
         window.history.replaceState({}, '', newUrl);
     }
 
-    // ===== NO RESULTS MESSAGE =====
+    // ===== UPDATE NO RESULTS MESSAGE =====
     function updateNoResultsMessage(visibleCount) {
         const cardList = document.querySelector('.card-list');
         if (!cardList) return;
 
-        let noResultsBox = cardList.querySelector('.js-filter-no-results');
+        // Find or create the filter no-results element
+        let noResultsEl = cardList.querySelector('.sf-no-results-filter');
 
         if (visibleCount === 0) {
-            if (!noResultsBox) {
-                noResultsBox = document.createElement('div');
-                noResultsBox.className = 'no-results-box js-filter-no-results';
-
+            if (!noResultsEl) {
                 // Create elements safely without innerHTML
-                const iconWrap = document.createElement('div');
-                iconWrap.className = 'no-results-icon-wrap';
-                iconWrap.innerHTML = `
-                    <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="11" cy="11" r="8"/>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                        <line x1="8" y1="11" x2="14" y2="11"/>
-                    </svg>
-                `;
+                noResultsEl = document.createElement('div');
+                noResultsEl.className = 'sf-no-results-filter';
 
-                const textPara = document.createElement('p');
-                textPara.className = 'no-results-text';
-                textPara.textContent = window.SF_LIST_I18N?.filterNoResults || 'Ei tuloksia';
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'sf-no-results-icon';
+                iconDiv.textContent = '🔍';
 
-                const hintPara = document.createElement('p');
-                hintPara.className = 'no-results-hint';
-                hintPara.textContent = window.SF_LIST_I18N?.noResultsHint || 'Kokeile muuttaa suodattimia';
+                const textP = document.createElement('p');
+                textP.className = 'sf-no-results-text';
+                textP.textContent = window.SF_LIST_I18N?.filterNoResults || 'Ei hakutuloksia';
 
-                noResultsBox.appendChild(iconWrap);
-                noResultsBox.appendChild(textPara);
-                noResultsBox.appendChild(hintPara);
-                cardList.appendChild(noResultsBox);
-            } else {
-                noResultsBox.style.display = '';
+                const hintP = document.createElement('p');
+                hintP.className = 'sf-no-results-hint';
+                hintP.textContent = window.SF_LIST_I18N?.filterNoResultsHint || 'Kokeile muuttaa suodattimia';
+
+                noResultsEl.appendChild(iconDiv);
+                noResultsEl.appendChild(textP);
+                noResultsEl.appendChild(hintP);
+
+                cardList.appendChild(noResultsEl);
             }
+            noResultsEl.style.display = 'flex';
         } else {
-            if (noResultsBox) {
-                noResultsBox.style.display = 'none';
+            if (noResultsEl) {
+                noResultsEl.style.display = 'none';
             }
         }
-    }
 
-    // ===== CLEAR/RESET BUTTONS =====
-    function updateClearButtonVisibility() {
-        const hasFilters =
-            (filterType && filterType.value !== '') ||
-            (filterState && filterState.value !== '') ||
-            (filterSite && filterSite.value !== '') ||
-            (searchInput && searchInput.value !== '') ||
-            (filterSearch && filterSearch.value !== '') ||
-            (filterDateFrom && filterDateFrom.value !== '') ||
-            (filterDateTo && filterDateTo.value !== '');
-
-        if (clearAllBtn) {
-            clearAllBtn.classList.toggle('hidden', !hasFilters);
-        }
-        if (resetAllBtn) {
-            resetAllBtn.classList.toggle('hidden', !hasFilters);
+        // Handle the PHP-rendered no-results box separately
+        const phpNoResultsBox = cardList.querySelector('.no-results-box:not(.sf-no-results-filter)');
+        if (phpNoResultsBox) {
+            phpNoResultsBox.style.display = 'none';
         }
     }
 
-    // ===== UPDATE RESULTS BAR =====
-    function updateResultsBar() {
-        const allCards = document.querySelectorAll('.card');
-        const visibleCards = document.querySelectorAll('.card:not([style*="display: none"])');
-        
-        let resultsBar = document.querySelector('.sf-results-bar');
-        
-        const hasFilters = 
-            (filterType && filterType.value !== '') ||
-            (filterState && filterState.value !== '') ||
-            (filterSite && filterSite.value !== '') ||
-            (searchInput && searchInput.value !== '') ||
-            (filterDateFrom && filterDateFrom.value !== '') ||
-            (filterDateTo && filterDateTo.value !== '');
-        
-        if (hasFilters) {
-            if (!resultsBar) {
-                resultsBar = document.createElement('div');
-                resultsBar.className = 'sf-results-bar';
-                const cardList = document.querySelector('.card-list');
-                if (cardList && cardList.parentNode) {
-                    cardList.parentNode.insertBefore(resultsBar, cardList);
-                }
-            }
-            
-            const i18n = window.SF_LIST_I18N || {};
-            const countText = (i18n.filterResultsCount || 'Näytetään {visible} / {total} tulosta')
-                .replace('{visible}', visibleCards.length)
-                .replace('{total}', allCards.length);
-            
-            resultsBar.innerHTML = '<span class="sf-results-count">' + countText + '</span>';
-            resultsBar.style.display = '';
-        } else {
-            if (resultsBar) {
-                resultsBar.style.display = 'none';
-            }
-        }
-    }
-
-    if (clearAllBtn) {
-        clearAllBtn.addEventListener('click', function () {
-            clearAllFilters();
-        });
-    }
-
-    if (resetAllBtn) {
-        resetAllBtn.addEventListener('click', function (e) {
+    // ===== FORM SUBMISSION =====
+    if (filtersForm) {
+        filtersForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            clearAllFilters();
+            applyListFilters();
         });
     }
 
-    function clearAllFilters() {
-        if (filterType) filterType.value = '';
-        if (filterState) filterState.value = '';
-        if (filterSite) filterSite.value = '';
-        if (filterSearch) filterSearch.value = '';
-        if (searchInput) searchInput.value = '';
-        if (filterDateFrom) filterDateFrom.value = '';
-        if (filterDateTo) filterDateTo.value = '';
-        if (filterArchived) filterArchived.value = '';
+    // ===== EVENT LISTENERS FOR FILTERS =====
+    filterType.addEventListener('change', applyListFilters);
+    filterState.addEventListener('change', applyListFilters);
+    filterSite.addEventListener('change', applyListFilters);
+    filterSearch.addEventListener('input', applyListFilters);
+    filterDateFrom.addEventListener('change', applyListFilters);
+    filterDateTo.addEventListener('change', applyListFilters);
+    filterArchived.addEventListener('change', applyListFilters);
 
-        // Reset toggle buttons
-        toggleBtns.forEach(btn => {
-            btn.classList.remove('active');
-            btn.setAttribute('aria-pressed', 'false');
-            if (btn.dataset.archivedValue === '') {
-                btn.classList.add('active');
-                btn.setAttribute('aria-pressed', 'true');
-            }
-        });
+    // ===== CLEAR FILTERS =====
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function (e) {
+            e.preventDefault();
 
-        // Reset chip labels
-        chips.forEach(chip => {
-            chip.classList.remove('active');
-            const chipLabel = chip.querySelector('.chip-label');
-            const filterName = chip.dataset.filter;
-            if (chipLabel && window.SF_LIST_I18N) {
-                if (filterName === 'type') chipLabel.textContent = window.SF_LIST_I18N.filterChipTypeAll || 'Kaikki tyypit';
-                if (filterName === 'state') chipLabel.textContent = window.SF_LIST_I18N.filterChipStateAll || 'Kaikki tilat';
-                if (filterName === 'site') chipLabel.textContent = window.SF_LIST_I18N.filterChipSiteAll || 'Kaikki työmaat';
-                if (filterName === 'date') chipLabel.textContent = window.SF_LIST_I18N.filterDate || 'Päivämäärä';
-            }
-        });
+            filterType.value = '';
+            filterState.value = '';
+            filterSite.value = '';
+            filterSearch.value = '';
+            filterDateFrom.value = '';
+            filterDateTo.value = '';
+            filterArchived.value = '';
 
-        applyClientSideFilters();
-        updateClearButtonVisibility();
-        updateResultsBar();
-    }
-
-    // ===== DATE DROPDOWN =====
-    function renderDateDropdown(chip, dropdown) {
-        dropdown.classList.add('sf-chip-dropdown-date');
-        
-        const i18n = window.SF_LIST_I18N || {};
-        
-        // === QUICK PRESETS ===
-        const presetsSection = document.createElement('div');
-        presetsSection.className = 'sf-date-section';
-        
-        const presetsTitle = document.createElement('div');
-        presetsTitle.className = 'sf-date-section-title';
-        presetsTitle.textContent = i18n.dateTimespanHeader || 'Pikavalinta';
-        presetsSection.appendChild(presetsTitle);
-        
-        const presetsGrid = document.createElement('div');
-        presetsGrid.className = 'sf-date-presets';
-        
-        const today = new Date();
-        const presets = [
-            { 
-                label: i18n.datePreset7days || '7 pv', 
-                shortLabel: i18n.datePreset7daysShort || '7 pv',
-                from: daysAgo(7), 
-                to: formatDateISO(today) 
-            },
-            { 
-                label: i18n.datePreset30days || '30 pv', 
-                shortLabel: i18n.datePreset30daysShort || '30 pv',
-                from: daysAgo(30), 
-                to: formatDateISO(today) 
-            },
-            { 
-                label: i18n.datePresetMonth || 'Tämä kk', 
-                shortLabel: i18n.datePresetMonthShort || getMonthShortName(today.getMonth()),
-                from: firstDayOfMonth(today), 
-                to: lastDayOfMonth(today) 
-            },
-            { 
-                label: i18n.datePresetYear || String(today.getFullYear()), 
-                shortLabel: String(today.getFullYear()),
-                from: today.getFullYear() + '-01-01', 
-                to: today.getFullYear() + '-12-31' 
-            },
-            { 
-                label: i18n.datePresetAll || 'Kaikki', 
-                shortLabel: i18n.filterDate || 'Päivämäärä',
-                from: '', 
-                to: '' 
-            }
-        ];
-        
-        presets.forEach(preset => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'sf-date-preset-btn';
-            btn.textContent = preset.label;
-            
-            // Check if this preset is currently active
-            const currentFrom = filterDateFrom ? filterDateFrom.value : '';
-            const currentTo = filterDateTo ? filterDateTo.value : '';
-            if (currentFrom === preset.from && currentTo === preset.to) {
-                btn.classList.add('active');
-            }
-            
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                applyDateFilter(chip, preset.from, preset.to, preset.shortLabel);
-            });
-            
-            presetsGrid.appendChild(btn);
-        });
-        
-        presetsSection.appendChild(presetsGrid);
-        dropdown.appendChild(presetsSection);
-        
-        // === MONTH PICKER ===
-        const monthSection = document.createElement('div');
-        monthSection.className = 'sf-date-section';
-        
-        const monthTitle = document.createElement('div');
-        monthTitle.className = 'sf-date-section-title';
-        monthTitle.textContent = i18n.dateMonthHeader || 'Kuukausi';
-        monthSection.appendChild(monthTitle);
-        
-        let selectedYear = today.getFullYear();
-        
-        const yearNav = document.createElement('div');
-        yearNav.className = 'sf-date-year-nav';
-        
-        const prevYearBtn = document.createElement('button');
-        prevYearBtn.type = 'button';
-        prevYearBtn.className = 'sf-date-year-btn';
-        prevYearBtn.innerHTML = '◄';
-        prevYearBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            selectedYear--;
-            yearLabel.textContent = selectedYear;
-            updateMonthButtons();
-        });
-        
-        const yearLabel = document.createElement('span');
-        yearLabel.className = 'sf-date-year-label';
-        yearLabel.textContent = selectedYear;
-        
-        const nextYearBtn = document.createElement('button');
-        nextYearBtn.type = 'button';
-        nextYearBtn.className = 'sf-date-year-btn';
-        nextYearBtn.innerHTML = '►';
-        nextYearBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            selectedYear++;
-            yearLabel.textContent = selectedYear;
-            updateMonthButtons();
-        });
-        
-        yearNav.appendChild(prevYearBtn);
-        yearNav.appendChild(yearLabel);
-        yearNav.appendChild(nextYearBtn);
-        monthSection.appendChild(yearNav);
-        
-        const monthGrid = document.createElement('div');
-        monthGrid.className = 'sf-date-month-grid';
-        
-        const monthNames = i18n.monthNamesShort || ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-        
-        function updateMonthButtons() {
-            monthGrid.innerHTML = '';
-            for (let m = 0; m < 12; m++) {
-                const monthBtn = document.createElement('button');
-                monthBtn.type = 'button';
-                monthBtn.className = 'sf-date-month-btn';
-                monthBtn.textContent = monthNames[m];
-                
-                const monthFrom = formatDateISO(new Date(selectedYear, m, 1));
-                const monthTo = lastDayOfMonthByYearMonth(selectedYear, m);
-                
-                // Check if this month is currently selected
-                const currentFrom = filterDateFrom ? filterDateFrom.value : '';
-                const currentTo = filterDateTo ? filterDateTo.value : '';
-                if (currentFrom === monthFrom && currentTo === monthTo) {
-                    monthBtn.classList.add('active');
-                }
-                
-                // Disable future months - compare year and month only
-                if (selectedYear > today.getFullYear() || (selectedYear === today.getFullYear() && m > today.getMonth())) {
-                    monthBtn.disabled = true;
-                    monthBtn.classList.add('disabled');
-                }
-                
-                monthBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const shortLabel = monthNames[m] + ' ' + selectedYear;
-                    applyDateFilter(chip, monthFrom, monthTo, shortLabel);
-                });
-                
-                monthGrid.appendChild(monthBtn);
-            }
-        }
-        
-        updateMonthButtons();
-        monthSection.appendChild(monthGrid);
-        dropdown.appendChild(monthSection);
-        
-        // === CUSTOM DATE RANGE ===
-        const customSection = document.createElement('div');
-        customSection.className = 'sf-date-section';
-        
-        const customTitle = document.createElement('div');
-        customTitle.className = 'sf-date-section-title';
-        customTitle.textContent = i18n.datePresetCustom || 'Oma aikaväli';
-        customSection.appendChild(customTitle);
-        
-        const customRow = document.createElement('div');
-        customRow.className = 'sf-date-custom-row';
-        
-        const fromInput = document.createElement('input');
-        fromInput.type = 'date';
-        fromInput.className = 'sf-date-input';
-        fromInput.value = filterDateFrom ? filterDateFrom.value : '';
-        fromInput.placeholder = i18n.filterDateFrom || 'Alkaen';
-        
-        const separator = document.createElement('span');
-        separator.className = 'sf-date-separator';
-        separator.textContent = '–';
-        
-        const toInput = document.createElement('input');
-        toInput.type = 'date';
-        toInput.className = 'sf-date-input';
-        toInput.value = filterDateTo ? filterDateTo.value : '';
-        toInput.placeholder = i18n.filterDateTo || 'Asti';
-        
-        customRow.appendChild(fromInput);
-        customRow.appendChild(separator);
-        customRow.appendChild(toInput);
-        customSection.appendChild(customRow);
-        
-        const customBtnRow = document.createElement('div');
-        customBtnRow.className = 'sf-date-custom-btn-row';
-        
-        const applyBtn = document.createElement('button');
-        applyBtn.type = 'button';
-        applyBtn.className = 'sf-date-apply-btn';
-        applyBtn.textContent = i18n.filterApply || 'Suodata';
-        applyBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            let shortLabel = '';
-            if (fromInput.value && toInput.value) {
-                shortLabel = formatDateShort(fromInput.value) + ' - ' + formatDateShort(toInput.value);
-            } else if (fromInput.value) {
-                shortLabel = formatDateShort(fromInput.value) + ' →';
-            } else if (toInput.value) {
-                shortLabel = '→ ' + formatDateShort(toInput.value);
-            } else {
-                shortLabel = i18n.filterDate || 'Päivämäärä';
-            }
-            applyDateFilter(chip, fromInput.value, toInput.value, shortLabel);
-        });
-        
-        customBtnRow.appendChild(applyBtn);
-        customSection.appendChild(customBtnRow);
-        dropdown.appendChild(customSection);
-    }
-
-    // ===== APPLY DATE FILTER =====
-    function applyDateFilter(chip, fromVal, toVal, chipLabel) {
-        // Update hidden fields
-        if (filterDateFrom) filterDateFrom.value = fromVal;
-        if (filterDateTo) filterDateTo.value = toVal;
-        
-        // Update chip display
-        const chipLabelEl = chip.querySelector('.chip-label');
-        if (chipLabelEl) {
-            chipLabelEl.textContent = chipLabel;
-        }
-        
-        // Update chip active state
-        if (fromVal || toVal) {
-            chip.classList.add('active');
-        } else {
-            chip.classList.remove('active');
-        }
-        
-        // Close dropdown
-        chip.classList.remove('open');
-        
-        // Apply filter with animation
-        applyClientSideFiltersWithAnimation();
-        updateClearButtonVisibility();
-        updateResultsBar();
-    }
-
-    // ===== APPLY FILTERS WITH ANIMATION =====
-    function applyClientSideFiltersWithAnimation() {
-        const cards = document.querySelectorAll('.card');
-        
-        // First, mark cards that will be hidden
-        cards.forEach(card => {
-            const shouldShow = shouldCardBeVisible(card);
-            if (!shouldShow && card.style.display !== 'none') {
-                card.classList.add('sf-filtering-out');
-            }
-        });
-        
-        // After animation, actually hide/show
-        setTimeout(() => {
-            applyClientSideFilters();
-            
-            // Add appear animation to newly visible cards
-            cards.forEach(card => {
-                card.classList.remove('sf-filtering-out');
-                if (card.style.display !== 'none') {
-                    card.classList.add('sf-filtering-in');
-                    setTimeout(() => card.classList.remove('sf-filtering-in'), 300);
+            // Reset archived toggle
+            toggleBtns.forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+                if (btn.dataset.archivedValue === '') {
+                    btn.classList.add('active');
+                    btn.setAttribute('aria-pressed', 'true');
                 }
             });
-        }, 150);
+
+            applyListFilters();
+        });
     }
 
-    // ===== HELPER FUNCTIONS =====
-    function formatDateISO(date) {
-        return date.getFullYear() + '-' + 
-               String(date.getMonth() + 1).padStart(2, '0') + '-' + 
-               String(date.getDate()).padStart(2, '0');
+    // ===== INITIAL LOAD =====
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasFilters = urlParams.get('type') || urlParams.get('state') ||
+        urlParams.get('site') || urlParams.get('q') ||
+        urlParams.get('date_from') || urlParams.get('date_to') ||
+        urlParams.get('archived');
+
+    if (hasFilters) {
+        applyListFilters();
+    } else {
+        // Update chips on initial load
+        updateChipsDisplay();
     }
-
-    function formatDateShort(dateStr) {
-        if (!dateStr) return '';
-        const parts = dateStr.split('-');
-        if (parts.length === 3) {
-            return parts[2] + '.' + parts[1] + '.';
-        }
-        return dateStr;
-    }
-
-    function daysAgo(days) {
-        const d = new Date();
-        d.setDate(d.getDate() - days);
-        return formatDateISO(d);
-    }
-
-    function firstDayOfMonth(date) {
-        return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-01';
-    }
-
-    function lastDayOfMonth(date) {
-        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        return formatDateISO(lastDay);
-    }
-
-    function lastDayOfMonthByYearMonth(year, month) {
-        const lastDay = new Date(year, month + 1, 0);
-        return formatDateISO(lastDay);
-    }
-
-    function getMonthShortName(monthIndex) {
-        const i18n = window.SF_LIST_I18N || {};
-        // Use English month names as fallback for language neutrality
-        const names = i18n.monthNamesShort || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        return names[monthIndex] || '';
-    }
-
-    function shouldCardBeVisible(card) {
-        const typeVal = filterType ? filterType.value : '';
-        const stateVal = filterState ? filterState.value : '';
-        const siteVal = filterSite ? filterSite.value : '';
-        const searchVal = (searchInput ? searchInput.value : '').toLowerCase().trim();
-        const dateFromVal = filterDateFrom ? filterDateFrom.value : '';
-        const dateToVal = filterDateTo ? filterDateTo.value : '';
-        const archivedVal = filterArchived ? filterArchived.value : '';
-        
-        if (typeVal && card.dataset.type !== typeVal) return false;
-        if (stateVal && card.dataset.state !== stateVal) return false;
-        if (siteVal && card.dataset.site !== siteVal) return false;
-        if (searchVal && !(card.dataset.title || '').toLowerCase().includes(searchVal)) return false;
-        if (dateFromVal && card.dataset.date && card.dataset.date < dateFromVal) return false;
-        if (dateToVal && card.dataset.date && card.dataset.date > dateToVal) return false;
-        
-        const cardArchivedValue = card.dataset.archived || '0';
-        if (archivedVal === '' && cardArchivedValue === '1') return false;
-        if (archivedVal === 'only' && cardArchivedValue !== '1') return false;
-        
-        return true;
-    }
-
-    // ===== INITIALIZE =====
-    // Apply filters on page load
-    applyClientSideFilters();
-    updateClearButtonVisibility();
-    updateResultsBar();
-
 })();
