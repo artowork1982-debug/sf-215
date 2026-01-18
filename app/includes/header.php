@@ -54,7 +54,13 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $availableLangs)) {
     $parts = parse_url($uri);
     $path  = $parts['path'] ?? '/index.php';
     parse_str($parts['query'] ?? '', $q);
+    
+    // Varmista että page-parametri säilyy aina redirectissä
+    // $currentPage is already validated at lines 16-21
     unset($q['lang']);
+    // Always use the validated $currentPage to ensure security
+    $q['page'] = $currentPage;
+    
     $clean = $path . (empty($q) ? '' : ('?' . http_build_query($q)));
 
     header('Location: ' . $clean);
