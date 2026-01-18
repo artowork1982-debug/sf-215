@@ -33,6 +33,7 @@
 }
 
 /* Hide old filters-grid completely */
+/* REMOVED: These rules were hiding ALL filters including the active filter form
 .filters,
 .filters-grid,
 .filters-toggle,
@@ -44,6 +45,7 @@ form.filters {
     margin: 0 !important;
     padding: 0 !important;
 }
+*/
 
 .filters-grid {
     display: grid;

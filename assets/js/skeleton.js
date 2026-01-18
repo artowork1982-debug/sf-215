@@ -30,6 +30,24 @@
         hideSkeleton('skeletonTable', 400);
     });
 
+    /**
+     * Fallback: Force hide skeleton after 5 seconds if not already hidden
+     * This ensures skeleton doesn't get stuck if JavaScript errors occur
+     */
+    setTimeout(function() {
+        var skeleton = document.getElementById('skeletonContainer');
+        if (skeleton && !skeleton.classList.contains('loaded')) {
+            skeleton.classList.add('loaded');
+            console.warn('Skeleton fallback triggered - skeleton was force-hidden after 5s');
+        }
+        
+        var skeletonTable = document.getElementById('skeletonTable');
+        if (skeletonTable && !skeletonTable.classList.contains('loaded')) {
+            skeletonTable.classList.add('loaded');
+            console.warn('Skeleton table fallback triggered - skeleton was force-hidden after 5s');
+        }
+    }, 5000);
+
     // Export for potential external use
     if (typeof window !== 'undefined') {
         window.SF_Skeleton = {
