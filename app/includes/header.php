@@ -56,11 +56,10 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $availableLangs)) {
     parse_str($parts['query'] ?? '', $q);
     
     // Varmista että page-parametri säilyy aina redirectissä
-    $currentPage = $_GET['page'] ?? 'list';
+    // $currentPage is already validated at lines 16-21
     unset($q['lang']);
-    if (!isset($q['page'])) {
-        $q['page'] = $currentPage;
-    }
+    // Always use the validated $currentPage to ensure security
+    $q['page'] = $currentPage;
     
     $clean = $path . (empty($q) ? '' : ('?' . http_build_query($q)));
 
